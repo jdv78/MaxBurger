@@ -1,0 +1,684 @@
+table '01 Sales Article Measures'
+	lineageTag: f942d724-6f95-4f48-aa06-ecbe20bf09f0
+
+	measure Values = sum('F_SALES_ARTICLE_DAILY'[Value])
+		displayFolder: 99. Base Values
+		lineageTag: a0c486f0-d596-4408-80bd-0dcd95542ff8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '01 Sales' = ```
+			Var _Sales = Calculate([Values],'F_SALES_ARTICLE_DAILY'[Attribute] ="SALES_GROSS_AFTER_DISC")
+			
+			return 
+			
+			if( _Sales = 0 ,BLANK(), _sales)
+			```
+		formatString: #,0
+		displayFolder: 01. Sales Measures
+		lineageTag: e3d1b53a-81e7-4158-87f9-243abd93e30f
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '02 Sales LY' = Calculate([Values],'F_SALES_ARTICLE_DAILY'[Attribute] ="LY_SALES_GROSS_AFTER_DISC")
+		formatString: #,0
+		displayFolder: 01. Sales Measures
+		lineageTag: 5e537358-c000-4067-929b-876491a2df4c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '03 Sales LLY' = Calculate([Values],'F_SALES_ARTICLE_DAILY'[Attribute] ="LLY_SALES_GROSS_AFTER_DISC")
+		formatString: #,0
+		displayFolder: 01. Sales Measures
+		lineageTag: b65fcaec-072a-4a33-9cc1-042fd0b72a45
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '01 Sales vs LY%' =
+			VAR _result = IF(
+			    ISBLANK( [02 Sales LY] ),
+			    BLANK( ),
+			    DIVIDE( [01 Sales] -[02 Sales LY] , ABS([02 Sales LY] ) )
+			)
+			Var results =   IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+			RETURN
+			    IF( results = -1 , BLANK(),results)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 40. Diff%
+		lineageTag: 85f104d9-f848-443f-a6a0-cca45fc01339
+
+	measure '01 Checks' = ```
+			Calculate([Values],'F_SALES_ARTICLE_DAILY'[Attribute] ="CHECKS")
+			
+			```
+		formatString: #,0
+		displayFolder: 02. Checks
+		lineageTag: 45080abd-1ad6-4bba-b440-ec7e6442311e
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '02 Checks LY' = Calculate([Values],'F_SALES_ARTICLE_DAILY'[Attribute] ="LY_CHECKS")
+		formatString: #,0
+		displayFolder: 02. Checks
+		lineageTag: 93bb5d37-cfc2-4075-a44c-cb3be4b2f93d
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '03 Checks LLY' = Calculate([Values],'F_SALES_ARTICLE_DAILY'[Attribute] ="LLY_CHECKS")
+		formatString: #,0
+		displayFolder: 02. Checks
+		lineageTag: 75dbe997-93e6-4e9c-b380-ab04a9b788fe
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '01 Avg Check' = ```
+			divide([01 Sales],[01 Checks],0)
+			
+			```
+		formatString: #,0
+		displayFolder: 03. Avg Check
+		lineageTag: 31d3a86d-5593-4fd5-aa0b-6fdca2bdb5b1
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '01 Quantity' = ```
+			Calculate([Values],'F_SALES_ARTICLE_DAILY'[Attribute] ="Quantity")
+			
+			```
+		formatString: #,0
+		displayFolder: 04. Quantity
+		lineageTag: bc687004-0d08-428a-be76-c4d733ef0458
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '01 CHECKS_PER_COUNTRY' = ```
+			Calculate([Values],'F_SALES_ARTICLE_DAILY'[Attribute] ="CHECKS_PER_COUNTRY")
+			
+			```
+		formatString: #,0
+		displayFolder: 30. TOTAL_CHECKS_PER_COUNTRY_PER_DATE
+		lineageTag: 6a3fcbc4-3542-434e-a612-538bb074aa35
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '02 Avg check LY' = ```
+			 divide([02 Sales LY],[02 Checks LY],0)
+			
+			```
+		formatString: #,0
+		displayFolder: 03. Avg Check
+		lineageTag: 7672dac8-c09a-4446-a16d-c6984ab5561b
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '03 Avg check LLY' = divide([03 Sales LLY],[03 Checks LLY],0)
+		formatString: #,0
+		displayFolder: 03. Avg Check
+		lineageTag: e512a03c-6b51-470e-92d4-d030e6bd9b90
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '02 Quantity LY' = ```
+			Calculate([Values],'F_SALES_ARTICLE_DAILY'[Attribute] ="LY_Quantity")
+			
+			```
+		formatString: #,0
+		displayFolder: 04. Quantity
+		lineageTag: e34da5cc-e065-4f2f-bdac-e7b1f1053ce2
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '03 Quantity LLY' = ```
+			Calculate([Values],'F_SALES_ARTICLE_DAILY'[Attribute] ="LLY_Quantity")
+			
+			```
+		formatString: #,0
+		displayFolder: 04. Quantity
+		lineageTag: 18a29980-b060-41df-9c63-9b351f0fb0e0
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '02 CHECKS_PER_COUNTRY LY' = ```
+			Calculate([Values],'F_SALES_ARTICLE_DAILY'[Attribute] ="LY_CHECKS_PER_COUNTRY")
+			
+			```
+		formatString: #,0
+		displayFolder: 30. TOTAL_CHECKS_PER_COUNTRY_PER_DATE
+		lineageTag: bb5e8c1a-a09d-4c32-97f5-8cc2abf831fe
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '03 CHECKS_PER_COUNTRY LLY' = ```
+			Calculate([Values],'F_SALES_ARTICLE_DAILY'[Attribute] ="LLY_CHECKS_PER_COUNTRY")
+			
+			```
+		formatString: #,0
+		displayFolder: 30. TOTAL_CHECKS_PER_COUNTRY_PER_DATE
+		lineageTag: bb2f8d44-9976-4017-a673-48d760203345
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure '02 Sales vs LLY% ' =
+			IF(
+			    ISBLANK([03 Sales LLY] ),
+			    BLANK( ),
+			    DIVIDE( [01 Sales] -[03 Sales LLY] , ABS([03 Sales LLY]  ) )
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 40. Diff%
+		lineageTag: 8c92e9a0-9dfb-46bf-be0a-e81c71425690
+
+	measure '03 Sales LY vs LLY%' = ```
+			 IF(
+			    ISBLANK([03 Sales LLY] ),
+			    BLANK( ),
+			    DIVIDE( [02 Sales LY] -[03 Sales LLY] , ABS([03 Sales LLY]  ) )
+			)
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 40. Diff%
+		lineageTag: 07bcc67b-281f-4416-b9a0-499717529728
+
+	measure '04 Checks vs LY%' =
+			VAR _result = IF(
+			    ISBLANK( [02 Checks LY] ),
+			    BLANK( ),
+			    DIVIDE( [01 Checks] -[02 Checks LY] , ABS([02 Checks LY] ) )
+			)
+			Var results =   IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+			RETURN
+			    IF( results = -1 , BLANK(),results)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 40. Diff%
+		lineageTag: 336d0193-2323-4204-8abb-d66e8ded4473
+
+	measure '05 Checks vs LLY% ' =
+			IF(
+			    ISBLANK([03 Checks LLY] ),
+			    BLANK( ),
+			    DIVIDE( [01 Checks] -[03 Checks LLY] , ABS([03 Checks LLY]  ) )
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 40. Diff%
+		lineageTag: a71a27a9-42dd-49fc-a9d6-57ee08e766f6
+
+	measure '06 Checks LY vs LLY% ' = ```
+			 IF(
+			    ISBLANK( [03 Checks LLY]),
+			    BLANK( ),
+			    DIVIDE( [02 Checks LY]-[03 Checks LLY] , ABS( [03 Checks LLY] ) ))
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 40. Diff%
+		lineageTag: 20c384ac-400a-408e-8c00-112197552a38
+
+	measure '07 Avg check vs LY' = ```
+			
+			 VAR _result = IF(
+			    ISBLANK( [02 Avg check LY] ),
+			    BLANK( ),
+			    DIVIDE( [01 Avg check] -[02 Avg check LY] , ABS([02 Avg check LY] ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 40. Diff%
+		lineageTag: 8d0edbaa-2948-4b99-89be-de42d1b27832
+
+	measure '08 Avg check vs LLY%' =
+			VAR _result = IF(
+			    ISBLANK( [03 Avg check LLY] ),
+			    BLANK( ),
+			    DIVIDE( [01 Avg check] -[03 Avg check LLY] , ABS([03 Avg check LLY] ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 40. Diff%
+		lineageTag: f326e420-157b-456a-a6c3-b27c0387a481
+
+	measure '09 Avg check LY vs LLY%' =
+			VAR _result = IF(
+			    ISBLANK( [03 Avg check LLY] ),
+			    BLANK( ),
+			    DIVIDE( [02 Avg check LY] -[03 Avg check LLY] , ABS([03 Avg check LLY] ) )
+			)
+			Var results =   IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+			RETURN
+			    IF( results = -1 , BLANK(),results)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 40. Diff%
+		lineageTag: e5111cbd-8e6f-496c-8bcf-6cf79079c47b
+
+	measure '01 Sales vs LY' = [01 Sales] - [02 Sales LY]
+		displayFolder: 50. Diff
+		lineageTag: 23b1da1a-400f-4182-93e4-8c954713d0eb
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '02 Sales vs LLY' = [01 Sales] - [03 Sales LLY]
+		displayFolder: 50. Diff
+		lineageTag: 0d513dbb-3974-4aeb-a5f7-56151714a1a7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '04 Checks vs LY' = ```
+			VAR _result =  [01 Checks] -[02 Checks LY] 
+			RETURN
+			    _result
+			```
+		displayFolder: 50. Diff
+		lineageTag: a8ee2619-5334-4b83-9e9c-bd89141e9937
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '05 Checks vs LLY' = ```
+			VAR _result =  [01 Checks] -[03 Checks LLY] 
+			RETURN
+			    _result
+			```
+		displayFolder: 50. Diff
+		lineageTag: 3c6be620-67cd-4732-84e2-42707806c171
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '07 Avg checks vs LY' =
+			VAR _result = [01 Avg check] -[02 Avg check LY]
+			
+			RETURN
+			    _result
+		displayFolder: 50. Diff
+		lineageTag: 4176a605-83dd-445b-a7c4-7de763f6dcbc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '08 Avg checks vs LLY' = ```
+			VAR _result =  [02 Avg check LY] -[03 Avg check LLY] 
+			
+			RETURN
+			 _result 
+			```
+		displayFolder: 50. Diff
+		lineageTag: 2afcb57c-1d71-4732-9d2e-0553a4368dfd
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Unit Drive (per Channel)' =
+			var _total = calculate([02 Sales LY], all(Dim_CHANNEL))
+			
+			Var result = ([01 Sales]-[02 Sales LY])/_total
+			
+			return
+			
+			result*100
+		displayFolder: 90.Unit Drive
+		lineageTag: a1a80c45-3d8c-4636-9bec-da5282f723e6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Checks Unit Drive (per Channel)' =
+			var _total = calculate([02 Checks LY], all(Dim_CHANNEL))
+			
+			Var result = ([01 Checks]-[02 Checks LY])/_total
+			
+			return
+			
+			result*100
+		displayFolder: 90.Unit Drive
+		lineageTag: 3082a0be-eea1-4fd6-a4a7-f95657b6fbc8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '10 Quantity vs LY%' =
+			VAR _result = IF(
+			    ISBLANK( [02 Quantity LY] ),
+			    BLANK( ),
+			    DIVIDE( [01 Quantity] -[02 Quantity LY] , ABS([02 Quantity LY]) )
+			)
+			
+			Var results =   IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+			RETURN
+			    IF( results = -1 , BLANK(),results)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 40. Diff%
+		lineageTag: 22e40334-fa7c-4874-832b-66d60985ddab
+
+	measure '11 Quantity vs LLY%' =
+			VAR _result = IF(
+			    ISBLANK( [03 Quantity LLY] ),
+			    BLANK( ),
+			    DIVIDE( [01 Quantity] -[03 Quantity LLY] , ABS([03 Quantity LLY]) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 40. Diff%
+		lineageTag: 5bfe1af4-b639-45ae-bfb9-0c0a231d39dd
+
+	measure '11 Quantity LY vs LLY%' =
+			VAR _result = IF(
+			    ISBLANK( [03 Quantity LLY] ),
+			    BLANK( ),
+			    DIVIDE(  [02 Quantity LY]-[03 Quantity LLY] , ABS([03 Quantity LLY]) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 40. Diff%
+		lineageTag: fa5883df-4843-47d4-869c-a73860163a7d
+
+	measure '04 Checks Article' =
+			SUMX(
+			    SUMMARIZE(
+			        'F_SALES_ARTICLE_DAILY',
+			        'F_SALES_ARTICLE_DAILY'[FISCAL_DATE],
+			        'F_SALES_ARTICLE_DAILY'[COUNTRY_KEY],
+			        "DistinctCounts", values('F_SALES_ARTICLE_DAILY'[LINE_ITEM_ROLE_KEY])
+			    ),
+			    [DistinctCounts])
+		displayFolder: 02. Checks
+		lineageTag: 71ff51f7-f890-46ec-9060-64298f7ad32b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Strike rate' =
+			
+			DIVIDE([01 Quantity],[Checks_total])*100
+		formatString: 0.0
+		displayFolder: 06. Strike Rate %
+		lineageTag: 58dbb496-e6a0-4332-9eda-1e7e26901155
+
+	measure Values_checks = sum('F_NUMBER_OF_RECEIPTS'[Value])
+		displayFolder: 99. Base Values
+		lineageTag: b66cf017-16ec-430b-a9f3-5614a272525b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Checks_total =
+			VAR _R = Calculate([Values_checks], 'F_NUMBER_OF_RECEIPTS'[Attribute]="Number_of_Receipt")
+			Var _Q =  [01 Quantity]
+			Return
+			
+			IF (_Q=BLANK(), BLANK(),_R)
+		displayFolder: 30. TOTAL_CHECKS_PER_COUNTRY_PER_DATE
+		lineageTag: b008133e-18d1-4a08-b3e2-336fb9544158
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Checks_total LY' = ```
+			Var _R = Calculate([Values_checks LY], 'F_NUMBER_OF_RECEIPTS_LY'[Attribute]="Number_of_Receipt")
+			
+			Var _Q =  [01 Quantity]
+			Return
+			
+			IF (_Q=BLANK(), BLANK(),_R)
+			
+			```
+		displayFolder: 30. TOTAL_CHECKS_PER_COUNTRY_PER_DATE
+		lineageTag: e134f25a-693f-4486-86ca-acf0cc00b9da
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Values_checks LY' = sum('F_NUMBER_OF_RECEIPTS_LY'[Value])
+		displayFolder: 99. Base Values
+		lineageTag: f2c6aefd-0d1c-4f29-a953-4d88587d1c9d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Strike rate LY' =
+			
+			DIVIDE([02 Quantity LY],[Checks_total LY])*100
+		formatString: 0.0
+		displayFolder: 06. Strike Rate %
+		lineageTag: 12ee4933-2550-4c59-9fcb-4a1388e7bb72
+
+	measure '12 Strike Rate vs LY%' =
+			VAR _result = IF(
+			    ISBLANK( [Strike rate LY] ),
+			    BLANK( ),
+			    DIVIDE( [Strike rate] -[Strike rate LY]  , ABS([Strike rate LY]  ) )
+			)
+			Var results =   IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+			RETURN
+			    IF( results = -1 , BLANK(),results)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 40. Diff%
+		lineageTag: d254ed10-d279-4bab-8be7-b2a02e421d6c
+
+	measure '04 Quantity (Sales <> 0)' = ```
+			CALCULATE(
+			    [Values], 
+			    'F_SALES_ARTICLE_DAILY'[Attribute] = "Quantity",
+			    FILTER(
+			        'F_SALES_ARTICLE_DAILY',
+			        'F_SALES_ARTICLE_DAILY'[ARTICLE_KEY] IN
+			            SELECTCOLUMNS(
+			                FILTER(
+			                    'F_SALES_ARTICLE_DAILY',
+			                    'F_SALES_ARTICLE_DAILY'[Attribute] = "SALES_GROSS_AFTER_DISC" &&
+			                    [Values] <> 0
+			                ),
+			                "ARTICLE_KEY", 'F_SALES_ARTICLE_DAILY'[ARTICLE_KEY]
+			            )
+			    )
+			)
+			```
+		formatString: #,0
+		displayFolder: 04. Quantity
+		lineageTag: 107913ae-9894-41e2-bca7-8bb8aba59352
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '05 Quantity (Sales <> 0) LY' = ```
+			CALCULATE(
+			    [Values], 
+			    'F_SALES_ARTICLE_DAILY'[Attribute] = "LY_Quantity",
+			    FILTER(
+			        'F_SALES_ARTICLE_DAILY',
+			        'F_SALES_ARTICLE_DAILY'[ARTICLE_KEY] IN
+			            SELECTCOLUMNS(
+			                FILTER(
+			                    'F_SALES_ARTICLE_DAILY',
+			                    'F_SALES_ARTICLE_DAILY'[Attribute] = "LY_SALES_GROSS_AFTER_DISC" &&
+			                    [Values] <> 0
+			                ),
+			                "ARTICLE_KEY", 'F_SALES_ARTICLE_DAILY'[ARTICLE_KEY]
+			            )
+			    )
+			)
+			```
+		formatString: #,0
+		displayFolder: 04. Quantity
+		lineageTag: edef0a7a-5757-40e2-8fd8-a59000b81fc4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '01 Discount' = Calculate([Values],'F_SALES_ARTICLE_DAILY'[Attribute] ="DISCOUNT_TOTAL")
+		displayFolder: 05. Discount
+		lineageTag: 1a208c2e-4544-4b24-a2d8-08a1995b44fd
+
+	measure '02 Discount LY' = Calculate([Values],'F_SALES_ARTICLE_DAILY'[Attribute] ="LY_DISCOUNT_TOTAL")
+		displayFolder: 05. Discount
+		lineageTag: 4b013c44-f960-43f1-ad61-638f87118d3f
+
+	measure '03 Discount LLY' = Calculate([Values],'F_SALES_ARTICLE_DAILY'[Attribute] ="LLY_DISCOUNT_TOTAL")
+		displayFolder: 05. Discount
+		lineageTag: 60fbe88d-e95b-4573-a8ff-2c6daec425d3
+
+	measure '04 Price' = divide([01 Sales],[04 Quantity (Sales <> 0)])
+		displayFolder: 01. Sales Measures
+		lineageTag: 6e0f76d8-3fac-4e10-b7f1-a17d3c3f4431
+
+	measure '05 Price LY' = divide([02 Sales LY],[05 Quantity (Sales <> 0) LY])
+		displayFolder: 01. Sales Measures
+		lineageTag: 6f397d9d-ff5e-429e-8088-64dec7aee63e
+
+	measure '06 Quantity per check (Sales <> 0)' =
+			DIVIDE([04 Quantity (Sales <> 0)]
+			    ,[01 Checks])
+		formatString: #,0
+		displayFolder: 04. Quantity
+		lineageTag: 810ba812-e828-44c6-b11e-abfd268894aa
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '06 Price Effect' = ```
+			VAR Table_context = 
+			FILTER(
+			    VALUES('dim_ARTICLE'[ARTICLE_NAME]),
+			    AND( NOT ISBLANK( [04 Price] ) , NOT ISBLANK([05 Price LY]  ) ) = TRUE()
+			)
+			
+			RETURN
+			sumx(Table_context,
+			 ( [04 Price] -[05 Price LY]  ) *[05 Quantity (Sales <> 0) LY])
+			```
+		formatString: #,0
+		displayFolder: 01. Sales Measures
+		lineageTag: 459b1f26-937c-48d3-bdd5-764553026c07
+
+	measure '07 Quantity per check (Sales <> 0) LY' =
+			DIVIDE([05 Quantity (Sales <> 0) LY]
+			    ,[02 Checks LY])
+		formatString: #,0
+		displayFolder: 04. Quantity
+		lineageTag: 48035447-716c-4328-a259-38a988fb5092
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '08 Quantity per Check vs. LY (Sales <> 0) %' = ```
+			
+			    Var _div = DIVIDE(
+			   [06 Quantity per check (Sales <> 0)]   -[07 Quantity per check (Sales <> 0) LY] ,
+			    [07 Quantity per check (Sales <> 0) LY])
+			
+			
+			    return if (_div =-1 ,BLANK(),_div )
+			```
+		formatString: 0.0%
+		displayFolder: 04. Quantity
+		lineageTag: ce68dc25-121e-43c5-b6d6-13e477326c35
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '07 Sales (Gross) LY' = ```
+			VAR Table_context = 
+			FILTER(
+			    VALUES('dim_ARTICLE'[ARTICLE_NAME]),
+			    AND( NOT ISBLANK( [04 Price]) , NOT ISBLANK([05 Price LY]  ) ) = TRUE()
+			)
+			
+			RETURN
+			CALCULATE(
+			  [02 Sales LY],
+			    Table_context
+			)
+			```
+		formatString: #,0
+		displayFolder: 01. Sales Measures
+		lineageTag: ae0c60e5-c5b4-43b4-9426-5b5c4ac764c2
+
+	measure '08 Price Effect %' =
+			
+			DIVIDE(
+			   [Price effect] ,
+			    [07 Sales (Gross) LY]
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 01. Sales Measures
+		lineageTag: 97586453-3867-40d2-aac7-0f4d390d7d03
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '09 sales (Quantity <> 0) ' = ```
+			var _Sales= CALCULATE(
+			    [Values], 
+			    'F_SALES_ARTICLE_DAILY'[Attribute] ="SALES_GROSS_AFTER_DISC" ,
+			    FILTER(
+			        'F_SALES_ARTICLE_DAILY',
+			        'F_SALES_ARTICLE_DAILY'[ARTICLE_KEY] IN
+			            SELECTCOLUMNS(
+			                FILTER(
+			                    'F_SALES_ARTICLE_DAILY',
+			                    'F_SALES_ARTICLE_DAILY'[Attribute] = "Quantity" &&
+			                    [Values] <> 0
+			                ),
+			                "ARTICLE_KEY", 'F_SALES_ARTICLE_DAILY'[ARTICLE_KEY]
+			            )
+			    )
+			)
+			
+			return 
+			if(_Sales =0 , blank(),_Sales)
+			```
+		formatString: #,0
+		displayFolder: 01. Sales Measures
+		lineageTag: d38785a7-c91e-4660-a57a-e275371f793c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '10 sales LY (Quantity <> 0)' = ```
+			CALCULATE(
+			    [Values], 
+			    'F_SALES_ARTICLE_DAILY'[Attribute] ="LY_SALES_GROSS_AFTER_DISC" ,
+			    FILTER(
+			        'F_SALES_ARTICLE_DAILY',
+			        'F_SALES_ARTICLE_DAILY'[ARTICLE_KEY] IN
+			            SELECTCOLUMNS(
+			                FILTER(
+			                    'F_SALES_ARTICLE_DAILY',
+			                    'F_SALES_ARTICLE_DAILY'[Attribute] = "LY_Quantity" &&
+			                    [Values] <> 0
+			                ),
+			                "ARTICLE_KEY", 'F_SALES_ARTICLE_DAILY'[ARTICLE_KEY]
+			            )
+			    )
+			)
+			```
+		formatString: #,0
+		displayFolder: 01. Sales Measures
+		lineageTag: 8b5b8a26-43d3-42b8-9ce5-c0f338f7d8bc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '13 Sales vs LY% (Quantity <> 0)' =
+			VAR _result = IF(
+			    ISBLANK([10 sales LY (Quantity <> 0)] ),
+			    BLANK( ),
+			    DIVIDE( [09 sales (Quantity <> 0) ] -[10 sales LY (Quantity <> 0)] , ABS([10 sales LY (Quantity <> 0)]) )
+			)
+			Var results =   IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+			RETURN
+			    IF( results = -1 , BLANK(),results)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 40. Diff%
+		lineageTag: 3a058dda-9583-4a9a-b6e3-a1bf583e002a
+
+	measure '14 Quanity vs LY% (Sales <> 0)' =
+			VAR _result = IF(
+			    ISBLANK( [05 Quantity (Sales <> 0) LY]),
+			    BLANK( ),
+			    DIVIDE( [04 Quantity (Sales <> 0)] -[05 Quantity (Sales <> 0) LY] , ABS([05 Quantity (Sales <> 0) LY]) )
+			)
+			Var results =   IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+			RETURN
+			    IF( results = -1 , BLANK(),results)
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 40. Diff%
+		lineageTag: f9802c18-0d2e-4ab3-8dac-445f6f6aa401
+
+	partition '01 Sales Article Measures' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Column1"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

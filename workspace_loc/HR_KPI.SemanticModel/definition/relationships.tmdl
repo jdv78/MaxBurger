@@ -1,0 +1,20 @@
+relationship 3c3f4f54-f73e-35ed-1528-c4595fe00611
+	fromColumn: 'Antal avslut'.Attribute
+	toColumn: 'Dim Positions'.Positions
+
+relationship 78c65a59-9e78-60cb-d948-8e900753421a
+	fromColumn: 2024.Positions
+	toColumn: 'Dim Positions'.Column1
+
+relationship a8c56e08-049c-fa9d-07c2-e1dd6be6eb28
+	fromColumn: 'Antal avslut'.'First Characters'
+	toColumn: 'First Characters'.Month
+
+relationship AutoDetected_9c30b85d-e26d-4721-9963-ae079687b609
+	fromColumn: 'MBRetention Extract Worker T'.'Month Name'
+	toColumn: 'First Characters'.Month
+
+relationship d4a6f141-3dcd-6fe0-0ef6-dc443a8f8e8d
+	fromColumn: Hr_Cost.Positions
+	toColumn: 'Dim Positions'.Column1
+

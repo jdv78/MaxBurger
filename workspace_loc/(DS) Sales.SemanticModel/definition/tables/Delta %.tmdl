@@ -1,0 +1,49 @@
+table 'Delta %'
+	lineageTag: 89c64880-0806-427f-87f6-2590a361107a
+
+	column 'Delta %'
+		lineageTag: 81a9a89c-8853-4e48-9a89-6cf3a9853969
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Delta % Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Delta % Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Delta % Fields'
+		lineageTag: d20dd839-4244-4d46-bc18-e90ffdcdf70e
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Delta % Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Delta % Order'
+		formatString: 0
+		lineageTag: f8728b4a-992d-4968-969f-a69b3e1c130c
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Delta %' = calculated
+		mode: import
+		source = ```
+				{
+				    ("vs LY%", NAMEOF('01 Sales Measures'[01 Sales vs LY%]), 0),
+				    ("vs LLY%", NAMEOF('01 Sales Measures'[02 Sales vs LLY%]), 1),
+				    ("vs BU%", NAMEOF('01 Sales Measures'[01 Sales vs BU%]), 2)
+				 
+				}
+				```
+
+	annotation PBI_Id = 292f9e0110234f8ca6344a295c9405df
+

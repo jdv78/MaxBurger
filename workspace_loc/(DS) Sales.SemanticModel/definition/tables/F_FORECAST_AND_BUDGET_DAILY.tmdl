@@ -1,0 +1,119 @@
+table F_FORECAST_AND_BUDGET_DAILY
+	lineageTag: d8700554-bb61-406d-9327-68292e7bd8f9
+
+	column FISCAL_DATE_KEY
+		dataType: int64
+		lineageTag: 0118543b-d879-4517-9717-e59c1fbf9496
+		summarizeBy: none
+		sourceColumn: FISCAL_DATE_KEY
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FISCAL_DATE
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 44cc7fa1-120c-4bd8-9f83-9abcb60d3da0
+		summarizeBy: none
+		sourceColumn: FISCAL_DATE
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column RESTAURANT_KEY
+		dataType: int64
+		lineageTag: 5ee8cf12-b5ef-44a5-b95a-db62894f55a4
+		summarizeBy: none
+		sourceColumn: RESTAURANT_KEY
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column COUNTRY_KEY
+		dataType: int64
+		lineageTag: 75984028-5269-4253-958d-ed934ae2d51f
+		summarizeBy: sum
+		sourceColumn: COUNTRY_KEY
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: d8a1fb7b-99a4-4044-accd-9245acf3dd68
+		summarizeBy: sum
+		sourceColumn: Year
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column UPDATED_AT
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: bdf69f26-ccdb-45bf-9064-7678d8034f0c
+		summarizeBy: none
+		sourceColumn: UPDATED_AT
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Attribute
+		dataType: string
+		lineageTag: 9bf9eb28-b5e8-48c6-b004-c303e49ec7a0
+		summarizeBy: none
+		sourceColumn: Attribute
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value
+		dataType: double
+		lineageTag: cb01dce7-abd9-4f89-abaa-747f704f61ac
+		summarizeBy: sum
+		sourceColumn: Value
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition F_FORECAST_AND_BUDGET_DAILY = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases("ya34293.west-europe.azure.snowflakecomputing.com","ANALYSIS"),
+				    GOLD_Database = Source{[Name="GOLD",Kind="Database"]}[Data],
+				    SALES_Schema = GOLD_Database{[Name="SALES",Kind="Schema"]}[Data],
+				    F_FORECAST_AND_BUDGET_DAILY_Table = SALES_Schema{[Name="F_FORECAST_AND_BUDGET_DAILY",Kind="Table"]}[Data],
+				    #"Inserted Year" = Table.AddColumn(F_FORECAST_AND_BUDGET_DAILY_Table, "Year", each Date.Year([FISCAL_DATE]), Int64.Type),
+				    #"Filtered Rows" = Table.SelectRows(#"Inserted Year", each List.Contains(YearFilter,[Year]) =true),
+				    #"Removed Duplicates" = Table.Distinct(#"Filtered Rows", {"FISCAL_DATE_KEY", "FISCAL_DATE", "RESTAURANT_KEY", "COUNTRY_KEY", "SALES_GROSS", "BUDGET", "FORECAST", "LY_SALES_GROSS"}),
+				    #"Removed Other Columns" = Table.SelectColumns(#"Removed Duplicates",{"FISCAL_DATE_KEY", "FISCAL_DATE", "RESTAURANT_KEY", "COUNTRY_KEY", "SALES_GROSS_AFTER_DISC", "BUDGET", "FORECAST", "LY_SALES_GROSS_AFTER_DISC", "Year", "UPDATED_AT"}),
+				    #"Unpivoted Columns" = Table.UnpivotOtherColumns(#"Removed Other Columns", {"FISCAL_DATE_KEY", "FISCAL_DATE", "RESTAURANT_KEY", "COUNTRY_KEY", "Year", "UPDATED_AT"}, "Attribute", "Value"),
+				    #"Changed Type" = ChangeTypeNoErrors(#"Unpivoted Columns",{{"Value", type number}})
+				in
+				    #"Changed Type"
+
+	changedProperty = IsHidden
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

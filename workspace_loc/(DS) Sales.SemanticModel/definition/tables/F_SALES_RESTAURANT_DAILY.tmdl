@@ -1,0 +1,191 @@
+table F_SALES_RESTAURANT_DAILY
+	lineageTag: 86f8081f-bb2f-4ea9-9585-d3a3af1b927c
+
+	column RESTAURANT_KEY
+		dataType: int64
+		lineageTag: 4f4f485d-818a-4394-9279-414b397397fc
+		summarizeBy: none
+		sourceColumn: RESTAURANT_KEY
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column COUNTRY_KEY
+		dataType: int64
+		lineageTag: e89289c8-159b-4250-a04b-fdf6aef786a6
+		summarizeBy: sum
+		sourceColumn: COUNTRY_KEY
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DELIVERY_PARTNER_KEY
+		dataType: int64
+		lineageTag: b729ce2a-e133-48c5-ab73-4dc890afabb9
+		summarizeBy: none
+		sourceColumn: DELIVERY_PARTNER_KEY
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ORDER_TYPE_KEY
+		dataType: int64
+		lineageTag: 11bf4964-c236-461c-a2f8-59b73edc104e
+		summarizeBy: none
+		sourceColumn: ORDER_TYPE_KEY
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CHANNEL_KEY
+		dataType: int64
+		lineageTag: fcd9d4ec-a928-48a7-9436-e263269a2a44
+		summarizeBy: none
+		sourceColumn: CHANNEL_KEY
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FISCAL_DATE_KEY
+		dataType: int64
+		lineageTag: 0382e19b-2880-4eaf-b53f-1697bb96bcb3
+		summarizeBy: none
+		sourceColumn: FISCAL_DATE_KEY
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FISCAL_DATE
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 64d1f2de-7b92-4d35-aea9-a8fc9c24321d
+		summarizeBy: none
+		sourceColumn: FISCAL_DATE
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column UPDATED_AT
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: cf9ca620-caa5-4164-9ffb-eece0d6d9b49
+		summarizeBy: none
+		sourceColumn: UPDATED_AT
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 62b89df5-93c7-4ccd-813b-29853a9fb2ee
+		summarizeBy: sum
+		sourceColumn: Year
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Attribute
+		dataType: string
+		lineageTag: 1a29c2f4-1e97-4589-9874-c95677fba541
+		summarizeBy: none
+		sourceColumn: Attribute
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value
+		dataType: double
+		lineageTag: e873898c-ae59-4daf-8ab3-c435148e87d3
+		summarizeBy: sum
+		sourceColumn: Value
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column LY_FISCAL_DATE_KEY
+		dataType: int64
+		lineageTag: 7436a483-b0e9-4da7-918d-a1b2721dfebd
+		summarizeBy: sum
+		sourceColumn: LY_FISCAL_DATE_KEY
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column LY_FISCAL_DATE
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 38ab8054-5e7e-4b75-982b-6677e8611799
+		summarizeBy: none
+		sourceColumn: LY_FISCAL_DATE
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'FISCAL_DATE - Copy'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: b506aa48-6c1c-4f43-8671-0f1c1682986b
+		summarizeBy: none
+		sourceColumn: FISCAL_DATE - Copy
+
+		annotation SummarizationSetBy = Automatic
+
+	partition F_SALES_RESTAURANT_DAILY = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases("maxburgers-analytics.snowflakecomputing.com","ANALYSIS"),
+				    GOLD_Database = Source{[Name="GOLD",Kind="Database"]}[Data],
+				    SALES_Schema = GOLD_Database{[Name="SALES",Kind="Schema"]}[Data],
+				    F_SALES_RESTAURANT_DAILY_Table = SALES_Schema{[Name="F_SALES_RESTAURANT_DAILY",Kind="Table"]}[Data],
+				    #"Inserted Year" = Table.AddColumn(F_SALES_RESTAURANT_DAILY_Table, "Year", each Date.Year([FISCAL_DATE]), Int64.Type),
+				    #"Filtered Rows" = Table.SelectRows(#"Inserted Year", each List.Contains(YearFilter,[Year]) =true),
+				    #"Unpivoted Columns" = Table.UnpivotOtherColumns(#"Filtered Rows", {"RESTAURANT_KEY", "COUNTRY_KEY", "DELIVERY_PARTNER_KEY", "ORDER_TYPE_KEY", "CHANNEL_KEY", "FISCAL_DATE_KEY", "FISCAL_DATE", "UPDATED_AT","Year","LY_FISCAL_DATE_KEY","LY_FISCAL_DATE"}, "Attribute", "Value"),
+				    #"Replaced Value" = Table.ReplaceValue(#"Unpivoted Columns",null,0,Replacer.ReplaceValue,{"Value"}),
+				    #"Changed Type" = ChangeTypeNoErrors(#"Replaced Value",{{"Value", type number}}),
+				    #"Duplicated Column" = Table.DuplicateColumn(#"Changed Type", "FISCAL_DATE", "FISCAL_DATE - Copy"),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Duplicated Column",{{"FISCAL_DATE - Copy", type datetime}}),
+				    #"Filtered Rows1" = Table.SelectRows(#"Changed Type1", each [#"FISCAL_DATE - Copy"] >= RangeStart and [#"FISCAL_DATE - Copy"] < RangeEnd)
+				in
+				    #"Filtered Rows1"
+
+	changedProperty = IsHidden
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Exception
+

@@ -1,0 +1,56 @@
+table 'Dim Positions'
+	lineageTag: 6ee44f64-aba0-48f5-9573-8b4a1e1636c8
+
+	column Positions
+		dataType: string
+		lineageTag: 08c8fbbf-e190-4790-be6b-06874e747824
+		summarizeBy: none
+		sourceColumn: Positions
+		sortByColumn: Rank
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column Column1
+		dataType: string
+		lineageTag: d3289cd3-f313-42cd-9bd9-eea07c53ef30
+		summarizeBy: none
+		sourceColumn: Column1
+		sortByColumn: Rank
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column Rank
+		dataType: string
+		lineageTag: 4a7f5061-13f6-4ecb-9eee-3a7aa9c508d2
+		summarizeBy: none
+		sourceColumn: Rank
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Dim Positions' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WcgpyVtJRMjI2UYrViVZyKcpMK8lJTUksSgWKGhoYGIKFQ4oSM/NSQUJmZqZgEbAuQzNLMMe5KLVcITc1Nym1CChqbG4ENCwWAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Positions = _t, Value = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Positions", type text}, {"Value", Int64.Type}}),
+				    #"Cleaned Text" = Table.TransformColumns(#"Changed Type",{{"Positions", Text.Clean, type text}}),
+				    #"Trimmed Text" = Table.TransformColumns(#"Cleaned Text",{{"Positions", Text.Trim, type text}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Trimmed Text",{"Value"}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Removed Columns","Trainee","Trainee",Replacer.ReplaceText,{"Positions"}),
+				    #"Replaced Value2" = Table.ReplaceValue(#"Replaced Value","Trainee","Traniee",Replacer.ReplaceText,{"Positions"}),
+				    #"Merged Queries" = Table.NestedJoin(#"Replaced Value2", {"Positions"}, Attribute, {"Column1"}, "Attribute", JoinKind.LeftOuter),
+				    #"Expanded Attribute" = Table.ExpandTableColumn(#"Merged Queries", "Attribute", {"Column1"}, {"Column1"}),
+				    #"Cleaned Text1" = Table.TransformColumns(#"Expanded Attribute",{{"Column1", Text.Clean, type text}}),
+				    #"Trimmed Text1" = Table.TransformColumns(#"Cleaned Text1",{{"Column1", Text.Trim, type text}}),
+				    #"Added Conditional Column" = Table.AddColumn(#"Trimmed Text1", "Rank", each if [Column1] = "RC" then 1 else if [Column1] = "BRC" then 2 else if [Column1] = "Driftledare" then 3 else if [Column1] = "Crew member" then 5 else if [Column1] = "Traniee" then 4 else null)
+				in
+				    #"Added Conditional Column"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

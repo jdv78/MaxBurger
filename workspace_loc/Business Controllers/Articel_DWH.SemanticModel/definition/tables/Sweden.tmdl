@@ -1,0 +1,53 @@
+table Sweden
+	isHidden
+	lineageTag: 36cbb190-71fb-4349-8587-e9626465b686
+
+	column City
+		dataType: string
+		isHidden
+		lineageTag: 91c1403b-8fe2-4876-b26a-7cc2626ed27d
+		summarizeBy: none
+		sourceColumn: City
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region
+		dataType: string
+		isHidden
+		lineageTag: b06033d2-c978-4924-b958-71a58c00a4ac
+		summarizeBy: none
+		sourceColumn: Region
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Country
+		dataType: string
+		isHidden
+		lineageTag: 218dca8f-bf5f-4d85-b023-4dd40b371c87
+		summarizeBy: none
+		sourceColumn: Country
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Sweden = m
+		mode: import
+		queryGroup: 'Web Region'
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("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", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t, Column2 = _t, Column3 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}, {"Column2", type text}, {"Column3", type text}}),
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Changed Type", [PromoteAllScalars=true]),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Promoted Headers",{{"City", type text}, {"Region", type text}, {"Country", type text}})
+				in
+				    #"Changed Type1"
+
+	changedProperty = IsHidden
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,73 @@
+table Dim_DELIVERY_PARTNER
+	lineageTag: b3655057-39cd-4300-bf36-4cd8231dbf28
+
+	column DELIVERY_PARTNER_KEY
+		dataType: int64
+		lineageTag: 23f8b1cf-39ea-420e-a74c-48b5de4dadc6
+		summarizeBy: none
+		sourceColumn: DELIVERY_PARTNER_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DELIVERY_PARTNER_NAME
+		dataType: string
+		lineageTag: 54a8a8ee-6d79-4e69-a067-4e65f506a0a6
+		summarizeBy: none
+		sourceColumn: DELIVERY_PARTNER_NAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column SOURCE_SYSTEM
+		dataType: string
+		lineageTag: 6e8f106d-55e5-491f-b5c4-b93ce874020a
+		summarizeBy: none
+		sourceColumn: SOURCE_SYSTEM
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Partner Name'
+		dataType: string
+		lineageTag: 4ffc7ec3-8faf-497f-9b1d-4a1c61afeb47
+		summarizeBy: none
+		sourceColumn: Partner Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Partner Name Special'
+		dataType: string
+		lineageTag: ee850a6c-ea59-482c-bf02-d56b3aa536ed
+		summarizeBy: none
+		sourceColumn: Partner Name Special
+
+		annotation SummarizationSetBy = Automatic
+
+	column DELIVERY_PARTNER_ID
+		dataType: int64
+		formatString: 0
+		lineageTag: 580ab2ac-9dd6-45de-b5f9-0cb723b24326
+		summarizeBy: none
+		sourceColumn: DELIVERY_PARTNER_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_DELIVERY_PARTNER = m
+		mode: import
+		queryGroup: dim
+		source =
+				let
+				    Source = Snowflake.Databases("maxburgers-analytics.snowflakecomputing.com","ANALYSIS"),
+				    GOLD_Database = Source{[Name="GOLD",Kind="Database"]}[Data],
+				    SALES_Schema = GOLD_Database{[Name="SALES",Kind="Schema"]}[Data],
+				    D_DELIVERY_PARTNER_Table = SALES_Schema{[Name="D_DELIVERY_PARTNER",Kind="Table"]}[Data],
+				    #"Added Conditional Column" = Table.AddColumn(D_DELIVERY_PARTNER_Table, "Partner Name", each if [DELIVERY_PARTNER_NAME] = "Unknown" then "Max App" else [DELIVERY_PARTNER_NAME]),
+				    #"Replaced Value" = Table.ReplaceValue(#"Added Conditional Column","Del","",Replacer.ReplaceText,{"Partner Name"}),
+				    #"Added Conditional Column1" = Table.AddColumn(#"Replaced Value", "Partner Name Special", each if [DELIVERY_PARTNER_NAME] = "Unknown" then "Max App" else if [DELIVERY_PARTNER_NAME] = "Not delivery" then "Max App" else [Partner Name])
+				in
+				    #"Added Conditional Column1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

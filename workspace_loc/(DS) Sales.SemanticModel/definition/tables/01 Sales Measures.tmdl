@@ -1,0 +1,836 @@
+table '01 Sales Measures'
+	lineageTag: aa096061-11a7-437b-b298-fbff6a056852
+
+	measure Values = sum('F_SALES_RESTAURANT_DAILY'[Value])
+		displayFolder: 50. Base Values
+		lineageTag: 7dc697c0-506b-4c25-bcb9-2d1079a84e65
+
+	measure '01 Sales' = Calculate([Values],'F_SALES_RESTAURANT_DAILY'[Attribute] ="SALES_GROSS_AFTER_DISC")
+		formatString: #,0
+		displayFolder: 01. Sales Measures\01 Sales - (All Level)
+		lineageTag: 1e89d767-87e5-4ccf-af3d-f87f5a00b3af
+
+	measure '02 Sales LY' = Calculate([Values],'F_SALES_RESTAURANT_DAILY'[Attribute] ="LY_SALES_GROSS_AFTER_DISC")
+		formatString: #,0
+		displayFolder: 01. Sales Measures\01 Sales - (All Level)
+		lineageTag: 154dd793-6149-413e-a2b9-3ae6c51b03a6
+
+	measure '03 Sales LLY' = Calculate([Values],'F_SALES_RESTAURANT_DAILY'[Attribute] ="LLY_SALES_GROSS_AFTER_DISC")
+		formatString: #,0
+		displayFolder: 01. Sales Measures\01 Sales - (All Level)
+		lineageTag: 4c525e33-d903-465a-b7de-fa50814975f3
+
+	measure '01 Sales vs LY%' =
+			VAR _result = IF(
+			    ISBLANK( [02 Sales LY] ),
+			    BLANK( ),
+			    DIVIDE( [01 Sales] -[02 Sales LY] , ABS([02 Sales LY] ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 05. Diff %\01. All Level\01 YoY
+		lineageTag: a19f0e45-4272-477b-a9bb-28f067db6536
+
+	measure '02 Sales vs LLY%' =
+			IF(
+			    ISBLANK([03 Sales LLY] ),
+			    BLANK( ),
+			    DIVIDE( [01 Sales] -[03 Sales LLY] , ABS([03 Sales LLY]  ) )
+			)
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 05. Diff %\01. All Level\01 YoY
+		lineageTag: 18414b3c-742d-448c-9f88-73b11d19d125
+
+	measure '01 Sales vs LY' = [01 Sales] - [02 Sales LY]
+		formatString: #,0
+		displayFolder: 06. Diff $\01. All Level
+		lineageTag: f8e1683a-9ebf-476e-b18d-49da04e3b54c
+
+	measure '02 Sales vs LLY' = [01 Sales] - [03 Sales LLY]
+		formatString: #,0
+		displayFolder: 06. Diff $\01. All Level
+		lineageTag: 1adbec13-ce04-43b0-beaa-5ff16858d705
+
+	measure '01 Checks' = Calculate([Values],'F_SALES_RESTAURANT_DAILY'[Attribute] ="CHECKS")
+		formatString: #,0
+		displayFolder: 02. Checks
+		lineageTag: 9aecbb2d-3fb2-46a1-ab39-037aaf89d03c
+
+	measure '01 Discount' = ABS(Calculate([Values],'F_SALES_RESTAURANT_DAILY'[Attribute] ="DISCOUNT_TOTAL"))
+		displayFolder: 04. Discount
+		lineageTag: 638ff83d-edf3-411c-83ea-12b90176a6cc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '05 Sales Before Discount' = Calculate([Values],'F_SALES_RESTAURANT_DAILY'[Attribute] ="SALES_GROSS")
+		formatString: #,0
+		displayFolder: 01. Sales Measures\01 Sales - (All Level)
+		lineageTag: 6b34be21-05e7-45fd-b380-db08a5d283d2
+
+	measure '01 Avg check' = divide([01 Sales],[01 Checks],0)
+		formatString: #,0.0
+		displayFolder: 03. Avg checks
+		lineageTag: 975337cf-af04-4c63-b079-8aa0db0ac0fd
+
+	measure '04 Discount staff' = Calculate([Values],'F_SALES_RESTAURANT_DAILY'[Attribute] ="DISCOUNT_STAFF")
+		formatString: #,0
+		displayFolder: 04. Discount
+		lineageTag: adcdfa2f-3b08-47d6-a4e0-e6d19eaf8307
+
+	measure '04 Sales ex. VAT' = [05 Sales Before Discount]+[07 Discount ex. staff]-[06 VAT]
+		formatString: #,0
+		displayFolder: 01. Sales Measures\01 Sales - (All Level)
+		lineageTag: 89e4ebcb-c2f8-4260-93b2-79aa651bf281
+
+	measure '07 Discount ex. staff' = Calculate([Values],'F_SALES_RESTAURANT_DAILY'[Attribute] ="DISCOUNT_EX_STAFF")
+		formatString: #,0
+		displayFolder: 04. Discount
+		lineageTag: 20fbb5bd-95ec-4cc9-8ece-9dbfa7fbb61a
+
+	measure '06 VAT' = Calculate([Values],'F_SALES_RESTAURANT_DAILY'[Attribute] ="VAT_GROSS")
+		formatString: #,0
+		displayFolder: 01. Sales Measures\01 Sales - (All Level)
+		lineageTag: 1f041580-2492-4429-858c-eb9fa2e1c5cd
+
+	measure '02 Discount LY' = ABS(Calculate([Values],'F_SALES_RESTAURANT_DAILY'[Attribute] ="LY_DISCOUNT_TOTAL"))
+		formatString: #,0
+		displayFolder: 04. Discount
+		lineageTag: d8f3d1e2-2bfb-4b89-8fc3-07cf44e8cec8
+
+	measure '05 Discount staff LY' = Calculate([Values],'F_SALES_RESTAURANT_DAILY'[Attribute] ="LY_DISCOUNT_STAFF")
+		formatString: #,0
+		displayFolder: 04. Discount
+		lineageTag: a89161dd-e63f-42eb-8dde-cb81909554b8
+
+	measure '08 Discount ex. staff LY' = Calculate([Values],'F_SALES_RESTAURANT_DAILY'[Attribute] ="LY_DISCOUNT_EX_STAFF")
+		formatString: #,0
+		displayFolder: 04. Discount
+		lineageTag: a88af96f-4395-422a-b049-a10a07959fa7
+
+	measure '02 Checks LY' = Calculate([Values],'F_SALES_RESTAURANT_DAILY'[Attribute] ="LY_CHECKS")
+		formatString: #,0
+		displayFolder: 02. Checks
+		lineageTag: 87f82ba4-f2d0-4768-8353-3ee2064994f9
+
+	measure '03 Discount LLY' = ABS(Calculate([Values],'F_SALES_RESTAURANT_DAILY'[Attribute] ="LLY_DISCOUNT_TOTAL"))
+		formatString: #,0
+		displayFolder: 04. Discount
+		lineageTag: 3986368d-9f20-4a7d-ad88-771508af3101
+
+	measure '06 Discount staff LLY' = Calculate([Values],'F_SALES_RESTAURANT_DAILY'[Attribute] ="LLY_DISCOUNT_STAFF")
+		formatString: #,0
+		displayFolder: 04. Discount
+		lineageTag: 8afc96af-cf32-4f46-83bf-2db74d0ad162
+
+	measure '09 Discount ex. staff LLY' = Calculate([Values],'F_SALES_RESTAURANT_DAILY'[Attribute] ="LLY_DISCOUNT_EX_STAFF")
+		formatString: #,0
+		displayFolder: 04. Discount
+		lineageTag: 1f76aa1d-bf4b-4f54-a2c9-a8ff4c8a9eae
+
+	measure '03 Checks LLY' = Calculate([Values],'F_SALES_RESTAURANT_DAILY'[Attribute] ="LLY_CHECKS")
+		formatString: #,0
+		displayFolder: 02. Checks
+		lineageTag: 23241b8c-d1cc-45f4-bb4e-1d036969ac11
+
+	measure '02 Avg check LY' = divide([02 Sales LY],[02 Checks LY],0)
+		formatString: #,0.0
+		displayFolder: 03. Avg checks
+		lineageTag: 09e39962-b5f6-46ae-a6de-a891104382e7
+
+	measure '03 Avg check LLY' = divide([03 Sales LLY],[03 Checks LLY],0)
+		formatString: #,0.0
+		displayFolder: 03. Avg checks
+		lineageTag: 884abeb3-1944-43f0-b70e-85b7e9733aad
+
+	measure '04 Checks vs LY%' =
+			VAR _result = IF(
+			    ISBLANK( [02 Checks LY] ),
+			    BLANK( ),
+			    DIVIDE( [01 Checks] -[02 Checks LY] , ABS([02 Checks LY] ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 05. Diff %\01. All Level\01 YoY
+		lineageTag: d525ed7f-f82c-4ecc-b508-62423a075dc1
+
+	measure '05 Checks vs LLY%' =
+			IF(
+			    ISBLANK([03 Checks LLY] ),
+			    BLANK( ),
+			    DIVIDE( [01 Checks] -[03 Checks LLY] , ABS([03 Checks LLY]  ) )
+			)
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 05. Diff %\01. All Level\01 YoY
+		lineageTag: 1aab1f6f-c00c-43df-ac20-3eec4899e318
+
+	measure '07 Avg check vs LY%' =
+			VAR _result = IF(
+			    ISBLANK( [02 Avg check LY] ),
+			    BLANK( ),
+			    DIVIDE( [01 Avg check] -[02 Avg check LY] , ABS([02 Avg check LY] ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 05. Diff %\01. All Level\01 YoY
+		lineageTag: 0a438066-3aa7-41a8-82dc-0eb0df5eea2f
+
+	measure '08 Avg check vs LLY%' =
+			VAR _result = IF(
+			    ISBLANK( [03 Avg check LLY] ),
+			    BLANK( ),
+			    DIVIDE( [01 Avg check]-[03 Avg check LLY] , ABS([03 Avg check LLY] ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 05. Diff %\01. All Level\01 YoY
+		lineageTag: d8aa5dfd-17c0-4b80-a267-76d1b724bcc9
+
+	measure '04 Checks vs LY' = ```
+			VAR _result =  [01 Checks] -[02 Checks LY] 
+			RETURN
+			    _result
+			```
+		formatString: #,0
+		displayFolder: 06. Diff $\01. All Level
+		lineageTag: b8bc9530-4ab7-431e-9a14-a71e8a8b52d9
+
+	measure '05 Checks vs LLY' = ```
+			VAR _result =  [01 Checks] -[03 Checks LLY] 
+			RETURN
+			    _result
+			```
+		formatString: #,0
+		displayFolder: 06. Diff $\01. All Level
+		lineageTag: c9c3ff3b-6def-4ae7-96ed-d684f44ca467
+
+	measure '07 Avg checks vs LY' =
+			VAR _result = [01 Avg check] -[02 Avg check LY]
+			
+			RETURN
+			    _result
+		formatString: #,0
+		displayFolder: 06. Diff $\01. All Level
+		lineageTag: 1df62bea-d37a-4b4b-9766-1a90c31efed2
+
+	measure '08 Avg checks vs LLY' = ```
+			VAR _result =  [02 Avg check LY] -[03 Avg check LLY] 
+			
+			RETURN
+			 _result 
+			```
+		formatString: #,0
+		displayFolder: 06. Diff $\01. All Level
+		lineageTag: 4537a78f-d21f-46d0-ade7-d837a09bd036
+
+	measure Values_FCTBU = sum('F_FORECAST_AND_BUDGET_DAILY'[Value])
+		displayFolder: 50. Base Values
+		lineageTag: 9395ef7d-0133-4e15-a7c1-047e904937d2
+
+	measure '01 Sales Budget' = Calculate([Values_FCTBU], 'F_FORECAST_AND_BUDGET_DAILY'[Attribute]="Budget")
+		formatString: #,0
+		displayFolder: 01. Sales Measures\02 Budget Forecast - (Restaurant & Date Lowest Level)
+		lineageTag: 91b2d887-e946-4c7a-8f69-4d129654bec6
+
+	measure '02 Sales Forecast' = Calculate([Values_FCTBU], 'F_FORECAST_AND_BUDGET_DAILY'[Attribute]="Forecast")
+		formatString: #,0
+		displayFolder: 01. Sales Measures\02 Budget Forecast - (Restaurant & Date Lowest Level)
+		lineageTag: 82a4d0a7-9f3c-4ad2-81d7-d138a51c8de9
+
+	measure '03 Sales TYFC' = ```
+			
+			VAR _LastDate = CALCULATE(
+			    MAXX(
+			        FILTER(
+			            ALL(F_SALES_RESTAURANT_DAILY), 
+			            F_SALES_RESTAURANT_DAILY[Attribute]= "SALES_GROSS_AFTER_DISC"
+			        ), 
+			        F_SALES_RESTAURANT_DAILY[FISCAL_DATE]
+			    ),
+			    REMOVEFILTERS()
+			)
+			
+			VAR _act =  [01 Sales]
+			
+			Var _FCT = CALCULATE([02 Sales Forecast],
+			FILTER(Dim_FISCAL_DATE,Dim_FISCAL_DATE[FISCAL_DATE]> _LastDate))
+			
+			
+			Var Result = _FCT + _act
+			
+			RETURN 
+			
+			Result
+			```
+		formatString: #,0
+		displayFolder: 01. Sales Measures\02 Budget Forecast - (Restaurant & Date Lowest Level)
+		lineageTag: 2e9c3975-219f-4b7d-a6e5-628413ff1c1f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '04 Sales TYBU' = ```
+			
+			VAR _LastDate = CALCULATE(
+			    MAXX(
+			        FILTER(
+			            ALL(F_SALES_RESTAURANT_DAILY), 
+			            F_SALES_RESTAURANT_DAILY[Attribute]= "SALES_GROSS_AFTER_DISC"
+			        ), 
+			        F_SALES_RESTAURANT_DAILY[FISCAL_DATE]
+			    ),
+			    REMOVEFILTERS()
+			)
+			
+			VAR _act =  [01 Sales]
+			
+			Var _BUD = CALCULATE([01 Sales Budget],
+			FILTER(Dim_FISCAL_DATE,Dim_FISCAL_DATE[FISCAL_DATE]> _LastDate))
+			
+			
+			Var Result = _BUD + _act
+			
+			RETURN 
+			
+			Result
+			```
+		formatString: #,0
+		displayFolder: 01. Sales Measures\02 Budget Forecast - (Restaurant & Date Lowest Level)
+		lineageTag: e1422b7a-cbae-42cc-a954-00c4463407ab
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '01 Sales vs BU%' =
+			VAR _result = IF(
+			    ISBLANK([01 Sales Budget]  ),
+			    BLANK( ),
+			    DIVIDE( [01 Sales] -[01 Sales Budget] , ABS([01 Sales Budget] ) )
+			)
+			RETURN
+			   -- IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+			
+			   _result
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 05. Diff %\02. (Restaurant & Date Lowest Level)
+		lineageTag: 736448c3-2087-4ffb-85a9-f00c6adca1be
+
+	measure '02 Sales vs FCT%' =
+			VAR _result = IF(
+			    ISBLANK([02 Sales Forecast] ),
+			    BLANK( ),
+			    DIVIDE( [01 Sales] - [02 Sales Forecast], ABS( [02 Sales Forecast]) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 05. Diff %\02. (Restaurant & Date Lowest Level)
+		lineageTag: cdff3966-ec69-4ffd-817f-ffa02602f382
+
+	measure '03 Sales BU vs LY%' = ```
+			VAR _result = IF(
+			    ISBLANK([02 Sales LY] ),
+			    BLANK( ),
+			    DIVIDE( [01 Sales Budget] - [02 Sales LY], ABS( [02 Sales LY]) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+			    
+			    
+			    
+			 
+			```
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 05. Diff %\02. (Restaurant & Date Lowest Level)
+		lineageTag: 0c77ceb0-a7df-4a76-9357-187843500e35
+
+	measure '05 Sales FCT vs LY%' = ```
+			VAR _result = IF(
+			    ISBLANK([02 Sales LY] ),
+			    BLANK( ),
+			    DIVIDE( [02 Sales Forecast]- [02 Sales LY], ABS( [02 Sales LY]) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+			    
+			    
+			    
+			 
+			```
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 05. Diff %\02. (Restaurant & Date Lowest Level)
+		lineageTag: 48f953f4-2771-45fd-bc56-8674d9058fea
+
+	measure '07 Sales TYBU vs LY%' = ```
+			VAR _result = IF(
+			    ISBLANK([02 Sales LY] ),
+			    BLANK( ),
+			    DIVIDE( [04 Sales TYBU] - [02 Sales LY], ABS( [02 Sales LY]) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+			    
+			    
+			    
+			 
+			```
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 05. Diff %\02. (Restaurant & Date Lowest Level)
+		lineageTag: 0141fa33-3d81-46f0-bde7-bb36034b62a1
+
+	measure '09 Sales TYFC vs LY%' = ```
+			VAR _result = IF(
+			    ISBLANK([02 Sales LY] ),
+			    BLANK( ),
+			    DIVIDE( [03 Sales TYFC] - [02 Sales LY], ABS( [02 Sales LY]) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+			    
+			    
+			    
+			 
+			```
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 05. Diff %\02. (Restaurant & Date Lowest Level)
+		lineageTag: f6986a2c-5c2a-428c-ba41-73e3716ada5b
+
+	measure '04 Sales BU vs LLY%' = ```
+			VAR _result = IF(
+			    ISBLANK([03 Sales LLY] ),
+			    BLANK( ),
+			    DIVIDE( [01 Sales Budget] - [03 Sales LLY], ABS( [03 Sales LLY]) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+			    
+			    
+			    
+			 
+			```
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 05. Diff %\02. (Restaurant & Date Lowest Level)
+		lineageTag: 7148d0be-f20a-4955-9e40-793cd7a1d570
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '06 Sales FCT vs LLY%' = ```
+			VAR _result = IF(
+			    ISBLANK([03 Sales LLY]),
+			    BLANK( ),
+			    DIVIDE( [03 Sales TYFC] - [03 Sales LLY], ABS( [03 Sales LLY]) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+			    
+			    
+			    
+			    
+			 
+			```
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 05. Diff %\02. (Restaurant & Date Lowest Level)
+		lineageTag: 9e956089-75fc-4dfc-8e8f-4574c4b32b1b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '08 Sales TYBU vs LLY%' = ```
+			VAR _result = IF(
+			    ISBLANK([03 Sales LLY] ),
+			    BLANK( ),
+			    DIVIDE( [04 Sales TYBU] - [03 Sales LLY], ABS( [03 Sales LLY]) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+			    
+			    
+			    
+			 
+			```
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 05. Diff %\02. (Restaurant & Date Lowest Level)
+		lineageTag: 7127cbf3-3928-4fb6-bd57-192de48e7641
+
+	measure '10 Sales TYFC vs LLY%' = ```
+			VAR _result = IF(
+			    ISBLANK([03 Sales LLY] ),
+			    BLANK( ),
+			    DIVIDE( [03 Sales TYFC] - [03 Sales LLY], ABS( [03 Sales LLY]) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+			    
+			    
+			    
+			 
+			```
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 05. Diff %\02. (Restaurant & Date Lowest Level)
+		lineageTag: 901e7235-399c-4ffc-a910-51af2a323c67
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '03 Sales LY vs LLY%' =
+			IF(
+			    ISBLANK([03 Sales LLY] ),
+			    BLANK( ),
+			    DIVIDE( [02 Sales LY] -[03 Sales LLY] , ABS([03 Sales LLY]  ) )
+			)
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 05. Diff %\01. All Level\01 YoY
+		lineageTag: 2c789018-8354-47be-bce2-5b708f00c5d2
+
+	measure '06 Checks LY vs LLY%' =
+			IF(
+			    ISBLANK([03 Checks LLY] ),
+			    BLANK( ),
+			    DIVIDE( [02 Checks LY] -[03 Checks LLY] , ABS([03 Checks LLY]  ) )
+			)
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 05. Diff %\01. All Level\01 YoY
+		lineageTag: 92d94fc6-e3fe-4457-a021-70fd717e8539
+
+	measure '09 Avg check LY vs LLY%' =
+			VAR _result = IF(
+			    ISBLANK( [03 Avg check LLY] ),
+			    BLANK( ),
+			    DIVIDE( [02 Avg check LY] -[03 Avg check LLY] , ABS([03 Avg check LLY] ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 05. Diff %\01. All Level\01 YoY
+		lineageTag: 884635da-ba93-46bb-9f24-819e266b859f
+
+	measure '04 Sales LY vs LLY' = [02 Sales LY] - [03 Sales LLY]
+		formatString: #,0
+		displayFolder: 06. Diff $\01. All Level
+		lineageTag: 2090440e-4845-43fc-ba9b-12aa93253402
+
+	measure '06 Checks LY vs LLY' = ```
+			VAR _result =  [02 Checks LY] -[03 Checks LLY] 
+			RETURN
+			    _result
+			```
+		formatString: #,0
+		displayFolder: 06. Diff $\01. All Level
+		lineageTag: 793c7238-06bb-4628-b387-d1fff64f6c29
+
+	measure '09 Avg checks LY vs LLY' = ```
+			VAR _result =  [02 Avg check LY] -[03 Avg check LLY] 
+			
+			RETURN
+			 _result 
+			```
+		formatString: #,0
+		displayFolder: 06. Diff $\01. All Level
+		lineageTag: 3fa0cf0a-c60c-4d95-8379-31851906c214
+
+	measure '01 Sales vs BU' = ```
+			[01 Sales] -[01 Sales Budget] 
+			```
+		formatString: #,0
+		displayFolder: 06. Diff $\02. (Restaurant & Date Lowest Level)
+		lineageTag: 3f61d345-ceb0-4a86-8ba8-236ebc4003c7
+
+	measure '02 Sales vs FCT' = [01 Sales] - [02 Sales Forecast]
+		formatString: #,0
+		displayFolder: 06. Diff $\02. (Restaurant & Date Lowest Level)
+		lineageTag: 8538696b-170d-4eed-938e-434b52250e59
+
+	measure '11 Sales LY vs BU%' =
+			VAR _result = IF(
+			    ISBLANK([01 Sales Budget]  ),
+			    BLANK( ),
+			    DIVIDE( [02 Sales LY] -[01 Sales Budget] , ABS([01 Sales Budget] ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 05. Diff %\02. (Restaurant & Date Lowest Level)
+		lineageTag: c25d8a31-c109-4d82-b05b-bd5af08d896d
+
+	measure '12 Sales LLY vs BU%' =
+			VAR _result = IF(
+			    ISBLANK([01 Sales Budget]  ),
+			    BLANK( ),
+			    DIVIDE( [03 Sales LLY] -[01 Sales Budget] , ABS([01 Sales Budget] ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 05. Diff %\02. (Restaurant & Date Lowest Level)
+		lineageTag: ed9efed8-87b1-43a9-8473-5fe1b4486410
+
+	measure '13 Sales LY vs FCT%' =
+			VAR _result = IF(
+			    ISBLANK([02 Sales Forecast]  ),
+			    BLANK( ),
+			    DIVIDE( [02 Sales LY] -[02 Sales Forecast] , ABS([02 Sales Forecast] ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 05. Diff %\02. (Restaurant & Date Lowest Level)
+		lineageTag: c780f64a-7a7f-468b-9168-8f2986cb6e0a
+
+	measure '14 Sales LLY vs FCT%' =
+			VAR _result = IF(
+			    ISBLANK([02 Sales Forecast]  ),
+			    BLANK( ),
+			    DIVIDE( [03 Sales LLY] -[02 Sales Forecast] , ABS([02 Sales Forecast] ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 05. Diff %\02. (Restaurant & Date Lowest Level)
+		lineageTag: 53d758e7-31bf-4c12-85c6-895fddab2206
+
+	measure '03 Sales BU vs LY' = [01 Sales Budget] - [02 Sales LY]
+		formatString: #,0
+		displayFolder: 06. Diff $\02. (Restaurant & Date Lowest Level)
+		lineageTag: ba908ca1-883f-497c-887e-a3afd16cc620
+
+	measure '05 Sales FCT vs LY' = [02 Sales Forecast]- [02 Sales LY]
+		formatString: #,0
+		displayFolder: 06. Diff $\02. (Restaurant & Date Lowest Level)
+		lineageTag: a05970f9-68bb-44de-9f76-3e31356b8647
+
+	measure '07 Sales TYBU vs LY' = ```
+			 [04 Sales TYBU] - [02 Sales LY]
+			```
+		formatString: #,0
+		displayFolder: 06. Diff $\02. (Restaurant & Date Lowest Level)
+		lineageTag: cbb696ae-be79-4729-83c4-586ce780da95
+
+	measure '09 Sales TYFC vs LY' = ```
+			[03 Sales TYFC] - [02 Sales LY]
+			    
+			    
+			 
+			```
+		formatString: #,0
+		displayFolder: 06. Diff $\02. (Restaurant & Date Lowest Level)
+		lineageTag: 0a8e847f-13ad-4865-bc43-ec834f5c3852
+
+	measure '04 Sales BU vs LLY' = [01 Sales Budget] - [03 Sales LLY]
+		formatString: #,0
+		displayFolder: 06. Diff $\02. (Restaurant & Date Lowest Level)
+		lineageTag: 2691f66d-fdd1-4a09-8d3b-e45691dcf525
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '06 Sales FCT vs LLY' = ```
+			 [03 Sales TYFC] - [03 Sales LLY]
+			    
+			    
+			 
+			```
+		formatString: #,0
+		displayFolder: 06. Diff $\02. (Restaurant & Date Lowest Level)
+		lineageTag: f3de998a-5228-4166-8a31-c252ed3e8715
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '08 Sales TYBU vs LLY' = ```
+			[04 Sales TYBU] - [03 Sales LLY]
+			    
+			    
+			 
+			```
+		formatString: #,0
+		displayFolder: 06. Diff $\02. (Restaurant & Date Lowest Level)
+		lineageTag: d408503b-5e3e-462c-86e7-785e916db0b9
+
+	measure '10 Sales TYFC vs LLY' = ```
+			 [03 Sales TYFC] - [03 Sales LLY]
+			 
+			```
+		formatString: #,0
+		displayFolder: 06. Diff $\02. (Restaurant & Date Lowest Level)
+		lineageTag: 2f6adff9-3d3f-425f-ac26-33d4f76242b9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '11 Sales LY vs BU' = ```
+			[02 Sales LY] -[01 Sales Budget] 
+			```
+		formatString: #,0
+		displayFolder: 06. Diff $\02. (Restaurant & Date Lowest Level)
+		lineageTag: beea78c8-6f52-447e-9a38-170df95bf508
+
+	measure '12 Sales LLY vs BU' = ```
+			 [03 Sales LLY] -[01 Sales Budget]
+			```
+		formatString: #,0
+		displayFolder: 06. Diff $\02. (Restaurant & Date Lowest Level)
+		lineageTag: 7c788b76-1986-42fc-9160-9fd983777340
+
+	measure '13 Sales LY vs FCT' = ```
+			 [02 Sales LY] -[02 Sales Forecast]
+			```
+		formatString: #,0
+		displayFolder: 06. Diff $\02. (Restaurant & Date Lowest Level)
+		lineageTag: be927cac-829b-48a6-a177-414e1864e8fd
+
+	measure '14 Sales LLY vs FCT' = ```
+			 [03 Sales LLY] -[02 Sales Forecast] 
+			```
+		formatString: #,0
+		displayFolder: 06. Diff $\02. (Restaurant & Date Lowest Level)
+		lineageTag: f9980dc3-8e4e-4843-b234-ec76cf1df845
+
+	measure '01 Sales Share of Total (per Channel)' = DIVIDE([01 Sales],CALCULATE([01 Sales], ALL(Dim_CHANNEL)),BLANK())
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 01. Sales Measures\03 Share of Total
+		lineageTag: 02cdb965-19cf-4df1-bea6-19f11b3fba50
+
+	measure 'Unit Drive (per Channel)' =
+			var _total = calculate([02 Sales LY], all(Dim_CHANNEL))
+			
+			Var result = ([01 Sales]-[02 Sales LY])/_total
+			
+			return
+			
+			result*100
+		formatString: #,0.0
+		displayFolder: 08 Unit Drive
+		lineageTag: 0d116679-99dd-42c3-8187-ca7a4aeaee96
+
+	measure '02 Sales Share of Total (per Channel) LY' = DIVIDE([02 Sales LY],CALCULATE([02 Sales LY], ALL(Dim_CHANNEL)),BLANK())
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 01. Sales Measures\03 Share of Total
+		lineageTag: dbc4f127-2ff1-4d22-a335-03408e299be6
+
+	measure '03 Sales Share of Total (per Channel) BU' = DIVIDE([01 Sales Budget],CALCULATE([01 Sales], ALL(Dim_CHANNEL)),BLANK())
+		displayFolder: 01. Sales Measures\03 Share of Total
+		lineageTag: 1cca938c-2efc-4128-86d3-2723c19e87d7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '10 Discount vs LY%' =
+			VAR _result = IF(
+			    ISBLANK( [02 Discount LY] ),
+			    BLANK( ),
+			    DIVIDE( [01 Discount] -[02 Discount LY] , ABS([02 Discount LY] ) )
+			)
+			RETURN
+			    --IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+			
+			    if(_result =-1 , blank(), _result)
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 05. Diff %\01. All Level\01 YoY
+		lineageTag: c8506eb6-34c6-4ab6-81c2-c4038a5cc064
+
+	measure '01 ACC Sales vs LY%' =
+			
+			Var ACC_TY = calculate([01 Sales],ALLEXCEPT(Dim_FISCAL_DATE,Dim_FISCAL_DATE[FISCAL_DAY_OF_WEEK_SHORT]),'Dim_FISCAL_DATE'[Weeks ACC]="ACC")
+			Var ACC_LY = calculate([02 Sales LY],ALLEXCEPT(Dim_FISCAL_DATE,Dim_FISCAL_DATE[FISCAL_DAY_OF_WEEK_SHORT]),'Dim_FISCAL_DATE'[Weeks ACC]="ACC")
+			
+			VAR _result = IF(
+			    ISBLANK( ACC_LY ),
+			    BLANK( ),
+			    DIVIDE( ACC_TY -ACC_LY , ABS(ACC_LY ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 05. Diff %\01. All Level\02 ACC
+		lineageTag: 580e03f4-5141-4270-8f85-cc501f6ef473
+
+	measure '02 ACC Sales vs BU%' =
+			
+			Var ACC_TY = calculate([01 Sales],ALLEXCEPT(Dim_FISCAL_DATE,Dim_FISCAL_DATE[FISCAL_DAY_OF_WEEK_SHORT]),'Dim_FISCAL_DATE'[Weeks ACC]="ACC")
+			Var ACC_LY = calculate([01 Sales Budget],ALLEXCEPT(Dim_FISCAL_DATE,Dim_FISCAL_DATE[FISCAL_DAY_OF_WEEK_SHORT]),'Dim_FISCAL_DATE'[Weeks ACC]="ACC")
+			
+			VAR _result = IF(
+			    ISBLANK( ACC_LY ),
+			    BLANK( ),
+			    DIVIDE( ACC_TY -ACC_LY , ABS(ACC_LY ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 05. Diff %\01. All Level\02 ACC
+		lineageTag: 1b936dbd-fddb-4535-b98d-1afc2b7633a7
+
+	measure '03 ACC Checks vs LY%' =
+			
+			Var ACC_TY = calculate([01 Checks],ALLEXCEPT(Dim_FISCAL_DATE,Dim_FISCAL_DATE[FISCAL_DAY_OF_WEEK_SHORT]),'Dim_FISCAL_DATE'[Weeks ACC]="ACC")
+			Var ACC_LY = calculate([02 Checks LY],ALLEXCEPT(Dim_FISCAL_DATE,Dim_FISCAL_DATE[FISCAL_DAY_OF_WEEK_SHORT]),'Dim_FISCAL_DATE'[Weeks ACC]="ACC")
+			
+			VAR _result = IF(
+			    ISBLANK( ACC_LY ),
+			    BLANK( ),
+			    DIVIDE( ACC_TY -ACC_LY , ABS(ACC_LY ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 05. Diff %\01. All Level\02 ACC
+		lineageTag: 145bd117-c037-47e7-9ee5-18297fdf252d
+
+	measure '04 ACC Avg Check vs LY%' =
+			
+			Var ACC_TY = calculate([01 Avg check],ALLEXCEPT(Dim_FISCAL_DATE,Dim_FISCAL_DATE[FISCAL_DAY_OF_WEEK_SHORT]),'Dim_FISCAL_DATE'[Weeks ACC]="ACC")
+			Var ACC_LY = calculate([02 Avg check LY],ALLEXCEPT(Dim_FISCAL_DATE,Dim_FISCAL_DATE[FISCAL_DAY_OF_WEEK_SHORT]),'Dim_FISCAL_DATE'[Weeks ACC]="ACC")
+			
+			VAR _result = IF(
+			    ISBLANK( ACC_LY ),
+			    BLANK( ),
+			    DIVIDE( ACC_TY -ACC_LY , ABS(ACC_LY ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 05. Diff %\01. All Level\02 ACC
+		lineageTag: bbf875f4-33ee-4a0c-8c24-f26ca166ebe5
+
+	measure '01 Sales Share of Total (Order Type)' = DIVIDE([01 Sales],CALCULATE([01 Sales], ALL('Dim_ORDER_TYPE')),BLANK())
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 01. Sales Measures\03 Share of Total
+		lineageTag: 63711d30-356b-4c38-969f-cf9dd7d033d0
+
+	measure '05 ACC Discount vs LY%' =
+			
+			Var ACC_TY = calculate([01 Discount],ALLEXCEPT(Dim_FISCAL_DATE,Dim_FISCAL_DATE[FISCAL_DAY_OF_WEEK_SHORT]),'Dim_FISCAL_DATE'[Weeks ACC]="ACC")
+			Var ACC_LY = calculate([02 Discount LY],ALLEXCEPT(Dim_FISCAL_DATE,Dim_FISCAL_DATE[FISCAL_DAY_OF_WEEK_SHORT]),'Dim_FISCAL_DATE'[Weeks ACC]="ACC")
+			
+			VAR _result = IF(
+			    ISBLANK( ACC_LY ),
+			    BLANK( ),
+			    DIVIDE( ACC_TY -ACC_LY , ABS(ACC_LY ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 05. Diff %\01. All Level\02 ACC
+		lineageTag: 928dae3c-8178-49be-8e43-47d119264262
+
+	measure 'Checks Unit Drive (per Channel)' =
+			var _total = calculate([02 Checks LY], all(Dim_CHANNEL))
+			
+			Var result = ([01 Checks]-[02 Checks LY])/_total
+			
+			return
+			
+			result*100
+		formatString: #,0.0
+		displayFolder: 08 Unit Drive
+		lineageTag: a63d823e-5a82-446c-910a-6242adf05d0d
+
+	partition '01 Sales Measures' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Column1"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

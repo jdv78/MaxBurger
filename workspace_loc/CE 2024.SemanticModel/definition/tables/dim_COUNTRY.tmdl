@@ -1,0 +1,96 @@
+table dim_COUNTRY
+	lineageTag: 99fcea51-f8de-4e64-ac64-fb76ce157935
+
+	column COUNTRY_KEY
+		dataType: double
+		lineageTag: 9f284afd-dd7d-42e7-a8d9-8e4e6877c4ed
+		summarizeBy: none
+		sourceColumn: COUNTRY_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column COUNTRY_CODE
+		dataType: string
+		lineageTag: 0223b99d-29ac-4add-98a2-5f6a759e35fb
+		summarizeBy: none
+		sourceColumn: COUNTRY_CODE
+		sortByColumn: Rank
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column COUNTRY_NAME
+		dataType: string
+		lineageTag: 3cacb486-4c79-4891-8d0c-5a266ab72ebc
+		summarizeBy: none
+		sourceColumn: COUNTRY_NAME
+		sortByColumn: Rank
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column RA_COUNTRY_ID
+		dataType: double
+		lineageTag: 4911474f-6f59-41ea-8d39-6b52b0c2e4c1
+		summarizeBy: count
+		sourceColumn: RA_COUNTRY_ID
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column IS_ACTIVE_IN_RA
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 9749d66f-9447-4cab-bd01-3b948fca5cbb
+		summarizeBy: none
+		sourceColumn: IS_ACTIVE_IN_RA
+
+		annotation SummarizationSetBy = Automatic
+
+	column COUNTRY_TIMEZONE
+		dataType: string
+		lineageTag: 076ab1a2-55b6-4f73-b896-87fd71c30e82
+		summarizeBy: none
+		sourceColumn: COUNTRY_TIMEZONE
+
+		annotation SummarizationSetBy = Automatic
+
+	column Group
+		dataType: string
+		lineageTag: 933d40fb-a435-4cae-a0ed-e88c64422c00
+		summarizeBy: none
+		sourceColumn: Group
+
+		annotation SummarizationSetBy = Automatic
+
+	column Rank
+		dataType: string
+		lineageTag: 019fed47-b7fe-453e-80be-fda4eed58a31
+		summarizeBy: none
+		sourceColumn: Rank
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_COUNTRY = m
+		mode: import
+		queryGroup: dim
+		source =
+				let
+				    Source = Snowflake.Databases("ya34293.west-europe.azure.snowflakecomputing.com","ANALYSIS"),
+				    GOLD_PROD_Database = Source{[Name="GOLD",Kind="Database"]}[Data],
+				    CORE_Schema = GOLD_PROD_Database{[Name="CORE",Kind="Schema"]}[Data],
+				    D_COUNTRY_Table = CORE_Schema{[Name="D_COUNTRY",Kind="Table"]}[Data],
+				    #"Added Conditional Column" = Table.AddColumn(D_COUNTRY_Table, "Group", each if [COUNTRY_CODE] = "SE" then "Region 1" else if [COUNTRY_CODE] = "NO" then "Region 1" else if [COUNTRY_CODE] = "DK" then "Region 2" else if [COUNTRY_CODE] = "PL" then "Region 2" else "Other"),
+				    #"Added Conditional Column1" = Table.AddColumn(#"Added Conditional Column", "Rank", each if [COUNTRY_CODE] = "SE" then 1 else if [COUNTRY_CODE] = "PL" then 2 else if [COUNTRY_CODE] = "DK" then 3 else if [COUNTRY_CODE] = "NO" then 4 else null)
+				in
+				    #"Added Conditional Column1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

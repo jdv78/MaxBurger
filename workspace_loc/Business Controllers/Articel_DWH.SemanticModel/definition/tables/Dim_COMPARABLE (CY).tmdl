@@ -1,0 +1,34 @@
+table 'Dim_COMPARABLE (CY)'
+	lineageTag: e8515a47-39d3-4cef-b181-fccf7ff65519
+
+	column 'Comp & NonComp TY'
+		dataType: string
+		lineageTag: d0152b9e-c596-4408-9f33-147b447fd245
+		summarizeBy: none
+		sourceColumn: Comp & NonComp TY
+
+		annotation SummarizationSetBy = Automatic
+
+	column IS_COMPARABLE
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: b0e9437c-5ebd-4a1a-98ad-c3de7562d4a9
+		summarizeBy: none
+		sourceColumn: IS_COMPARABLE
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Dim_COMPARABLE (CY)' = m
+		mode: import
+		queryGroup: dim
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45Wcs7PLVDSUQoJCnVVitWJVvLLz9OFirk5+gQDBWMB", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Comp & NonComp TY" = _t, IS_COMPARABLE = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Comp & NonComp TY", type text}, {"IS_COMPARABLE", type logical}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

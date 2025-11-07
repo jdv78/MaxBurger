@@ -1,0 +1,138 @@
+table ft_Max
+	lineageTag: 39acade6-5ce5-411d-9f83-340ce8207c19
+
+	measure Actual = CALCULATE(sum(ft_Max[Value]),ft_Max[Sources]="Actual")
+		lineageTag: 85fb46a5-7335-4871-9c2b-72803be5eac1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Country
+		dataType: string
+		lineageTag: d3ae86c8-65c0-4cd5-94a5-6287c85041fd
+		summarizeBy: none
+		sourceColumn: Country
+
+		annotation SummarizationSetBy = Automatic
+
+	column Group
+		dataType: string
+		lineageTag: 4eca7e52-f829-4f85-99e6-5b6851001a37
+		summarizeBy: none
+		sourceColumn: Group
+
+		annotation SummarizationSetBy = Automatic
+
+	column KPI
+		dataType: string
+		lineageTag: e2c9f235-9a91-477c-9396-617b1896a1cb
+		summarizeBy: none
+		sourceColumn: KPI
+
+		annotation SummarizationSetBy = Automatic
+
+	column Combine
+		dataType: string
+		lineageTag: 5981e2e5-457c-45eb-913a-46dd22d96d55
+		summarizeBy: none
+		sourceColumn: Combine
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sources
+		dataType: string
+		lineageTag: e60360e9-caa9-4c9a-a544-568bdc5f921c
+		summarizeBy: none
+		sourceColumn: Sources
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Today Date'
+		dataType: string
+		lineageTag: ce53f314-807f-45c9-a2bb-2aac9cccf4e2
+		summarizeBy: none
+		sourceColumn: Today Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column Type
+		dataType: string
+		lineageTag: a1b59a93-6570-438f-862d-90c6554be1f5
+		summarizeBy: none
+		sourceColumn: Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Column9
+		dataType: string
+		lineageTag: f1427a87-9c9b-4899-b0d2-060880555024
+		summarizeBy: none
+		sourceColumn: Column9
+
+		annotation SummarizationSetBy = Automatic
+
+	column Measures
+		dataType: string
+		lineageTag: 2182b0f2-aa04-4c5a-8d45-1cdc0fd0fddd
+		summarizeBy: none
+		sourceColumn: Measures
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sources '
+		dataType: string
+		lineageTag: c9b45645-114c-492c-b694-a57c56904141
+		summarizeBy: none
+		sourceColumn: "Sources "
+
+		annotation SummarizationSetBy = Automatic
+
+	column Act_Target
+		dataType: string
+		lineageTag: cc3d7773-d92a-4023-8f50-f84144c22e12
+		summarizeBy: none
+		sourceColumn: Act_Target
+
+		annotation SummarizationSetBy = Automatic
+
+	column Attribute
+		dataType: string
+		lineageTag: 2c0d1c8c-39c6-4789-8e81-5d852de6460b
+		summarizeBy: none
+		sourceColumn: Attribute
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value
+		dataType: double
+		lineageTag: 3cf1d7b7-0909-416b-8c44-f21dc08c3287
+		summarizeBy: sum
+		sourceColumn: Value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Internal Mng'
+		dataType: double
+		lineageTag: bf86655d-a3af-46fc-a251-a20972170603
+		summarizeBy: sum
+		sourceColumn: Internal Mng
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition ft_Max = m
+		mode: import
+		source =
+				let
+				    Source = Table.Combine({ft_Denmark, ft_Sweden, ft_Poland, ft_Norway}),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Combine", type text}, {"KPI", type text}, {"Group", type text}, {"Country", type text}, {"Sources", type text}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"Measures_1", "Act_Target"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

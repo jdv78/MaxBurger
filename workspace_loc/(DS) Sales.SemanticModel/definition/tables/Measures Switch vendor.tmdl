@@ -1,0 +1,44 @@
+table 'Measures Switch vendor'
+	isHidden
+	lineageTag: 44979d8b-d6d1-4a48-99bc-c7058403010c
+
+	calculationGroup
+		precedence: 1
+
+		calculationItem Absolute = Selectedmeasure()
+
+			formatStringDefinition = "#.0"
+
+		calculationItem '% of Total' = ```
+				DIVIDE(
+				    SELECTEDMEASURE(),
+				    CALCULATE(
+				        SELECTEDMEASURE(),
+				        REMOVEFILTERS('Dim_DELIVERY_PARTNER'),
+				       'Dim_DELIVERY_PARTNER'[DELIVERY_PARTNER_NAME] <> "Not delivery"
+				    )
+				)
+				
+				```
+
+			formatStringDefinition = "0.0%"
+
+	column Name
+		dataType: string
+		isHidden
+		lineageTag: dfa5b150-ee3f-4d07-892b-61b4ccc7b4f8
+		summarizeBy: none
+		sourceColumn: Name
+		sortByColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ordinal
+		dataType: int64
+		isHidden
+		lineageTag: f70008d2-9b21-448e-a70c-be68513f93dc
+		summarizeBy: sum
+		sourceColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+

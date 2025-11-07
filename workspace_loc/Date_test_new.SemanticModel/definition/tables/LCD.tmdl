@@ -1,0 +1,37 @@
+table LCD
+	lineageTag: 31e0beea-5812-4c50-a41c-272a1f1cf6bf
+
+	column LCD
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 93c54101-000d-44f2-b84e-d9312268abf3
+		summarizeBy: none
+		sourceColumn: LCD
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Name
+		dataType: string
+		lineageTag: 31291e24-9b6f-4a7c-aecb-17e43422d1ec
+		summarizeBy: none
+		sourceColumn: Name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition LCD = m
+		mode: import
+		source =
+				let
+				    Today = DateTime.Date(DateTime.LocalNow()),
+				    OneDayBefore = Date.AddDays(Today, -1),
+				    #"Converted to Table" = #table(1, {{OneDayBefore}}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Converted to Table",{{"Column1", type date}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"Column1", "LCD"}}),
+				    #"Added Custom" = Table.AddColumn(#"Renamed Columns", "Name", each "LCD")
+				in
+				    #"Added Custom"
+
+	annotation PBI_ResultType = Table
+

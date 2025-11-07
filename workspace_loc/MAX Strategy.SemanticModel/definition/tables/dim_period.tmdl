@@ -1,0 +1,109 @@
+table dim_period
+	lineageTag: 97151945-5474-4eea-b615-b95a651caeb2
+
+	column Attribute
+		dataType: string
+		lineageTag: 8f9c4eba-8d6c-4ea1-9397-7316e596ef2c
+		summarizeBy: none
+		sourceColumn: Attribute
+		sortByColumn: Rank
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 4bb27b5b-73ec-4194-b822-7db329f4b03b
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		dataType: double
+		formatString: 0
+		lineageTag: 702c9f0f-1352-495a-a7f7-c65bc9aed1af
+		summarizeBy: sum
+		sourceColumn: Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column Rank
+		dataType: int64
+		formatString: 0
+		lineageTag: d97abfa9-b809-47f3-81ba-9379b8493484
+		summarizeBy: sum
+		sourceColumn: Rank
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsYearTotal
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 73b8f551-d086-4de6-9738-f395b166aae0
+		summarizeBy: none
+		sourceColumn: IsYearTotal
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Quarter - Text '
+		dataType: string
+		lineageTag: f0a8bd82-c4c2-4dcd-a1f6-dadf675797c8
+		summarizeBy: none
+		sourceColumn: "Quarter - Text "
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year - 2dig'
+		dataType: int64
+		formatString: 0
+		lineageTag: f3bd8759-82da-48e6-88e0-3a3a5da14cfe
+		summarizeBy: sum
+		sourceColumn: Year - 2dig
+
+		annotation SummarizationSetBy = Automatic
+
+	hierarchy 'Year Hierarchy'
+		lineageTag: a3d7275b-bffa-4e1c-b49b-2639d7e3b968
+
+		level Year
+			lineageTag: d7e22f0d-c2f8-4981-bd86-f44043e81ac9
+			column: Year
+
+		level Attribute
+			lineageTag: d3a073a9-0a36-4198-b496-228e972cbe0d
+			column: Attribute
+
+	partition dim_period = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("RdIxDsMwDEPRu2TuEFGS7R6jc5D7X6PJQP+NIPC2f13HL3TG97g/zxQzmbUn34N0buSZzNqT70UBClCAwihAAgkkkIwESlCCEpRGCSpQgQpURgVqUIMa1EYNGqABGqBhNEATNEETNI0maIEWaIGW0QJRhChCFCEXIYpIikiKSIpIF/GO+w8=", BinaryEncoding.Base64), Compression.Deflate)), let _t=((type nullable text) meta [Serialized.Text=true]) in type table [Attribute=_t]),
+				    #"Typed" = Table.TransformColumnTypes(Source,{{"Attribute", type text}}),
+				
+				    // Parse Year, Quarter, and detect "year-only" rows like 2019
+				    #"Add Year" = Table.AddColumn(#"Typed", "Year", each let a=[Attribute] in
+				        if Text.Length(a)=4 then Number.FromText(a) else Number.FromText(Text.End(a,4)), Int64.Type),
+				    #"Add Quarter" = Table.AddColumn(#"Add Year", "Quarter", each if Text.StartsWith([Attribute],"Q") then Number.FromText(Text.Middle([Attribute],1,1)) else null, Int64.Type),
+				    #"Flag Year Total" = Table.AddColumn(#"Add Quarter", "IsYearTotal", each Text.Length([Attribute])=4, type logical),
+				
+				    // Sort: Year ↑, quarters first, then the year total, and index from 1
+				    #"Sorted" = Table.Sort(#"Flag Year Total", {{"Year", Order.Ascending}, {"IsYearTotal", Order.Ascending}, {"Quarter", Order.Ascending}}),
+				    #"Add Rank" = Table.AddIndexColumn(#"Sorted", "Rank", 1, 1, Int64.Type),
+				    #"Replaced Value" = Table.ReplaceValue(#"Add Rank",null,5,Replacer.ReplaceValue,{"Quarter"}),
+				    #"Duplicated Column" = Table.DuplicateColumn(#"Replaced Value", "Quarter", "Quarter - Copy"),
+				    #"Added Custom" = Table.AddColumn(#"Duplicated Column", "Custom", each "Q"),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Added Custom",{{"Quarter - Copy", type text}}),
+				    #"Merged Columns" = Table.CombineColumns(#"Changed Type",{"Custom", "Quarter - Copy"},Combiner.CombineTextByDelimiter("", QuoteStyle.None),"Quarter - Text "),
+				    #"Inserted Last Characters" = Table.AddColumn(#"Merged Columns", "Last Characters", each Text.End(Text.From([Year], "en-SE"), 2), type text),
+				    #"Renamed Columns" = Table.RenameColumns(#"Inserted Last Characters",{{"Last Characters", "Year - 2dig"}}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Renamed Columns",{{"Year - 2dig", Int64.Type}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

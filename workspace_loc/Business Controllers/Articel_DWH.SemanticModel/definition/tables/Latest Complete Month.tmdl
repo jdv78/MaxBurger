@@ -1,0 +1,65 @@
+table 'Latest Complete Month'
+	isHidden
+	lineageTag: 46e297c4-020b-4f1c-9dc8-1c41e1930581
+
+	column 'Last Completed Month'
+		dataType: dateTime
+		isHidden
+		formatString: Long Date
+		lineageTag: b15dbc4d-2a57-428a-9e80-ac243c9dcc6d
+		summarizeBy: none
+		sourceColumn: Last Completed Month
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column LastCompletedMonth
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: c44e0250-0a1c-46ed-97d1-9c40fe91551f
+		summarizeBy: sum
+		sourceColumn: LastCompletedMonth
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Latest Complete Month' = m
+		mode: import
+		queryGroup: Time
+		source = ```
+				let
+				    // Get the current date and time
+				    CurrentDateTime = DateTime.LocalNow(),
+				    
+				    // Get the first day of the current month
+				    StartOfCurrentMonth = Date.StartOfMonth(CurrentDateTime),
+				    
+				    // Subtract one month to get the first day of the last completed month
+				    StartOfLastCompletedMonth = Date.AddMonths(StartOfCurrentMonth, -1),
+				    
+				    // Create a table with the last completed month
+				    #"Converted to Table" = #table(1, {{StartOfLastCompletedMonth}}),
+				    
+				    // Rename the column to "Last Completed Month"
+				    #"Renamed Columns" = Table.RenameColumns(#"Converted to Table", {{"Column1", "Last Completed Month"}}),
+				    
+				    // Change the column type to date
+				    #"Changed Type" = Table.TransformColumnTypes(#"Renamed Columns", {{"Last Completed Month", type date}}),
+				    #"Inserted Year" = Table.AddColumn(#"Changed Type", "Year", each Date.Year([Last Completed Month]), Int64.Type),
+				    #"Inserted Month" = Table.AddColumn(#"Inserted Year", "Month", each Date.Month([Last Completed Month]), Int64.Type),
+				    #"Merged Columns" = Table.CombineColumns(Table.TransformColumnTypes(#"Inserted Month", {{"Year", type text}, {"Month", type text}}, "en-US"),{"Year", "Month"},Combiner.CombineTextByDelimiter("", QuoteStyle.None),"Merged"),
+				    #"Renamed Columns1" = Table.RenameColumns(#"Merged Columns",{{"Merged", "LastCompletedMonth"}}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Renamed Columns1",{{"LastCompletedMonth", Int64.Type}})
+				in
+				    #"Changed Type1"
+				```
+
+	changedProperty = IsHidden
+
+	annotation PBI_ResultType = Table
+

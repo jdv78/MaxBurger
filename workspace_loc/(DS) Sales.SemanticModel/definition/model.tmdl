@@ -1,0 +1,67 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+	sourceQueryCulture: en-SE
+	dataAccessOptions
+		fastCombine
+		legacyRedirects
+		returnErrorValuesAsNull
+
+queryGroup dim
+
+	annotation PBI_QueryGroupOrder = 0
+
+queryGroup filter
+
+	annotation PBI_QueryGroupOrder = 1
+
+queryGroup Time
+
+	annotation PBI_QueryGroupOrder = 2
+
+queryGroup 'Web Region'
+
+	annotation PBI_QueryGroupOrder = 3
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["F_SALES_RESTAURANT_DAILY","Dim_FISCAL_DATE","Dim_RESTAURANT_COMPARABLE","Dim_RESTAURANT","Dim_CHANNEL","Dim_ORDER_TYPE","Dim_DELIVERY_PARTNER","YearFilter","01 Sales Measures","LCD","RefreshDateTime","Dynamic Format Strings","Dim_COMPARABLE (CY)","CompFilterTY","HT_Last Refresh","HT_Last Refresh for Report","F_FORECAST_AND_BUDGET_DAILY","02 Design Measures","ChangeTypeNoErrors","Latest Complete Month","LCM","Current Month","Sweden","Flags","RangeStart","RangeEnd"]
+
+annotation __TEdtr = 1
+
+ref table F_SALES_RESTAURANT_DAILY
+ref table Dim_FISCAL_DATE
+ref table Dim_RESTAURANT_COMPARABLE
+ref table Dim_RESTAURANT
+ref table Dim_CHANNEL
+ref table Dim_ORDER_TYPE
+ref table Dim_DELIVERY_PARTNER
+ref table YearFilter
+ref table '01 Sales Measures'
+ref table LCD
+ref table RefreshDateTime
+ref table 'Dynamic Format Strings'
+ref table 'Dim_COMPARABLE (CY)'
+ref table CompFilterTY
+ref table 'HT_Last Refresh'
+ref table 'HT_Last Refresh for Report'
+ref table F_FORECAST_AND_BUDGET_DAILY
+ref table 'Parameter Sales'
+ref table 'Parameter Sales FY'
+ref table '02 Design Measures'
+ref table 'Measures Switch'
+ref table 'Latest Complete Month'
+ref table LCM
+ref table 'Parameter Sales R12M'
+ref table 'Current Month'
+ref table 'Measures Switch vendor'
+ref table Sweden
+ref table Flags
+ref table RangeStart
+ref table RangeEnd
+ref table '$ Sales '
+ref table 'Delta %'
+
+ref cultureInfo en-US
+

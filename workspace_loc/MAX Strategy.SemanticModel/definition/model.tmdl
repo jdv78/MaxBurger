@@ -1,0 +1,36 @@
+model Model
+	culture: en-GB
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+	sourceQueryCulture: en-SE
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["ft_Sweden","ft_Poland","ft_Norway","ft_Denmark","ft_Max","dim_country","dim_tbl","dim_group","dim_period","dim_tbl_structure","Table","00 measure","Slicer Table","Measure Type","DIM_XRate","Sales TYFC 2025","Units","Units (2)","Units (3)"]
+
+annotation __TEdtr = 1
+
+annotation PBI_ProTooling = ["CalcGroup"]
+
+ref table ft_Max
+ref table dim_country
+ref table dim_group
+ref table dim_period
+ref table dim_tbl_structure
+ref table '00 measure'
+ref table 'Slicer Table'
+ref table 'Measure Type'
+ref table DIM_XRate
+ref table 'Sales TYFC 2025'
+ref table Units
+ref table 'Parameter Sales R12M'
+ref table 'Units (3)'
+
+ref role 'ALL Access'
+ref role Sweden
+
+ref cultureInfo en-GB
+

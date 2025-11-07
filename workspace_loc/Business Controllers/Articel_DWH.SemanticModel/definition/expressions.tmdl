@@ -1,0 +1,72 @@
+expression ChangeTypeNoErrors = ```
+		let
+		    Source = let
+		    ChangeTypefx = (Table as table, DataTypes as list) as table => 
+		    let
+		        SourceCols = Table.ColumnNames(Table),
+		        DataTypesColumnList = List.Transform(DataTypes, each _{0}),
+		        MatchingCols = List.Intersect({SourceCols, DataTypesColumnList}),
+		        MatchingTypesRestoredasList = 
+		            List.Transform(
+		                List.Transform(
+		                    MatchingCols, 
+		                    each List.PositionOf(DataTypesColumnList, _)
+		                ), 
+		            each DataTypes{_}
+		        ),
+		        Custom2 = Table.TransformColumnTypes(Table, MatchingTypesRestoredasList)
+		    in
+		        Custom2,
+		        Docs = [
+		                Documentation.Name = "ChangeTypeFxNoErrors",
+		                Documentation.Description = "Returns no error if the data types applied are not found.",
+		               
+		                Documentation.Examples = 
+		                    {
+		                        [
+		                            Description = "There are 2 arguments to this function. Table, DataTypes as List of List", 
+		                            Code = 
+		    "ChangeTypeNoErrors (
+		        Source,                     -- Table Name 
+		        { {Date, type date}, 
+		        {Region, type text}, 
+		        {Units, Int64.Type} }       -- Data types applied to columns
+		    )
+		    ",
+		                            Result = "Table with no errors"
+		                        ]
+		                    }
+		            ]
+		    in
+		    Value.ReplaceType(ChangeTypefx, Value.ReplaceMetadata(Value.Type(ChangeTypefx), Docs))
+		in
+		    Source
+		```
+	lineageTag: 7dd05b48-9d7d-4aad-a64d-98108f35a0d3
+	queryGroup: filter
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Function
+
+expression 'F_SALES_ARTICLE_DAILY (3)' =
+		let
+		    Source = Snowflake.Databases("maxburgers-analytics.snowflakecomputing.com","ANALYSIS"),
+		    GOLD_Database = Source{[Name="GOLD",Kind="Database"]}[Data],
+		    SALES_Schema = GOLD_Database{[Name="SALES",Kind="Schema"]}[Data],
+		    F_SALES_ARTICLE_DAILY_Table = SALES_Schema{[Name="F_SALES_ARTICLE_DAILY",Kind="Table"]}[Data],
+		    #"Inserted Year" = Table.AddColumn(F_SALES_ARTICLE_DAILY_Table, "Year", each Date.Year([FISCAL_DATE]), Int64.Type),
+		    #"Filtered Rows" = Table.SelectRows(#"Inserted Year", each List.Contains(#"YearFilter",[Year]) =true),
+		    #"Removed Other Columns" = Table.SelectColumns(#"Filtered Rows",{"FISCAL_DATE_KEY", "FISCAL_DATE", "ARTICLE_KEY", "COUNTRY_KEY", "DISCOUNT_KEY", "DELIVERY_PARTNER_KEY", "ORDER_TYPE_KEY", "CHANNEL_KEY", "LINE_ITEM_ROLE_KEY", "SALES_GROSS", "SALES_NET", "TOTAL_CHECKS_PER_COUNTRY_PER_DATE", "CHECKS", "QUANTITY", "LY_SALES_GROSS", "LY_SALES_NET", "LY_TOTAL_CHECKS_PER_COUNTRY_PER_DATE", "LY_CHECKS", "LY_QUANTITY", "LLY_SALES_GROSS", "LLY_SALES_NET", "LLY_TOTAL_CHECKS_PER_COUNTRY_PER_DATE", "LLY_CHECKS", "LLY_QUANTITY", "UPDATED_AT", "Year"}),
+		    #"Unpivoted Columns" = Table.UnpivotOtherColumns(#"Removed Other Columns", {"FISCAL_DATE_KEY", "FISCAL_DATE", "ARTICLE_KEY", "COUNTRY_KEY", "DISCOUNT_KEY", "DELIVERY_PARTNER_KEY", "ORDER_TYPE_KEY", "CHANNEL_KEY", "LINE_ITEM_ROLE_KEY", "UPDATED_AT", "Year"}, "Attribute", "Value"),
+		    #"Replaced Value" = Table.ReplaceValue(#"Unpivoted Columns",null,0,Replacer.ReplaceValue,{"Value"}),
+		    #"Changed Type" = #"ChangeTypeNoErrors"(#"Replaced Value",{{"Value", type number}}),
+		    #"Filtered Rows1" = Table.SelectRows(#"Changed Type", each ([Year] = 2025))
+		in
+		    #"Filtered Rows1"
+	lineageTag: bb8d8b14-5b91-4027-b4bd-fad8ac1a4291
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

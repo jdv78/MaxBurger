@@ -1,0 +1,50 @@
+table '$ Sales '
+	lineageTag: 26f2b226-3a80-494c-bc23-0555478d9d52
+
+	column '$ Sales '
+		lineageTag: f7722e98-d74f-40d9-a900-400b1102a017
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: '$ Sales  Order'
+
+		relatedColumnDetails
+			groupByColumn: '$ Sales  Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column '$ Sales  Fields'
+		lineageTag: 96eb28c5-dadb-4aa2-8562-5ed4348759fc
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: '$ Sales  Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column '$ Sales  Order'
+		formatString: 0
+		lineageTag: 2a7b916b-5f2d-49ff-9092-533173f5306a
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition '$ Sales ' = calculated
+		mode: import
+		source = ```
+				{
+				    ("Act", NAMEOF('01 Sales Measures'[01 Sales]), 0),
+				    ("LY", NAMEOF('01 Sales Measures'[02 Sales LY]), 1),
+				    ("LLY", NAMEOF('01 Sales Measures'[03 Sales LLY]), 2),
+				    ("Bud", NAMEOF('01 Sales Measures'[01 Sales Budget]), 3)
+				  
+				}
+				```
+
+	annotation PBI_Id = bef1c9c55402449f89ee7ab5bf61e40f
+

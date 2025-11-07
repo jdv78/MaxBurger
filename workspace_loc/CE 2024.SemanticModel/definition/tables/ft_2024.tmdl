@@ -1,0 +1,137 @@
+table ft_2024
+	lineageTag: 3f934596-6e46-426b-b22a-f68022a34e1c
+
+	measure 'Days in week' = CALCULATE(MAXX(ft_2024,ft_2024[Value]),ft_2024[Attribute]="DAYS_IN_WEEK")
+		lineageTag: facce72f-1eae-4162-8545-bcaad02eebc1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Trading Days' = CALCULATE(sumx(ft_2024,ft_2024[Value]),ft_2024[Attribute]="TOTAL_COUNT_RESTAURANT_KEY_GREATER")
+		lineageTag: 928e9aed-1b6a-4f5f-82f1-4853bd8013ae
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Store Count' = max(ft_2024[YEARLY_COUNT_RESTAURANT_KEY_GREATER_THAN_ZERO])
+		lineageTag: 427b0357-461f-43b1-9488-30727c44e4fe
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Days in week  sum' =
+			
+			CALCULATE(
+			    SUMX(ft_2024, ft_2024[Value]),
+			    ft_2024[Attribute] = "DAYS_IN_WEEK"
+			)
+		lineageTag: 2847e407-9860-47a8-90cd-4c93ffb881d7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Sales = CALCULATE(sumx(ft_2024,ft_2024[Value]),ft_2024[Attribute]="ACT_SALES")
+		lineageTag: bd9c20ef-be73-427d-ac28-732f16876775
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FISCAL_YEAR
+		dataType: double
+		formatString: 0
+		lineageTag: a52d03bd-b428-4fd5-9505-9fac0d1a4cc9
+		summarizeBy: sum
+		sourceColumn: FISCAL_YEAR
+
+		annotation SummarizationSetBy = Automatic
+
+	column FISCAL_MONTH_NAME_SHORT
+		dataType: string
+		lineageTag: b714892e-adf8-486e-9465-6f15bf387fa7
+		summarizeBy: none
+		sourceColumn: FISCAL_MONTH_NAME_SHORT
+
+		annotation SummarizationSetBy = Automatic
+
+	column FISCAL_DAY_OF_WEEK_SHORT
+		dataType: string
+		lineageTag: 6160c72b-2d8d-43dd-a2ac-eff9bbbbf491
+		summarizeBy: none
+		sourceColumn: FISCAL_DAY_OF_WEEK_SHORT
+
+		annotation SummarizationSetBy = Automatic
+
+	column FISCAL_DAY_OF_WEEK
+		dataType: double
+		lineageTag: 61f289f3-6e93-4fb3-9605-0a9afa528dd4
+		summarizeBy: sum
+		sourceColumn: FISCAL_DAY_OF_WEEK
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column COUNTRY_CODE
+		dataType: string
+		lineageTag: 3d0df2d9-e0df-446c-97ac-70e9e5ca9e0e
+		summarizeBy: none
+		sourceColumn: COUNTRY_CODE
+
+		annotation SummarizationSetBy = Automatic
+
+	column COUNTRY_KEY
+		dataType: double
+		lineageTag: 56d01603-8d97-48d3-bfdf-d99d28c512dc
+		summarizeBy: none
+		sourceColumn: COUNTRY_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column YEARLY_COUNT_RESTAURANT_KEY_GREATER_THAN_ZERO
+		dataType: double
+		lineageTag: b835f7cf-825a-4af1-b29d-8c1eb0f22d9f
+		summarizeBy: sum
+		sourceColumn: YEARLY_COUNT_RESTAURANT_KEY_GREATER_THAN_ZERO
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Attribute
+		dataType: string
+		lineageTag: 762931c0-776c-47af-9617-6e7cadc902df
+		summarizeBy: none
+		sourceColumn: Attribute
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value
+		dataType: double
+		lineageTag: c16c3810-bfee-46f0-8627-74cf8b177d27
+		summarizeBy: sum
+		sourceColumn: Value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FISCAL_MONTH_KEY
+		dataType: string
+		lineageTag: 2ee244a8-9b31-4711-9101-5ad6984aa649
+		summarizeBy: none
+		sourceColumn: FISCAL_MONTH_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	partition ft_2024 = m
+		mode: import
+		source =
+				let
+				    Source = Value.NativeQuery(Snowflake.Databases("ya34293.west-europe.azure.snowflakecomputing.com","ANALYSIS"){[Name="GOLD"]}[Data], "WITH DaysInWeek AS (#(lf)    SELECT #(lf)        FISCAL_MONTH_NAME_SHORT,#(lf)        FISCAL_DAY_OF_WEEK_SHORT,#(lf)        COUNT(DISTINCT FISCAL_DATE) AS Days_In_Week#(lf)    FROM #(lf)        GOLD.CORE.D_FISCAL_DATE#(lf)    WHERE #(lf)        FISCAL_DATE BETWEEN '2023-12-01' AND '2024-12-31'#(lf)    GROUP BY #(lf)        FISCAL_MONTH_NAME_SHORT,#(lf)        FISCAL_DAY_OF_WEEK_SHORT#(lf)),#(lf)DailyCounts AS (#(lf)    SELECT #(lf)        DT.FISCAL_YEAR,#(lf)        DT.FISCAL_MONTH_KEY,#(lf)        DT.FISCAL_MONTH_NAME_SHORT,#(lf)        DT.FISCAL_DAY_OF_WEEK_SHORT,#(lf)        DT.FISCAL_DAY_OF_WEEK,#(lf)        DT.FISCAL_DATE,#(lf)        CR.COUNTRY_CODE,#(lf)        FDS.COUNTRY_KEY,#(lf)        SUM(FDS.REVENUE_LIKE_INSIKT) AS ACT_SALES,#(lf)        COUNT(DISTINCT CASE WHEN FDS.REVENUE_LIKE_INSIKT > 0 THEN FDS.RESTAURANT_KEY END) AS Count_Restaurant_Key_Greater_Than_Zero#(lf)    FROM #(lf)        GOLD.SALES.F_DAILY_SALES AS FDS#(lf)    INNER JOIN #(lf)        GOLD.CORE.D_RESTAURANT DR ON FDS.RESTAURANT_KEY = DR.RESTAURANT_KEY#(lf)    INNER JOIN #(lf)        GOLD.CORE.D_FISCAL_DATE AS DT ON FDS.FISCAL_DATE_KEY = DT.FISCAL_DATE_KEY#(lf)    INNER JOIN #(lf)        GOLD.CORE.D_COUNTRY AS CR ON FDS.COUNTRY_KEY = CR.COUNTRY_KEY#(lf)    INNER JOIN #(lf)        GOLD.CORE.D_RESTAURANT_COMPARABLE AS COMP ON COMP.RESTAURANT_KEY = DR.RESTAURANT_KEY#(lf)    WHERE #(lf)        DT.FISCAL_DATE BETWEEN '2023-12-01' AND '2024-12-31'#(lf)        AND COMP.IS_COMPARABLE = 'TRUE'#(lf)        AND COMP.YEAR = '2024'#(lf)        --AND CR.COUNTRY_CODE = 'SE'#(lf)    GROUP BY#(lf)        DT.FISCAL_YEAR,#(lf)         DT.FISCAL_MONTH_KEY,#(lf)        DT.FISCAL_DATE,#(lf)        DT.FISCAL_MONTH_NAME_SHORT,#(lf)        DT.FISCAL_DAY_OF_WEEK_SHORT,#(lf)        DT.FISCAL_DAY_OF_WEEK,#(lf)        CR.COUNTRY_CODE,#(lf)        FDS.COUNTRY_KEY#(lf)),#(lf)YearlyCounts AS (#(lf)    SELECT #(lf)        DT.FISCAL_YEAR,#(lf)        DT.FISCAL_MONTH_NAME_SHORT,#(lf)        DT.FISCAL_DAY_OF_WEEK_SHORT,#(lf)        DT.FISCAL_DAY_OF_WEEK,#(lf)        CR.COUNTRY_CODE,#(lf)        FDS.COUNTRY_KEY,#(lf)        COUNT(DISTINCT CASE WHEN FDS.REVENUE_LIKE_INSIKT > 0 THEN FDS.RESTAURANT_KEY END) AS Count_Restaurant_Key_Greater_Than_Zero#(lf)    FROM #(lf)        GOLD.SALES.F_DAILY_SALES AS FDS#(lf)    INNER JOIN #(lf)        GOLD_TEST.CORE.D_RESTAURANT DR ON FDS.RESTAURANT_KEY = DR.RESTAURANT_KEY#(lf)    INNER JOIN #(lf)        GOLD.CORE.D_FISCAL_DATE AS DT ON FDS.FISCAL_DATE_KEY = DT.FISCAL_DATE_KEY#(lf)    INNER JOIN #(lf)        GOLD.CORE.D_COUNTRY AS CR ON FDS.COUNTRY_KEY = CR.COUNTRY_KEY#(lf)    INNER JOIN #(lf)        GOLD.CORE.D_RESTAURANT_COMPARABLE AS COMP ON COMP.RESTAURANT_KEY = DR.RESTAURANT_KEY#(lf)    WHERE #(lf)        DT.FISCAL_DATE BETWEEN '2023-12-01' AND '2024-12-31'#(lf)        AND COMP.IS_COMPARABLE = 'TRUE'#(lf)        AND COMP.YEAR = '2024'#(lf)    GROUP BY#(lf)        DT.FISCAL_YEAR,#(lf)        DT.FISCAL_MONTH_NAME_SHORT,#(lf)        DT.FISCAL_DAY_OF_WEEK_SHORT,#(lf)        DT.FISCAL_DAY_OF_WEEK,#(lf)        CR.COUNTRY_CODE,#(lf)        FDS.COUNTRY_KEY#(lf))#(lf)SELECT #(lf)    DC.FISCAL_YEAR,#(lf)    DC.FISCAL_MONTH_KEY,#(lf)    DC.FISCAL_MONTH_NAME_SHORT,#(lf)    DC.FISCAL_DAY_OF_WEEK_SHORT,#(lf)    DC.FISCAL_DAY_OF_WEEK,#(lf)    DC.COUNTRY_CODE,#(lf)    DC.COUNTRY_KEY,#(lf)    SUM(DC.Count_Restaurant_Key_Greater_Than_Zero) AS Total_Count_Restaurant_Key_Greater,#(lf)    SUM(DC.ACT_SALES) AS ACT_SALES,#(lf)    AVG(DC.Count_Restaurant_Key_Greater_Than_Zero) AS Avg_Distinct_Count_Per_Day,#(lf)    COUNT(DISTINCT DC.FISCAL_DATE) AS Days_In_Week,#(lf)    SUM(DC.Count_Restaurant_Key_Greater_Than_Zero) / DW.Days_In_Week AS Avg_Distinct_Count_Per_Day1,#(lf)    YC.Count_Restaurant_Key_Greater_Than_Zero AS Yearly_Count_Restaurant_Key_Greater_Than_Zero#(lf)FROM #(lf)    DailyCounts DC#(lf)INNER JOIN #(lf)    DaysInWeek DW ON DC.FISCAL_MONTH_NAME_SHORT = DW.FISCAL_MONTH_NAME_SHORT AND DC.FISCAL_DAY_OF_WEEK_SHORT = DW.FISCAL_DAY_OF_WEEK_SHORT#(lf)LEFT JOIN #(lf)    YearlyCounts YC ON DC.FISCAL_YEAR = YC.FISCAL_YEAR AND DC.FISCAL_MONTH_NAME_SHORT = YC.FISCAL_MONTH_NAME_SHORT AND DC.FISCAL_DAY_OF_WEEK_SHORT = YC.FISCAL_DAY_OF_WEEK_SHORT AND DC.COUNTRY_CODE = YC.COUNTRY_CODE AND DC.COUNTRY_KEY = YC.COUNTRY_KEY#(lf)GROUP BY#(lf)    DC.FISCAL_YEAR,#(lf)    DC.FISCAL_MONTH_KEY,#(lf)    DC.FISCAL_MONTH_NAME_SHORT,#(lf)    DC.FISCAL_DAY_OF_WEEK_SHORT,#(lf)    DC.FISCAL_DAY_OF_WEEK,#(lf)    DC.COUNTRY_CODE,#(lf)    DC.COUNTRY_KEY,#(lf)    DW.Days_In_Week,#(lf)    YC.Count_Restaurant_Key_Greater_Than_Zero#(lf)ORDER BY #(lf)    DC.FISCAL_DAY_OF_WEEK ASC", null, [EnableFolding=true]),
+				    #"Appended Query" = Table.Combine({Source, ft_2023}),
+				    #"Unpivoted Columns" = Table.UnpivotOtherColumns(#"Appended Query", {"FISCAL_YEAR","FISCAL_MONTH_NAME_SHORT", "FISCAL_DAY_OF_WEEK_SHORT", "FISCAL_DAY_OF_WEEK", "COUNTRY_CODE", "COUNTRY_KEY", "YEARLY_COUNT_RESTAURANT_KEY_GREATER_THAN_ZERO","FISCAL_MONTH_KEY"}, "Attribute", "Value"),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Unpivoted Columns",{{"FISCAL_MONTH_KEY", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,130 @@
+table '02 Design Measures'
+	lineageTag: 2dc43eab-7656-4fa5-8a47-fe2ac51c68cc
+
+	measure 'Strike Rate vs LY% Color Code' =
+			
+			VAR _measure = [12 Strike Rate vs LY%]
+			VAR _result =
+			    SWITCH(
+			        TRUE(),
+			           _measure > 0, "#228b22",       -- If the measure is positive, use Green
+			        _measure < 0, "#FF0000",         -- If the measure is negative, use Red
+			        "Black"                      -- Default color if none of the above conditions are met
+			    )
+			RETURN
+			_result
+		lineageTag: 33770b32-9954-4801-81d0-3dfbffaa702f
+
+	measure 'Sales Rate vs LY% Color Code' =
+			
+			VAR _measure = [01 Sales vs LY%]
+			VAR _result =
+			    SWITCH(
+			        TRUE(),
+			           _measure > 0, "#228b22",       -- If the measure is positive, use Green
+			        _measure < 0, "#FF0000",         -- If the measure is negative, use Red
+			        "Black"                      -- Default color if none of the above conditions are met
+			    )
+			RETURN
+			_result
+		lineageTag: 7929e9ff-f129-4368-b574-1e627b75769f
+
+	measure 'List of Group values' =
+			
+			VAR __DISTINCT_VALUES_COUNT = DISTINCTCOUNT('Dim_ARTICLE'[Group])
+			VAR __MAX_VALUES_TO_SHOW = 1
+			RETURN
+				IF(
+					__DISTINCT_VALUES_COUNT > __MAX_VALUES_TO_SHOW,
+					CONCATENATE(
+						CONCATENATEX(
+							TOPN(
+								__MAX_VALUES_TO_SHOW,
+								VALUES('Dim_ARTICLE'[Group]),
+								'Dim_ARTICLE'[Group],
+								ASC
+							),
+							'Dim_ARTICLE'[Group],
+							", ",
+							'Dim_ARTICLE'[Group],
+							ASC
+						),
+						", etc."
+					),
+					CONCATENATEX(
+						VALUES('Dim_ARTICLE'[Group]),
+						'Dim_ARTICLE'[Group],
+						", ",
+						'Dim_ARTICLE'[Group],
+						ASC
+					)
+				)
+		lineageTag: 91dc6acd-3002-4006-b106-25bbd7b1edfe
+
+		extendedProperty MeasureTemplate =
+				{
+				  "version": 0,
+				  "daxTemplateName": "ConcatenateValues"
+				}
+
+		changedProperty = FormatString
+
+	measure _count = COUNT(Dim_FISCAL_DATE[WeeksACC])
+		lineageTag: a3b0e1bf-8b26-4b42-822e-38101a7f0f00
+
+	measure Quantity_Cleaned = ```
+			
+			CALCULATE(
+			    [Values], 
+			    'F_SALES_ARTICLE_DAILY'[Attribute] = "Quantity",
+			    FILTER(
+			        'F_SALES_ARTICLE_DAILY',
+			        'F_SALES_ARTICLE_DAILY'[ARTICLE_KEY] IN
+			            SELECTCOLUMNS(
+			                FILTER(
+			                    'F_SALES_ARTICLE_DAILY',
+			                    'F_SALES_ARTICLE_DAILY'[Attribute] = "SALES_GROSS_AFTER_DISC" &&
+			                    [Values] <> 0
+			                ),
+			                "ARTICLE_KEY", 'F_SALES_ARTICLE_DAILY'[ARTICLE_KEY]
+			            )
+			    )
+			)
+			
+			
+			
+			
+			
+			
+			```
+		lineageTag: e741cc7a-6b8f-456b-a313-29503010156e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Price effect' = ```
+			VAR Table_context = 
+			FILTER(
+			    VALUES('dim_ARTICLE'[ARTICLE_NAME]),
+			    AND( NOT ISBLANK( [04 Price] ) , NOT ISBLANK([05 Price LY]  ) ) = TRUE()
+			)
+			
+			RETURN
+			sumx(Table_context,
+			 ( [04 Price] -[05 Price LY]  ) *[05 Quantity (Sales <> 0) LY])
+			```
+		lineageTag: fbf4f608-d778-45e7-a682-beddc43e9ebb
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition '02 Design Measures' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Column1"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+

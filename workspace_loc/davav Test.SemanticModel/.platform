@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "davav Test"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "7f4c3095-fffd-8780-4ce4-b26db0e47cb9"
+  }
+}

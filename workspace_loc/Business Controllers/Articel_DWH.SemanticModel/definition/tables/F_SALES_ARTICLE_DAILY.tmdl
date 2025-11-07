@@ -1,0 +1,144 @@
+table F_SALES_ARTICLE_DAILY
+	lineageTag: a4fed249-1487-46c9-94b9-eff1d413a6e0
+
+	column FISCAL_DATE
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 3684716a-44c5-4c02-90b0-1a9070e78110
+		summarizeBy: none
+		sourceColumn: FISCAL_DATE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ARTICLE_KEY
+		dataType: double
+		lineageTag: dd68f017-54a3-4224-9d01-f75479a9d1b3
+		summarizeBy: none
+		sourceColumn: ARTICLE_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column COUNTRY_KEY
+		dataType: double
+		lineageTag: 92436516-f663-43fb-9bb3-8620f6cb9d45
+		summarizeBy: none
+		sourceColumn: COUNTRY_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DISCOUNT_KEY
+		dataType: double
+		lineageTag: 64fe6f86-5aca-451c-a563-faaac16ce6e3
+		summarizeBy: sum
+		sourceColumn: DISCOUNT_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DELIVERY_PARTNER_KEY
+		dataType: double
+		lineageTag: be82875a-8f1e-4352-919a-e6b1d01c80cd
+		summarizeBy: none
+		sourceColumn: DELIVERY_PARTNER_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ORDER_TYPE_KEY
+		dataType: double
+		lineageTag: f08a231b-a1a2-4cb2-a51a-f62838a8c38c
+		summarizeBy: none
+		sourceColumn: ORDER_TYPE_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CHANNEL_KEY
+		dataType: double
+		lineageTag: 87c4c9a2-6d72-4f2b-a938-444721e8de7b
+		summarizeBy: none
+		sourceColumn: CHANNEL_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column LINE_ITEM_ROLE_KEY
+		dataType: double
+		lineageTag: f3b05f0b-5a43-4893-b843-4653b31d549f
+		summarizeBy: none
+		sourceColumn: LINE_ITEM_ROLE_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Attribute
+		dataType: string
+		lineageTag: 6c745bdd-f5fd-4f19-86bf-7df9993ea54c
+		summarizeBy: none
+		sourceColumn: Attribute
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value
+		dataType: double
+		lineageTag: 5dea6aa3-e8ed-42f4-891f-9a588f599e40
+		summarizeBy: sum
+		sourceColumn: Value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column COUNTRY_NAME
+		dataType: string
+		lineageTag: 6e0f9343-457e-431b-a57a-63ec753e7526
+		summarizeBy: none
+		sourceColumn: COUNTRY_NAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column FISCAL_DATE_KEY
+		dataType: double
+		lineageTag: 213b9a83-a82d-463b-a7e4-cdf230e21fdd
+		summarizeBy: none
+		sourceColumn: FISCAL_DATE_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column IS_COMPARABLE
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: a8ea456d-ab7f-4d9c-baa8-c8c443e41902
+		summarizeBy: none
+		sourceColumn: IS_COMPARABLE
+
+		annotation SummarizationSetBy = Automatic
+
+	partition F_SALES_ARTICLE_DAILY = m
+		mode: import
+		source =
+				let
+				    Source = Value.NativeQuery(Snowflake.Databases("maxburgers-analytics.snowflakecomputing.com","ANALYSIS"){[Name="GOLD"]}[Data], "SELECT #(lf)    CR.country_name,#(lf)    dt.FISCAL_DATE,#(lf)    fds.FISCAL_DATE_KEY,#(lf)    fds.ARTICLE_KEY,#(lf)    fds.DISCOUNT_KEY,#(lf)    fds.DELIVERY_PARTNER_KEY, #(lf)    fds.ORDER_TYPE_KEY, #(lf)    fds.CHANNEL_KEY,#(lf)    fds.COUNTRY_KEY,#(lf)    fds.LINE_ITEM_ROLE_KEY,#(lf)    fds.is_comparable,#(lf)    CAST(SUM(fds.SALES_GROSS) AS FLOAT) as SALES_GROSS,#(lf)    CAST(SUM(fds.SALES_GROSS_AFTER_DISC) AS FLOAT) as SALES_GROSS_AFTER_DISC,#(lf)    CAST(SUM(fds.SALES_NET) AS FLOAT) as SALES_NET,#(lf)    CAST(SUM(fds.DISCOUNT_TOTAL) AS FLOAT) as DISCOUNT_TOTAL,#(lf)    CAST(SUM(fds.CHECKS) AS FLOAT) as CHECKS, #(lf)    CAST(SUM(fds.QUANTITY) AS FLOAT) as QUANTITY,#(lf)    CAST(SUM(fds.LY_SALES_GROSS) AS FLOAT) as LY_SALES_GROSS,#(lf)    CAST(SUM(fds.LY_SALES_GROSS_AFTER_DISC) AS FLOAT) as LY_SALES_GROSS_AFTER_DISC,#(lf)    CAST(SUM(fds.LY_SALES_NET) AS FLOAT) as LY_SALES_NET,#(lf)    CAST(SUM(fds.LY_DISCOUNT_TOTAL) AS FLOAT) as LY_DISCOUNT_TOTAL,#(lf)    CAST(SUM(fds.LY_CHECKS) AS FLOAT) as LY_CHECKS, #(lf)    CAST(SUM(fds.LY_QUANTITY) AS FLOAT) as LY_QUANTITY,#(lf)    CAST(SUM(fds.LLY_SALES_GROSS) AS FLOAT) as LL_SALES_GROSS,#(lf)    CAST(SUM(fds.LLY_SALES_GROSS_AFTER_DISC) AS FLOAT) as LLY_SALES_GROSS_AFTER_DISC,#(lf)    CAST(SUM(fds.LLY_SALES_NET) AS FLOAT) as LLY_SALES_NET,#(lf)    CAST(SUM(fds.LLY_DISCOUNT_TOTAL) AS FLOAT) as LLY_DISCOUNT_TOTAL,#(lf)    CAST(SUM(fds.LLY_CHECKS) AS FLOAT) as LLY_CHECKS, #(lf)    CAST(SUM(fds.LLY_QUANTITY) AS FLOAT) as LLY_QUANTITY,#(lf)    CAST(SUM(fds.CHECKS_PER_COUNTRY_PER_DATE)as float) as CHECKS_PER_COUNTRY,#(lf)    CAST(SUM(fds.LY_CHECKS_PER_COUNTRY_PER_DATE)as float) as LY_CHECKS_PER_COUNTRY,#(lf)    CAST(SUM(fds.LLY_CHECKS_PER_COUNTRY_PER_DATE)as float) as LLY_CHECKS_PER_COUNTRY#(lf)#(lf)FROM GOLD.SALES.F_SALES_ARTICLE_DAILY AS FDS#(lf)INNER JOIN GOLD.CORE.D_FISCAL_DATE AS dt ON FDS.FISCAL_DATE_KEY = dt.FISCAL_DATE_KEY#(lf)INNER JOIN GOLD.CORE.D_COUNTRY as CR on CR.COUNTRY_KEY = fds.COUNTRY_KEY#(lf)WHERE DT.FISCAL_DATE BETWEEN '2024-01-01' AND '2025-12-31'                                              #(lf)GROUP BY #(lf)    CR.country_name,#(lf)    dt.FISCAL_DATE,#(lf)    fds.FISCAL_DATE_KEY,#(lf)    fds.ARTICLE_KEY,#(lf)    fds.DISCOUNT_KEY,#(lf)    fds.DELIVERY_PARTNER_KEY, #(lf)    fds.ORDER_TYPE_KEY, #(lf)    fds.CHANNEL_KEY,#(lf)    fds.COUNTRY_KEY,#(lf)    fds.LINE_ITEM_ROLE_KEY,#(lf)    fds.is_comparable", null, [EnableFolding=true]),
+				    #"Unpivoted Columns" = Table.UnpivotOtherColumns(Source, {"COUNTRY_NAME","FISCAL_DATE_KEY", "IS_COMPARABLE","FISCAL_DATE", "ARTICLE_KEY", "DISCOUNT_KEY", "DELIVERY_PARTNER_KEY", "ORDER_TYPE_KEY", "CHANNEL_KEY", "COUNTRY_KEY", "LINE_ITEM_ROLE_KEY"}, "Attribute", "Value"),
+				    #"Replaced Value" = Table.ReplaceValue(#"Unpivoted Columns",null,0,Replacer.ReplaceValue,{"Value"}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Replaced Value",{{"Value", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

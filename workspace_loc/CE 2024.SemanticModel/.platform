@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "CE 2024"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "9d5a6a4c-3605-963a-4084-92c63a045aab"
+  }
+}

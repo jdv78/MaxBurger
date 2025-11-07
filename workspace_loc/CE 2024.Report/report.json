@@ -1,0 +1,60 @@
+{
+  "config": "{\"version\":\"5.54\",\"themeCollection\":{\"baseTheme\":{\"name\":\"CY24SU05\",\"version\":\"5.54\",\"type\":2}},\"activeSectionIndex\":0,\"defaultDrillFilterOtherVisuals\":true,\"settings\":{\"useNewFilterPaneExperience\":true,\"allowChangeFilterTypes\":true,\"useStylableVisualContainerHeader\":true,\"queryLimitOption\":6,\"useEnhancedTooltips\":true,\"exportDataMode\":1,\"useDefaultAggregateDisplayName\":true},\"objects\":{\"section\":[{\"properties\":{\"verticalAlignment\":{\"expr\":{\"Literal\":{\"Value\":\"'Top'\"}}}}}]}}",
+  "layoutOptimization": 0,
+  "resourcePackages": [
+    {
+      "resourcePackage": {
+        "disabled": false,
+        "items": [
+          {
+            "name": "CY24SU05",
+            "path": "BaseThemes/CY24SU05.json",
+            "type": 202
+          }
+        ],
+        "name": "SharedResources",
+        "type": 2
+      }
+    }
+  ],
+  "sections": [
+    {
+      "config": "{}",
+      "displayName": "Page 1",
+      "displayOption": 1,
+      "filters": "[{\"name\":\"Filter8d22b32f06f4d74080f2\",\"expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"dim_COUNTRY\"}},\"Property\":\"COUNTRY_CODE\"}},\"filter\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"dim_COUNTRY\",\"Type\":0}],\"Where\":[{\"Condition\":{\"In\":{\"Expressions\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"COUNTRY_CODE\"}}],\"Values\":[[{\"Literal\":{\"Value\":\"'SE'\"}}]]}}}]},\"type\":\"Categorical\",\"howCreated\":1,\"objects\":{}}]",
+      "height": 720.00,
+      "name": "12142225093d80d34b36",
+      "visualContainers": [
+        {
+          "config": "{\"name\":\"27d6bf5a0511d680ddfa\",\"layouts\":[{\"id\":0,\"position\":{\"x\":705.7066666666667,\"y\":34.13333333333333,\"width\":465.0666666666666,\"height\":168.96,\"z\":2}}],\"singleVisual\":{\"visualType\":\"slicer\",\"projections\":{\"Values\":[{\"queryRef\":\"dim_date.FISCAL_MONTH_KEY\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"d\",\"Entity\":\"dim_date\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"FISCAL_MONTH_KEY\"},\"Name\":\"dim_date.FISCAL_MONTH_KEY\",\"NativeReferenceName\":\"FISCAL_MONTH_KEY\"}]},\"drillFilterOtherVisuals\":true,\"objects\":{\"data\":[{\"properties\":{\"mode\":{\"expr\":{\"Literal\":{\"Value\":\"'Between'\"}}}}}],\"general\":[{\"properties\":{}}]}}}",
+          "filters": "[]",
+          "height": 168.96,
+          "width": 465.07,
+          "x": 705.71,
+          "y": 34.13,
+          "z": 2.00
+        },
+        {
+          "config": "{\"name\":\"aa4b5a192edf0998d498\",\"layouts\":[{\"id\":0,\"position\":{\"x\":31.573333333333334,\"y\":203.09333333333333,\"z\":1,\"width\":723.6266666666667,\"height\":436.9066666666667}}],\"singleVisual\":{\"visualType\":\"pivotTable\",\"projections\":{\"Columns\":[{\"queryRef\":\"FISCAL_DAYS.Days\",\"active\":true}],\"Values\":[{\"queryRef\":\"ft_2024.Days in week 1\"},{\"queryRef\":\"ft_2024.Sales\"}],\"Rows\":[{\"queryRef\":\"dim_date.FISCAL_MONTH_NAME\",\"active\":true},{\"queryRef\":\"dim_date.FISCAL_YEAR\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"f\",\"Entity\":\"ft_2024\",\"Type\":0},{\"Name\":\"f1\",\"Entity\":\"FISCAL_DAYS\",\"Type\":0},{\"Name\":\"d\",\"Entity\":\"dim_date\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f1\"}},\"Property\":\"Days\"},\"Name\":\"FISCAL_DAYS.Days\",\"NativeReferenceName\":\"Days\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"FISCAL_MONTH_NAME\"},\"Name\":\"dim_date.FISCAL_MONTH_NAME\",\"NativeReferenceName\":\"FISCAL_MONTH_NAME\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"FISCAL_YEAR\"},\"Name\":\"dim_date.FISCAL_YEAR\",\"NativeReferenceName\":\"FISCAL_YEAR\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Days in week  sum\"},\"Name\":\"ft_2024.Days in week 1\",\"NativeReferenceName\":\"Days in week  sum\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"Sales\"},\"Name\":\"ft_2024.Sales\",\"NativeReferenceName\":\"Sales\"}]},\"expansionStates\":[{\"roles\":[\"Rows\"],\"levels\":[{\"queryRefs\":[\"dim_date.FISCAL_MONTH_NAME\"],\"isCollapsed\":true,\"identityKeys\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"dim_date\"}},\"Property\":\"FISCAL_MONTH_NAME\"}}],\"isPinned\":true},{\"queryRefs\":[\"dim_date.FISCAL_YEAR\"],\"isCollapsed\":true,\"isPinned\":true}],\"root\":{\"identityValues\":null,\"children\":[{\"identityValues\":[{\"Literal\":{\"Value\":\"'January'\"}}],\"isToggled\":true}]}}],\"drillFilterOtherVisuals\":true}}",
+          "filters": "[]",
+          "height": 436.91,
+          "width": 723.63,
+          "x": 31.57,
+          "y": 203.09,
+          "z": 1.00
+        },
+        {
+          "config": "{\"name\":\"b6b2bdf09fa24d73937a\",\"layouts\":[{\"id\":0,\"position\":{\"x\":712.5333333333333,\"y\":389.97333333333336,\"z\":3,\"width\":465.06666666666666,\"height\":250.02666666666667}}],\"singleVisual\":{\"visualType\":\"pivotTable\",\"projections\":{\"Values\":[{\"queryRef\":\"ft_Sales.LY%\"},{\"queryRef\":\"ft_2024.Sales\"}],\"Rows\":[{\"queryRef\":\"dim_COUNTRY.COUNTRY_CODE\",\"active\":true}],\"Columns\":[{\"queryRef\":\"ft_Sales.FISCAL_DAY_OF_WEEK_SHORT\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"f\",\"Entity\":\"ft_Sales\",\"Type\":0},{\"Name\":\"d\",\"Entity\":\"dim_COUNTRY\",\"Type\":0},{\"Name\":\"f1\",\"Entity\":\"ft_2024\",\"Type\":0}],\"Select\":[{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"LY%\"},\"Name\":\"ft_Sales.LY%\",\"NativeReferenceName\":\"LY%\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"d\"}},\"Property\":\"COUNTRY_CODE\"},\"Name\":\"dim_COUNTRY.COUNTRY_CODE\",\"NativeReferenceName\":\"COUNTRY_CODE\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f\"}},\"Property\":\"FISCAL_DAY_OF_WEEK_SHORT\"},\"Name\":\"ft_Sales.FISCAL_DAY_OF_WEEK_SHORT\",\"NativeReferenceName\":\"FISCAL_DAY_OF_WEEK_SHORT\"},{\"Measure\":{\"Expression\":{\"SourceRef\":{\"Source\":\"f1\"}},\"Property\":\"Sales\"},\"Name\":\"ft_2024.Sales\",\"NativeReferenceName\":\"Sales\"}]},\"drillFilterOtherVisuals\":true}}",
+          "filters": "[]",
+          "height": 250.03,
+          "width": 465.07,
+          "x": 712.53,
+          "y": 389.97,
+          "z": 3.00
+        }
+      ],
+      "width": 1280.00
+    }
+  ]
+}

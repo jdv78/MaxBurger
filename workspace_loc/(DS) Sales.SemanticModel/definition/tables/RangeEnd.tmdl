@@ -1,0 +1,20 @@
+table RangeEnd
+	lineageTag: 0450212e-b160-4519-8a4c-bd22f1b4fac6
+
+	column RangeEnd
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 005c929f-d773-4825-a02f-b1ededa1f4a8
+		summarizeBy: none
+		sourceColumn: RangeEnd
+
+		annotation SummarizationSetBy = Automatic
+
+	partition RangeEnd = m
+		mode: import
+		source = #datetime(2025, 9, 1, 0, 0, 0) meta [IsParameterQuery=true, Type="DateTime", IsParameterQueryRequired=true]
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = DateTime
+

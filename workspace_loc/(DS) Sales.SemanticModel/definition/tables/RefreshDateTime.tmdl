@@ -1,0 +1,41 @@
+table RefreshDateTime
+	isHidden
+	lineageTag: c0819253-494a-47d2-b410-5d34915d4378
+
+	measure 'LAST REFRESHED' = VALUES (RefreshDateTime[Refresh])
+		formatString: General Date
+		isHidden
+		lineageTag: 5440fda7-ca99-4fc2-8197-94f99198374f
+
+		changedProperty = IsHidden
+
+	column Refresh
+		dataType: dateTime
+		isHidden
+		formatString: General Date
+		lineageTag: 4c668d36-38e1-4978-b471-1e13a0dead76
+		summarizeBy: none
+		sourceColumn: Refresh
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition RefreshDateTime = m
+		mode: import
+		queryGroup: Time
+		source =
+				let
+				    Source = DateTimeZone.SwitchZone(DateTimeZone.LocalNow(),10),
+				    #"Converted to Table" = #table(1, {{Source}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Converted to Table",{{"Column1", "Refresh"}}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Renamed Columns",{{"Refresh", type datetime}})
+				in
+				    #"Changed Type"
+
+	changedProperty = IsHidden
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

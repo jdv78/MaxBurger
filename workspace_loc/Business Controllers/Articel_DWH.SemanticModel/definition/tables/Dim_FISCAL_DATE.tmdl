@@ -1,0 +1,607 @@
+table Dim_FISCAL_DATE
+	lineageTag: d89411f7-cc53-4c61-9ddc-496c0d97ca57
+
+	column FISCAL_DATE_KEY
+		dataType: double
+		lineageTag: 083385e7-9498-44ec-bbc4-e7c18ddad1c6
+		summarizeBy: none
+		sourceColumn: FISCAL_DATE_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FISCAL_DATE
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: cf093a7e-5c9e-42ab-8b46-98bc68a764e0
+		summarizeBy: none
+		sourceColumn: FISCAL_DATE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column FISCAL_YEAR
+		dataType: double
+		lineageTag: 191ab7e2-d81f-4843-8023-e01eadfc6675
+		summarizeBy: sum
+		sourceColumn: FISCAL_YEAR
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FISCAL_CENTURY
+		dataType: double
+		lineageTag: 84cca990-aa6b-4b05-875a-9137bbf2ab6a
+		summarizeBy: sum
+		sourceColumn: FISCAL_CENTURY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FISCAL_QUARTER
+		dataType: double
+		lineageTag: 05a9d5ed-92ef-49cf-a909-7456feaaa8e3
+		summarizeBy: sum
+		sourceColumn: FISCAL_QUARTER
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FISCAL_MONTH
+		dataType: double
+		lineageTag: c19bda2c-55f8-4795-896d-a5a796e01df2
+		summarizeBy: sum
+		sourceColumn: FISCAL_MONTH
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FISCAL_WEEK
+		dataType: double
+		lineageTag: 604d015a-fb44-45d9-85fe-699c1f91a73a
+		summarizeBy: sum
+		sourceColumn: FISCAL_WEEK
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FISCAL_DAY
+		dataType: double
+		lineageTag: 1230d25c-c843-40b2-abec-700c7b576ce1
+		summarizeBy: sum
+		sourceColumn: FISCAL_DAY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FISCAL_DAY_OF_YEAR
+		dataType: double
+		lineageTag: 3fd6ce5a-0d51-4d42-bf0d-575a881d36ec
+		summarizeBy: sum
+		sourceColumn: FISCAL_DAY_OF_YEAR
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FISCAL_DAY_OF_WEEK
+		dataType: double
+		lineageTag: 56f96b35-eb42-468e-96ca-f84a2da296e0
+		summarizeBy: sum
+		sourceColumn: FISCAL_DAY_OF_WEEK
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FISCAL_DAY_OF_WEEK_LONG
+		dataType: string
+		lineageTag: 1870481a-bc1a-46e2-8c2d-abad1c5c17f9
+		summarizeBy: none
+		sourceColumn: FISCAL_DAY_OF_WEEK_LONG
+
+		annotation SummarizationSetBy = Automatic
+
+	column FISCAL_DAY_OF_WEEK_SHORT
+		dataType: string
+		lineageTag: 1c589761-18e2-4001-b350-d588b426d2e8
+		summarizeBy: none
+		sourceColumn: FISCAL_DAY_OF_WEEK_SHORT
+
+		annotation SummarizationSetBy = Automatic
+
+	column IS_FISCAL_WEEKDAY
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 9a1d8edc-bd5c-4e10-afa9-d809ed58ad3c
+		summarizeBy: none
+		sourceColumn: IS_FISCAL_WEEKDAY
+
+		annotation SummarizationSetBy = Automatic
+
+	column IS_FISCAL_WEEKEND
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 068afdab-6069-4294-9f79-5624c7f98a0a
+		summarizeBy: none
+		sourceColumn: IS_FISCAL_WEEKEND
+
+		annotation SummarizationSetBy = Automatic
+
+	column FISCAL_QUARTER_NAME
+		dataType: string
+		lineageTag: 709d9443-eae6-49cd-bc86-7f684279ab4a
+		summarizeBy: none
+		sourceColumn: FISCAL_QUARTER_NAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column FISCAL_MONTH_NAME
+		dataType: string
+		lineageTag: fc353c74-3b18-48a7-9b24-03332343be18
+		summarizeBy: none
+		sourceColumn: FISCAL_MONTH_NAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column FISCAL_MONTH_NAME_SHORT
+		dataType: string
+		lineageTag: 06fa1cea-2934-411f-af13-4b438753dc81
+		summarizeBy: none
+		sourceColumn: FISCAL_MONTH_NAME_SHORT
+
+		annotation SummarizationSetBy = Automatic
+
+	column FISCAL_QUARTER_KEY
+		dataType: string
+		lineageTag: 467a2b13-138b-4948-bff3-d1e60c463dbe
+		summarizeBy: none
+		sourceColumn: FISCAL_QUARTER_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column FISCAL_MONTH_KEY
+		dataType: double
+		lineageTag: 7292e8ae-8031-4a91-845c-8ef866f1fe9b
+		summarizeBy: sum
+		sourceColumn: FISCAL_MONTH_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FISCAL_WEEK_KEY
+		dataType: double
+		lineageTag: c50924a8-5cc2-4328-9630-ad961005f2ba
+		summarizeBy: sum
+		sourceColumn: FISCAL_WEEK_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FISCAL_WEEK_OF_MONTH
+		dataType: double
+		lineageTag: d7835eda-f959-4bc2-8fdb-2c53e96f17de
+		summarizeBy: sum
+		sourceColumn: FISCAL_WEEK_OF_MONTH
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FISCAL_DATE_LAST_YEAR
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: bf27b9ac-2fbd-43d8-ba31-219e38682f13
+		summarizeBy: none
+		sourceColumn: FISCAL_DATE_LAST_YEAR
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column FISCAL_DATE_LAST_LAST_YEAR
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: ae8b2635-29d7-4add-a935-2dcc926635a4
+		summarizeBy: none
+		sourceColumn: FISCAL_DATE_LAST_LAST_YEAR
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column LCD
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: eeee48e0-3cbd-4a0f-bcd5-e106d5cf0cb2
+		summarizeBy: none
+		sourceColumn: LCD
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'LCD Name'
+		dataType: string
+		lineageTag: caeb2d92-4d18-4d42-b18b-3b4c864ebfda
+		summarizeBy: none
+		sourceColumn: LCD Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Rank
+		dataType: string
+		lineageTag: 5bd3e0c5-bdc1-4fb1-a4ee-0615cb62ec01
+		summarizeBy: none
+		sourceColumn: Rank
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'FISCAL_WEEK - Copy'
+		dataType: string
+		lineageTag: 2545b7d5-a652-4a47-8edf-0c5b1c1effb8
+		summarizeBy: none
+		sourceColumn: FISCAL_WEEK - Copy
+
+		annotation SummarizationSetBy = Automatic
+
+	column WeekText
+		dataType: string
+		lineageTag: 48a99cf5-172f-492c-a37f-9c3e732dd58b
+		summarizeBy: none
+		sourceColumn: WeekText
+
+		annotation SummarizationSetBy = Automatic
+
+	column YearWeekText
+		dataType: string
+		lineageTag: 6af88a9d-fe78-4c86-a0f1-70817480c6da
+		summarizeBy: none
+		sourceColumn: YearWeekText
+
+		annotation SummarizationSetBy = Automatic
+
+	column FISCAL_WEEK_KEY_NR
+		dataType: int64
+		formatString: 0
+		lineageTag: 10447ba2-a8ee-4d84-a46c-38c51b1e5a5d
+		summarizeBy: sum
+		sourceColumn: FISCAL_WEEK_KEY_NR
+
+		annotation SummarizationSetBy = Automatic
+
+	column Index
+		dataType: int64
+		formatString: 0
+		lineageTag: 1a860b9a-77e9-4608-8263-bcf72fbe6554
+		summarizeBy: sum
+		sourceColumn: Index
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'FISCAL_MONTH - Copy'
+		dataType: string
+		lineageTag: 71337a9b-0249-4a13-a337-db36b06a152a
+		summarizeBy: none
+		sourceColumn: FISCAL_MONTH - Copy
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'FISCAL_YEAR - Copy'
+		dataType: string
+		lineageTag: ddb94384-756e-4e4e-93c3-fcdff0ef1bec
+		summarizeBy: none
+		sourceColumn: FISCAL_YEAR - Copy
+
+		annotation SummarizationSetBy = Automatic
+
+	column YearMonth
+		dataType: string
+		lineageTag: eacf35f1-028f-4f55-a4ad-914cb2a1c242
+		summarizeBy: none
+		sourceColumn: YearMonth
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthYear
+		dataType: string
+		lineageTag: 1ffcc06b-f853-407c-8a07-a04867705243
+		summarizeBy: none
+		sourceColumn: MonthYear
+
+		annotation SummarizationSetBy = Automatic
+
+	column LastCompletedMonth
+		dataType: double
+		lineageTag: cc87270b-86f4-4d48-bd49-97bb3dde957e
+		summarizeBy: sum
+		sourceColumn: LastCompletedMonth
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'LCM '
+		dataType: string
+		lineageTag: c46a5414-d163-4913-bb2e-5467fefca545
+		summarizeBy: none
+		sourceColumn: "LCM "
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Rolling 12M Start'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 76bafb81-fceb-4b35-a72b-34f045168967
+		summarizeBy: none
+		sourceColumn: Rolling 12M Start
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Start and End Date'
+		dataType: string
+		lineageTag: d9303c7d-c29b-44fe-81ef-93d9469cabbc
+		summarizeBy: none
+		sourceColumn: Start and End Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column CurrentMonth
+		dataType: double
+		lineageTag: d013426d-a0f8-4a48-913e-74680baaf14e
+		summarizeBy: sum
+		sourceColumn: CurrentMonth
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Current Month'
+		dataType: string
+		lineageTag: 4804abc6-453d-4fce-a6fe-555770bf9c12
+		summarizeBy: none
+		sourceColumn: Current Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'LCM and CM'
+		dataType: string
+		lineageTag: 0487d8b5-6c39-445c-a725-3b473d5da71a
+		summarizeBy: none
+		sourceColumn: LCM and CM
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Index.1'
+		dataType: int64
+		formatString: 0
+		lineageTag: 09031e20-3d11-4066-91ad-8bf6aef7be2f
+		summarizeBy: sum
+		sourceColumn: Index.1
+
+		annotation SummarizationSetBy = Automatic
+
+	column Rank2
+		dataType: int64
+		formatString: 0
+		lineageTag: 823ac31f-5c29-4bfa-9629-b7fe3e111d43
+		summarizeBy: sum
+		sourceColumn: Rank2
+
+		annotation SummarizationSetBy = Automatic
+
+	column Rank3
+		dataType: int64
+		formatString: 0
+		lineageTag: 8b92574c-d4f7-4e34-a69b-f5f55748d7b2
+		summarizeBy: sum
+		sourceColumn: Rank3
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Relative Filter' =
+			
+			VAR AdjustmentToLastMonday = WEEKDAY(TODAY(), 2) -- Adjust to the last Monday considering today
+			VAR LastMonday = TODAY() - AdjustmentToLastMonday
+			RETURN DATEDIFF(LastMonday, 'Dim_FISCAL_DATE'[FISCAL_DATE]+6, WEEK)
+		formatString: 0
+		lineageTag: df5e7b18-0ea2-400b-8a3f-cfea591aca51
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column RelativeDayCount =
+			
+			VAR TodayDate = TODAY()
+			VAR CurrentWeekday = WEEKDAY(TodayDate, 1) -- Sunday = 1, which is the DAX default
+			VAR DaysSinceLastSunday = CurrentWeekday - 1
+			VAR LastSunday = TodayDate - DaysSinceLastSunday
+			VAR LastMonday = LastSunday - 6 -- Calculate the date for the last Monday
+			RETURN
+			IF(
+			    Dim_FISCAL_DATE[FISCAL_DATE] >= LastMonday && Dim_FISCAL_DATE[FISCAL_DATE] <= LastSunday,
+			    0, -- If the fiscal week date is within the last complete week, mark it as 0
+			    DATEDIFF(LastMonday, Dim_FISCAL_DATE[FISCAL_DATE], DAY) -- Otherwise, calculate the difference in days from the last Monday
+			)
+		formatString: 0
+		lineageTag: c4ec3cc7-97b7-4f78-82e6-4a7f67a28358
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column LCW = IF(Dim_FISCAL_DATE[Relative Filter] = 0, "LCW", FORMAT(Dim_FISCAL_DATE[RelativeDayCount], "General Number"))
+		lineageTag: 40f062ee-4c0c-4c11-919e-68a7c0680fa8
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column LCWRank = IF(Dim_FISCAL_DATE[Relative Filter] = 0, "LCW", FORMAT(Dim_FISCAL_DATE[FISCAL_WEEK_KEY_NR], "General Number"))
+		lineageTag: dee72323-595f-4e8b-a20f-27491bc52f73
+		summarizeBy: none
+		sortByColumn: 'Relative Filter'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Weeks ACC' = ```
+			
+			VAR StartDate = DATE(2025, 1, 1)
+			VAR TodayDate = TODAY()
+			VAR DaysSinceSunday = WEEKDAY(TodayDate, 1)   -- Days since last Sunday
+			VAR LastSunday = TodayDate - DaysSinceSunday  -- Date of the last Sunday
+			VAR StartToLastSundayWeeks = DATEDIFF(StartDate, LastSunday, WEEK) -- Weeks from start to last Sunday
+			VAR FiscalWeekToDate = DATEDIFF(StartDate, Dim_FISCAL_DATE[FISCAL_DATE]-1, WEEK) -- Weeks from start to fiscal date in your dimension
+			RETURN
+			    IF(
+			        AND(
+			            FiscalWeekToDate <= StartToLastSundayWeeks,
+			            FiscalWeekToDate >= 0
+			        ),
+			        "ACC",
+			        BLANK()
+			    ) 
+			```
+		lineageTag: cfa296c1-107a-4414-b711-45b4eb2c5326
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Current Week' = if(and(Dim_FISCAL_DATE[Relative filter]>=1,Dim_FISCAL_DATE[Relative filter]<=1),"CW")
+		lineageTag: 6ab2b5f7-d36c-4411-8388-8e747bb564a3
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Last 4 Week' = if(and(Dim_FISCAL_DATE[Relative filter]>=-3,Dim_FISCAL_DATE[Relative filter]<=0),"L4W")
+		lineageTag: 74cfb62e-10fc-4e84-a0f5-37174f7cca9b
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Last 8 Week' = if(and(Dim_FISCAL_DATE[Relative filter]>=-7,Dim_FISCAL_DATE[Relative filter]<=0),"L8W")
+		lineageTag: e4037683-3fe4-4d2d-8d71-7585556570a7
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Last 12 Week' = if(and(Dim_FISCAL_DATE[Relative filter]>=-11,Dim_FISCAL_DATE[Relative filter]<=0),"L12W")
+		lineageTag: 698a7035-8077-4639-ba61-bee01ea4b66a
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Last 16 Week' = if(and(Dim_FISCAL_DATE[Relative filter]>=-15,Dim_FISCAL_DATE[Relative filter]<=0),"L16W")
+		lineageTag: be31480e-c5aa-4915-8ad8-6c713029cd3f
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Rolling 12 Weeks' = if(and(Dim_FISCAL_DATE[Relative filter]>=-11,Dim_FISCAL_DATE[Relative filter]<=0),"R12")
+		lineageTag: df1bf7ac-e9e6-4d61-baff-6b6b2837f30b
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column WithinRange = ```
+			
+			IF(
+			    Dim_FISCAL_DATE[FISCAL_DATE] >= MIN(Dim_FISCAL_DATE[Rolling 12M Start]) && 
+			    Dim_FISCAL_DATE[FISCAL_DATE] <= MAX(Dim_FISCAL_DATE[LCD]), 
+			    1, 
+			    0
+			)
+			
+			```
+		formatString: 0
+		lineageTag: f4337ffc-d1ca-49d9-be77-14724c04bb45
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column WeeksACC =
+			
+			VAR StartDate = DATE(2024, 1, 1)
+			VAR TodayDate = TODAY()
+			VAR DaysSinceSunday = WEEKDAY(TodayDate, 1)   -- Days since last Sunday
+			VAR LastSunday = TodayDate - DaysSinceSunday  -- Date of the last Sunday
+			VAR StartToLastSundayWeeks = DATEDIFF(StartDate, LastSunday, WEEK) -- Weeks from start to last Sunday
+			VAR FiscalWeekToDate = DATEDIFF(StartDate, Dim_FISCAL_DATE[FISCAL_DATE]-1, WEEK) -- Weeks from start to fiscal date in your dimension
+			RETURN
+			    IF(
+			        AND(
+			            FiscalWeekToDate <= StartToLastSundayWeeks,
+			            FiscalWeekToDate >= 0
+			        ),
+			        "ACC",
+			        BLANK()
+			    )
+		lineageTag: 4e182d54-3adc-462d-9bdc-41aed1500394
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_FISCAL_DATE = m
+		mode: import
+		queryGroup: dim
+		source =
+				let
+				    Source = Snowflake.Databases("maxburgers-analytics.snowflakecomputing.com","ANALYSIS"),
+				    GOLD_Database = Source{[Name="GOLD",Kind="Database"]}[Data],
+				    CORE_Schema = GOLD_Database{[Name="CORE",Kind="Schema"]}[Data],
+				    D_FISCAL_DATE_View = CORE_Schema{[Name="D_FISCAL_DATE",Kind="View"]}[Data],
+				    #"Filtered Rows" = Table.SelectRows(D_FISCAL_DATE_View, each List.Contains(YearFilter,[FISCAL_YEAR]) =true),
+				    #"Merged Queries" = Table.NestedJoin(#"Filtered Rows", {"FISCAL_DATE"}, LCD, {"LCD"}, "LCD", JoinKind.LeftOuter),
+				    #"Expanded LCD" = Table.ExpandTableColumn(#"Merged Queries", "LCD", {"LCD", "Name"}, {"LCD.1", "Name"}),
+				    #"Added Conditional Column" = Table.AddColumn(#"Expanded LCD", "Rank",each if [FISCAL_WEEK] < 10 then 0 else  ""),
+				    #"Duplicated Column" = Table.DuplicateColumn(#"Added Conditional Column", "FISCAL_WEEK", "FISCAL_WEEK - Copy"),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Duplicated Column",{{"Rank", type text}, {"FISCAL_WEEK - Copy", type text}}),
+				    #"Added Custom" = Table.AddColumn(#"Changed Type", "WeekText", each "W"&[Rank]&[#"FISCAL_WEEK - Copy"]),
+				    #"Inserted Year" = Table.AddColumn(#"Added Custom", "Year", each Date.Year([FISCAL_DATE]), Int64.Type),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Inserted Year",{{"Year", type text}}),
+				    #"Added Custom1" = Table.AddColumn(#"Changed Type1", "YearWeekText", each [Year]&[WeekText]),
+				    #"Removed Columns" = Table.RemoveColumns(#"Added Custom1",{"Year"}),
+				    #"Duplicated Column1" = Table.DuplicateColumn(#"Removed Columns", "FISCAL_WEEK_KEY", "FISCAL_WEEK_KEY - Copy"),
+				    #"Changed Type2" = Table.TransformColumnTypes(#"Duplicated Column1",{{"FISCAL_WEEK_KEY - Copy", Int64.Type}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Changed Type2",{{"FISCAL_WEEK_KEY - Copy", "FISCAL_WEEK_KEY_NR"}, {"Name", "LCD Name"}, {"LCD.1", "LCD"}}),
+				    #"Added Index" = Table.AddIndexColumn(#"Renamed Columns", "Index", 1, 1, Int64.Type),
+				    #"Duplicated Column2" = Table.DuplicateColumn(#"Added Index", "FISCAL_MONTH", "FISCAL_MONTH - Copy"),
+				    #"Duplicated Column3" = Table.DuplicateColumn(#"Duplicated Column2", "FISCAL_YEAR", "FISCAL_YEAR - Copy"),
+				    #"Changed Type3" = Table.TransformColumnTypes(#"Duplicated Column3",{{"FISCAL_YEAR - Copy", type text}, {"FISCAL_MONTH - Copy", type text}}),
+				    #"Added Custom2" = Table.AddColumn(#"Changed Type3", "YearMonth", each if [FISCAL_MONTH] < 10 then [#"FISCAL_YEAR - Copy"] & "0"&[#"FISCAL_MONTH - Copy"] else [#"FISCAL_YEAR - Copy"]&[#"FISCAL_MONTH - Copy"]),
+				    #"Inserted Merged Column" = Table.AddColumn(#"Added Custom2", "Merged", each Text.Combine({[FISCAL_MONTH_NAME_SHORT], Text.From([FISCAL_YEAR], "en-US")}, " "), type text),
+				    #"Renamed Columns1" = Table.RenameColumns(#"Inserted Merged Column",{{"Merged", "MonthYear"}}),
+				    #"Merged Queries1" = Table.NestedJoin(#"Renamed Columns1", {"FISCAL_MONTH_KEY"}, #"Latest Complete Month", {"LastCompletedMonth"}, "Latest Complete Month", JoinKind.LeftOuter),
+				    #"Expanded Latest Complete Month" = Table.ExpandTableColumn(#"Merged Queries1", "Latest Complete Month", {"LastCompletedMonth"}, {"LastCompletedMonth"}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Expanded Latest Complete Month",null,0,Replacer.ReplaceValue,{"LastCompletedMonth"}),
+				    #"Added Custom3" = Table.AddColumn(#"Replaced Value", "LCM ", each if [LastCompletedMonth] >0 then "LCM" else [FISCAL_MONTH_KEY]),
+				    #"Changed Type4" = Table.TransformColumnTypes(#"Added Custom3",{{"LCM ", type text}}),
+				    #"Merged Queries2" = Table.NestedJoin(#"Changed Type4", {"FISCAL_DATE"}, LCM, {"Rolling 12M Start"}, "LCM", JoinKind.LeftOuter),
+				    #"Expanded LCM" = Table.ExpandTableColumn(#"Merged Queries2", "LCM", {"Rolling 12M Start"}, {"Rolling 12M Start"}),
+				    #"Added Custom4" = Table.AddColumn(#"Expanded LCM", "Start and End Date", each if [LCD Name] = "LCD" then [LCD] else [Rolling 12M Start]),
+				    #"Merged Queries3" = Table.NestedJoin(#"Added Custom4", {"FISCAL_MONTH_KEY"}, #"Current Month", {"CurrentMonth"}, "Current Month", JoinKind.LeftOuter),
+				    #"Expanded Current Month" = Table.ExpandTableColumn(#"Merged Queries3", "Current Month", {"CurrentMonth"}, {"CurrentMonth"}),
+				    #"Replaced Value1" = Table.ReplaceValue(#"Expanded Current Month",null,0,Replacer.ReplaceValue,{"CurrentMonth"}),
+				    #"Added Conditional Column1" = Table.AddColumn(#"Replaced Value1", "Current Month", each if [CurrentMonth] > 0 then "CM" else null),
+				    #"Added Conditional Column2" = Table.AddColumn(#"Added Conditional Column1", "LCM and CM", each if [Current Month] = "CM" then [Current Month] else [#"LCM "]),
+				    #"Filtered Rows1" = Table.SelectRows(#"Added Conditional Column2", each true),
+				    #"Added Index1" = Table.AddIndexColumn(#"Filtered Rows1", "Index.1", 1, 1, Int64.Type),
+				    Custom1 = Table.AddRankColumn(#"Added Index1", "Rank2", {"YearWeekText", Order.Descending}, [RankKind = RankKind.Dense]),
+				    Custom2 = Table.AddRankColumn(Custom1, "Rank3", {"WeekText", Order.Descending}, [RankKind = RankKind.Dense])
+				in
+				    Custom2
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,152 @@
+table F_SALES_RESTAURANT_DAILY
+	lineageTag: c36c8f0f-c9c1-48dc-bfef-f0d0b8c235a3
+	sourceLineageTag: [dbo].[F_SALES_RESTAURANT_DAILY]
+
+	column FISCAL_DATE_KEY
+		dataType: double
+		sourceProviderType: decimal(34, 6)
+		lineageTag: 55d8a75c-c09f-4c61-973b-6982aa606e6e
+		sourceLineageTag: FISCAL_DATE_KEY
+		summarizeBy: sum
+		sourceColumn: FISCAL_DATE_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FISCAL_DATE
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: date
+		lineageTag: 467e5fd6-936b-459d-8cb5-9f8ad3d25fc7
+		sourceLineageTag: FISCAL_DATE
+		summarizeBy: none
+		sourceColumn: FISCAL_DATE
+
+		annotation SummarizationSetBy = Automatic
+
+	column RESTAURANT_KEY
+		dataType: double
+		sourceProviderType: decimal(34, 6)
+		lineageTag: ac62c5d5-e644-4745-8ae4-75f4edeb5ccb
+		sourceLineageTag: RESTAURANT_KEY
+		summarizeBy: sum
+		sourceColumn: RESTAURANT_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column COUNTRY_KEY
+		dataType: double
+		sourceProviderType: decimal(34, 6)
+		lineageTag: 6b605e13-6510-499e-89fb-ef61623b9198
+		sourceLineageTag: COUNTRY_KEY
+		summarizeBy: sum
+		sourceColumn: COUNTRY_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DISCOUNT_KEY
+		dataType: double
+		sourceProviderType: decimal(34, 6)
+		lineageTag: 30b5540b-f724-462b-8b28-0774988c0c77
+		sourceLineageTag: DISCOUNT_KEY
+		summarizeBy: sum
+		sourceColumn: DISCOUNT_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DELIVERY_PARTNER_KEY
+		dataType: double
+		sourceProviderType: decimal(34, 6)
+		lineageTag: 732e22ad-41bb-490b-9d81-53adbf2d5326
+		sourceLineageTag: DELIVERY_PARTNER_KEY
+		summarizeBy: sum
+		sourceColumn: DELIVERY_PARTNER_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ORDER_TYPE_KEY
+		dataType: double
+		sourceProviderType: decimal(34, 6)
+		lineageTag: 1e9eed6d-0fd7-4d9b-bfc2-a0bb6b9f0bc2
+		sourceLineageTag: ORDER_TYPE_KEY
+		summarizeBy: sum
+		sourceColumn: ORDER_TYPE_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CHANNEL_KEY
+		dataType: double
+		sourceProviderType: decimal(34, 6)
+		lineageTag: 1d57990c-1208-4e3b-81f7-dcd1f8cd6dcc
+		sourceLineageTag: CHANNEL_KEY
+		summarizeBy: sum
+		sourceColumn: CHANNEL_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column UPDATED_AT
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: caeac376-4e74-489b-9641-0639abf60bfe
+		sourceLineageTag: UPDATED_AT
+		summarizeBy: none
+		sourceColumn: UPDATED_AT
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: 5884902e-d14a-4ee0-a0b1-f1a33c57958d
+		sourceLineageTag: Year
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column Attribute
+		dataType: string
+		sourceProviderType: varchar(8000)
+		lineageTag: 37d02a52-ab6b-45a4-a72e-ee871ab281ca
+		sourceLineageTag: Attribute
+		summarizeBy: none
+		sourceColumn: Attribute
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value
+		dataType: double
+		sourceProviderType: float
+		lineageTag: 0c2bdbe6-756e-4aef-84aa-8702c50986ef
+		sourceLineageTag: Value
+		summarizeBy: sum
+		sourceColumn: Value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition F_SALES_RESTAURANT_DAILY = entity
+		mode: directLake
+		source
+			entityName: F_SALES_RESTAURANT_DAILY
+			schemaName: dbo
+			expressionSource: DatabaseQuery
+
+	annotation PBI_ResultType = Table
+

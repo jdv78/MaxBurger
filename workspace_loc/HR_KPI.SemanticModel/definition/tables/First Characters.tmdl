@@ -1,0 +1,56 @@
+table 'First Characters'
+	lineageTag: 920eb521-f722-40b1-b89f-87afb6291cc7
+
+	column Month
+		dataType: string
+		lineageTag: cee8e4f4-a05a-4fb3-bac9-fb5deeaf5e58
+		summarizeBy: none
+		sourceColumn: Month
+		sortByColumn: Index
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column Index
+		dataType: int64
+		formatString: 0
+		lineageTag: 115db285-c738-44e4-b91e-66efd08ddb39
+		summarizeBy: sum
+		sourceColumn: Index
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'First Characters' = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\dv1891\MAX Burgers AB\MAX Controlling Page - Documents\MAX Project\MAX Power BI\HR\Antal avslut restauragn 2024.xlsx"), null, true),
+				    Blad1_Sheet = Source{[Item="Blad1",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Blad1_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Date", type date}, {"Avslut", type text}, {"Tot. Antal % #(lf)avslut", type any}, {"Tot. Antal#(lf)avslut", type any}, {"Antal avslut #(lf)BRC", Int64.Type}, {"% avslut #(lf)BRC", type number}, {"Antal avslut#(lf)Driftledare", Int64.Type}, {"% avslut#(lf)Driftledare", type number}, {"Antal asvlut#(lf)Traniee", Int64.Type}, {"%  avslut #(lf)Traniee", type number}, {"Antal avslut#(lf)Crew member", Int64.Type}, {"% avslut#(lf)Crew member", type number}, {"Antal avslut#(lf)RC", Int64.Type}, {"% avslut #(lf)RC", type number}}),
+				    #"Filtered Rows" = Table.SelectRows(#"Changed Type", each ([Date] <> null)),
+				    #"Inserted Year" = Table.AddColumn(#"Filtered Rows", "Year", each Date.Year([Date]), Int64.Type),
+				    #"Inserted Month Name" = Table.AddColumn(#"Inserted Year", "Month Name", each Date.MonthName([Date]), type text),
+				    #"Inserted First Characters" = Table.AddColumn(#"Inserted Month Name", "First Characters", each Text.Start([Month Name], 3), type text),
+				    #"Unpivoted Columns" = Table.UnpivotOtherColumns(#"Inserted First Characters", {"Date", "Avslut", "Year", "Month Name", "First Characters"}, "Attribute", "Value"),
+				    #"Filtered Rows1" = Table.SelectRows(#"Unpivoted Columns", each ([Attribute] = "Antal asvlut#(lf)Traniee" or [Attribute] = "Antal avslut#(lf)Crew member" or [Attribute] = "Antal avslut#(lf)Driftledare" or [Attribute] = "Antal avslut#(lf)RC" or [Attribute] = "Antal avslut #(lf)BRC")),
+				    #"Cleaned Text" = Table.TransformColumns(#"Filtered Rows1",{{"Attribute", Text.Clean, type text}}),
+				    #"Trimmed Text" = Table.TransformColumns(#"Cleaned Text",{{"Attribute", Text.Trim, type text}}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Trimmed Text","Antal avslut","",Replacer.ReplaceText,{"Attribute"}),
+				    #"Replaced Value1" = Table.ReplaceValue(#"Replaced Value","Antal asvlut","",Replacer.ReplaceText,{"Attribute"}),
+				    #"Cleaned Text1" = Table.TransformColumns(#"Replaced Value1",{{"Attribute", Text.Clean, type text}}),
+				    #"Trimmed Text1" = Table.TransformColumns(#"Cleaned Text1",{{"Attribute", Text.Trim, type text}}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Trimmed Text1",{{"Value", type number}}),
+				    #"First Characters1" = #"Changed Type1"[First Characters],
+				    #"Removed Duplicates" = List.Distinct(#"First Characters1"),
+				    #"Converted to Table" = Table.FromList(#"Removed Duplicates", Splitter.SplitByNothing(), null, null, ExtraValues.Error),
+				    #"Renamed Columns" = Table.RenameColumns(#"Converted to Table",{{"Column1", "Month"}}),
+				    #"Added Index" = Table.AddIndexColumn(#"Renamed Columns", "Index", 1, 1, Int64.Type)
+				in
+				    #"Added Index"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

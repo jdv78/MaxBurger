@@ -1,0 +1,108 @@
+table F_NUMBER_OF_RECEIPTS
+	isHidden
+	lineageTag: d180af34-c719-419e-8c3c-2c88d66f7a70
+
+	column COUNTRY_CODE
+		dataType: string
+		isHidden
+		lineageTag: e4d9a8ac-097a-43d2-b39e-d7c454b0d471
+		summarizeBy: none
+		sourceColumn: COUNTRY_CODE
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column FISCAL_DATE
+		dataType: dateTime
+		isHidden
+		formatString: Long Date
+		lineageTag: 01b9a777-7647-47ea-bf32-a270d0d05b28
+		summarizeBy: none
+		sourceColumn: FISCAL_DATE
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column FISCAL_DATE_KEY
+		dataType: double
+		isHidden
+		lineageTag: 5fac4ad3-e232-424e-8a06-3c43da3f73c7
+		summarizeBy: none
+		sourceColumn: FISCAL_DATE_KEY
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column COUNTRY_KEY
+		dataType: double
+		isHidden
+		lineageTag: 4464e0a6-2aca-44e4-8db2-565dbfe253ef
+		summarizeBy: none
+		sourceColumn: COUNTRY_KEY
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Attribute
+		dataType: string
+		isHidden
+		lineageTag: cfc2e966-4b85-4d2e-8017-7d70c00a5022
+		summarizeBy: none
+		sourceColumn: Attribute
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value
+		dataType: double
+		isHidden
+		lineageTag: 88091eb4-aa2e-44ea-9f20-f4f96783b2cb
+		summarizeBy: sum
+		sourceColumn: Value
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column IS_COMPARABLE
+		dataType: boolean
+		isHidden
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 07d3324c-35e7-4e74-a8a7-e22ae901f18b
+		summarizeBy: none
+		sourceColumn: IS_COMPARABLE
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition F_NUMBER_OF_RECEIPTS = m
+		mode: import
+		source =
+				let
+				    Source = Value.NativeQuery(Snowflake.Databases("maxburgers-analytics.snowflakecomputing.com","ANALYSIS"){[Name="GOLD"]}[Data], "WITH ReceiptCounts AS (#(lf)  SELECT#(lf)    rest.country_code, #(lf)    s.COUNTRY_KEY,#(lf)    DT.FISCAL_DATE,#(lf)    s.FISCAL_DATE_KEY,#(lf)    comp.IS_COMPARABLE,#(lf)    COUNT(DISTINCT s.receipt_key) AS Number_of_Receipt#(lf)    FROM GOLD.SALES.F_ARTICLE_SALES AS s#(lf)    INNER JOIN GOLD.CORE.D_ARTICLE AS art ON s.article_key = art.article_key#(lf)    INNER JOIN GOLD.SALES.D_LINE_ITEM_ROLE AS L ON s.line_item_role_key = l.line_item_role_key#(lf)    INNER JOIN GOLD.CORE.D_RESTAURANT AS rest ON s.restaurant_key = rest.restaurant_key#(lf)    INNER JOIN GOLD.SALES.D_ORDER_TYPE AS otype ON s.order_type_key = otype.order_type_key#(lf)    INNER JOIN GOLD.CORE.D_FISCAL_DATE AS DT ON s.fiscal_date_key = DT.fiscal_date_key#(lf)    Inner Join GOLD.CORE.D_RESTAURANT_COMPARABLE as Comp ON comp.restaurant_key = rest.restaurant_key#(lf)    INNER JOIN GOLD.CORE.D_CHANNEL AS chan ON s.channel_key = chan.channel_key#(lf)    WHERE DT.FISCAL_DATE BETWEEN '2024-06-01' AND '2025-12-31' and comp.YEAR = '2025' --and comp.IS_COMPARABLE = 'true' and comp.YEAR = '2025'#(lf)    GROUP BY  rest.country_code, #(lf)    s.COUNTRY_KEY,#(lf)    DT.FISCAL_DATE,#(lf)    s.FISCAL_DATE_KEY,#(lf)    comp.IS_COMPARABLE#(lf)#(lf))#(lf)SELECT * FROM ReceiptCounts", null, [EnableFolding=true]),
+				    #"Unpivoted Columns" = Table.UnpivotOtherColumns(Source, {"COUNTRY_CODE","IS_COMPARABLE", "FISCAL_DATE", "FISCAL_DATE_KEY", "COUNTRY_KEY"}, "Attribute", "Value"),
+				    #"Replaced Value" = Table.ReplaceValue(#"Unpivoted Columns",null,0,Replacer.ReplaceValue,{"Value"}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Replaced Value",{{"Value", type number}})
+				in
+				    #"Changed Type"
+
+	changedProperty = IsHidden
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

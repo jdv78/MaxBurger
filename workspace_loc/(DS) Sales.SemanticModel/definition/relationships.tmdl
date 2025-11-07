@@ -1,0 +1,51 @@
+relationship AutoDetected_3ae2ebca-acb7-49cd-977a-86ccc9be203f
+	fromColumn: F_SALES_RESTAURANT_DAILY.RESTAURANT_KEY
+	toColumn: Dim_RESTAURANT.RESTAURANT_KEY
+
+relationship AutoDetected_98c2446f-5834-4d7f-91ab-0d47dc7957ef
+	fromColumn: Dim_RESTAURANT_COMPARABLE.RESTAURANT_KEY
+	toColumn: Dim_RESTAURANT.RESTAURANT_KEY
+
+relationship AutoDetected_3734fc58-e5fc-4897-a8e4-e7f8376bff2c
+	fromColumn: F_SALES_RESTAURANT_DAILY.DELIVERY_PARTNER_KEY
+	toColumn: Dim_DELIVERY_PARTNER.DELIVERY_PARTNER_KEY
+
+relationship AutoDetected_97bae6d5-9c17-4913-9ece-8599c8fe9790
+	fromColumn: F_SALES_RESTAURANT_DAILY.ORDER_TYPE_KEY
+	toColumn: Dim_ORDER_TYPE.ORDER_TYPE_KEY
+
+relationship AutoDetected_3aaa7864-60b4-4de3-8b85-238ecbf116f6
+	fromColumn: F_SALES_RESTAURANT_DAILY.CHANNEL_KEY
+	toColumn: Dim_CHANNEL.CHANNEL_KEY
+
+relationship AutoDetected_06f5e8ef-180d-4611-9c12-d72499893e40
+	fromColumn: F_SALES_RESTAURANT_DAILY.FISCAL_DATE_KEY
+	toColumn: Dim_FISCAL_DATE.FISCAL_DATE_KEY
+
+relationship AutoDetected_af0cd3e6-def2-4190-ac69-74e102873557
+	fromColumn: Dim_FISCAL_DATE.'LCD Name'
+	toColumn: LCD.Name
+
+relationship AutoDetected_5b68565b-b6de-4c49-a9a5-5ea24e4c08eb
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'Dim_COMPARABLE (CY)'.RESTAURANT_KEY
+	toColumn: Dim_RESTAURANT.RESTAURANT_KEY
+
+relationship AutoDetected_c4d02263-afd7-40a8-b69f-a69ed19d0e75
+	fromColumn: F_FORECAST_AND_BUDGET_DAILY.RESTAURANT_KEY
+	toColumn: Dim_RESTAURANT.RESTAURANT_KEY
+
+relationship AutoDetected_1e24d7d8-cf02-4746-8c47-5c54341f5688
+	fromColumn: F_FORECAST_AND_BUDGET_DAILY.FISCAL_DATE_KEY
+	toColumn: Dim_FISCAL_DATE.FISCAL_DATE_KEY
+
+relationship AutoDetected_d2f7444a-1e97-4ca6-ac45-a4d7edbd0824
+	fromColumn: Dim_RESTAURANT.CITY
+	toColumn: Sweden.City
+
+relationship cee9b574-5fbe-0a7e-e3e9-457ab2f42052
+	crossFilteringBehavior: bothDirections
+	fromColumn: Dim_RESTAURANT.COUNTRY_CODE
+	toColumn: Flags.'Country '
+

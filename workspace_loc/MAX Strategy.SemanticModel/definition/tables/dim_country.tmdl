@@ -1,0 +1,37 @@
+table dim_country
+	lineageTag: 83f8f739-9bee-453b-9cbc-068b16457a5d
+
+	column Country
+		dataType: string
+		lineageTag: 4e1a5c20-adc0-405b-82aa-624a91bf602d
+		summarizeBy: none
+		sourceColumn: Country
+		sortByColumn: Index
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column Index
+		dataType: int64
+		formatString: 0
+		lineageTag: 0473df28-741d-43e8-b5f3-aeb49ef2850d
+		summarizeBy: sum
+		sourceColumn: Index
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_country = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WCi5PTUnNU4rViVYKyM9JzEsBM/3yi8oTK8FMl9S83MSibKXYWAA=", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Country = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Country", type text}}),
+				    #"Added Index" = Table.AddIndexColumn(#"Changed Type", "Index", 1, 1, Int64.Type)
+				in
+				    #"Added Index"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

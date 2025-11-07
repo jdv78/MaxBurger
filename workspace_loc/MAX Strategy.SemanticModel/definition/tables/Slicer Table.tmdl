@@ -1,0 +1,37 @@
+table 'Slicer Table'
+	lineageTag: 42da61b8-6105-403d-acc9-12e2da926cf6
+
+	column Value
+		dataType: string
+		lineageTag: 74886058-bb88-4533-a7b1-91ccee3eb7bc
+		summarizeBy: none
+		sourceColumn: Value
+		sortByColumn: Index
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column Index
+		dataType: int64
+		formatString: 0
+		lineageTag: 19b8a84e-fc4f-402a-a55d-20d9527a138f
+		summarizeBy: none
+		sourceColumn: Index
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Slicer Table' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("dZPBbhoxEIZfZYRUiUhUon2DsA1JJAJRSdsD4mC8s7sjvJ6V7V3g1nfoG/ZJOrYh0ENu9u/x/ONvxpvN6GH2/AYvytVkJ/BptJ1sRmtl0KfVq+OKAoxj0F1Svq+ei9ujHVbsEFZPSSzQBqcM/LByVLAPXnICV+DfUy457h36oHqnbLgYYYUOrcbzljSCiC31bVJ+KtMjiBe0bPGUtDflg0Sh09gFYpvEmSQt4f6gJBv6nP2xFzupIZCvlI6h8Bk8uoHOfr+Q6iZgCWpAp2q8HEKgNkekV7Ar0XlQOx4QjtBStly3zKHJp2RrwGMni/gYGAsOvRcx08Pl6zotHmwtNq3gArIlHrPYdoZP6GCX3tD9z2QdVFVB6J0Vd5ek+6HOqAc2fYsTWLAW+rp38VqGtMQDcIc2FuZ7rYUJOCXcxk9yMa5yaUWDei/tWswX1yG4bmVC9igMG+EKg4cX/Y2tMmUGXBhqY06DKhJqqJsIhYBOQnKAcjuhXgmoThjJSO3rYvUVQUjBl+l0CnupPFfyyFxCg8qE5hRvlB9aSKKrxbrhrlM7MhROZzqKzK0wl730OHcxKau4TE2GcYQEqusgMGi2Fbn2Enz30RT9/f0HepmV25ZTypJLQmnFxT1+h/Rcf1YlUlMpI5CHGXVjKbZvTuHyU2a9pzjFoOVCOpTURhbR3YPhQyy/UcnSsaAVRKPt9h8=", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Value = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Value", type text}}),
+				    #"Added Index" = Table.AddIndexColumn(#"Changed Type", "Index", 1, 1, Int64.Type)
+				in
+				    #"Added Index"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

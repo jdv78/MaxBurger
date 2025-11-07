@@ -1,0 +1,72 @@
+table D_COUNTRY
+	lineageTag: 98288ff6-95d2-46a7-848b-b515c7153a9d
+
+	column COUNTRY_KEY
+		dataType: double
+		lineageTag: 0d807adb-6d6a-4e4f-bdcc-333ec887ad81
+		summarizeBy: none
+		sourceColumn: COUNTRY_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column COUNTRY_CODE
+		dataType: string
+		lineageTag: 258a831f-fe44-4a47-90a8-aa2c25946a8a
+		summarizeBy: none
+		sourceColumn: COUNTRY_CODE
+
+		annotation SummarizationSetBy = Automatic
+
+	column COUNTRY_NAME
+		dataType: string
+		lineageTag: 6cc43e85-b987-4833-8f1b-0f46ea161a96
+		summarizeBy: none
+		sourceColumn: COUNTRY_NAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column RA_COUNTRY_ID
+		dataType: double
+		lineageTag: 64d7a977-c3e6-4ad1-b625-d8f3cf6cd4e2
+		summarizeBy: count
+		sourceColumn: RA_COUNTRY_ID
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column IS_ACTIVE_IN_RA
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 895ea699-1631-4b41-b9b7-d2155e27261c
+		summarizeBy: none
+		sourceColumn: IS_ACTIVE_IN_RA
+
+		annotation SummarizationSetBy = Automatic
+
+	column COUNTRY_TIMEZONE
+		dataType: string
+		lineageTag: f98d917d-0b17-47a6-a9b7-3cb0b8f4c6d7
+		summarizeBy: none
+		sourceColumn: COUNTRY_TIMEZONE
+
+		annotation SummarizationSetBy = Automatic
+
+	partition D_COUNTRY = m
+		mode: import
+		queryGroup: dim
+		source =
+				let
+				    Source = Snowflake.Databases("maxburgers-analytics.snowflakecomputing.com","Analysis"),
+				    GOLD_Database = Source{[Name="GOLD",Kind="Database"]}[Data],
+				    CORE_Schema = GOLD_Database{[Name="CORE",Kind="Schema"]}[Data],
+				    D_COUNTRY_Table = CORE_Schema{[Name="D_COUNTRY",Kind="Table"]}[Data]
+				in
+				    D_COUNTRY_Table
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

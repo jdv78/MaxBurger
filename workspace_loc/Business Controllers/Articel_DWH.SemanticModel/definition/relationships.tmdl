@@ -1,0 +1,74 @@
+relationship AutoDetected_f421db22-3c03-408b-b8bc-e730c77c6473
+	fromColumn: Sweden.Country
+	toColumn: Flags.'Country '
+
+relationship AutoDetected_d55911a6-7b07-4afa-9ef6-48a976ddf9ba
+	fromColumn: F_SALES_ARTICLE_DAILY.ARTICLE_KEY
+	toColumn: Dim_ARTICLE.ARTICLE_KEY
+
+relationship AutoDetected_af966093-ecbd-4ba5-82a3-c4bc256d9627
+	fromColumn: Dim_ARTICLE_COMBINATION.ARTICLE_KEY
+	toColumn: Dim_ARTICLE.ARTICLE_KEY
+
+relationship AutoDetected_c75afb15-0e51-4d46-8b65-034624f7820a
+	fromColumn: F_SALES_ARTICLE_DAILY.DELIVERY_PARTNER_KEY
+	toColumn: Dim_DELIVERY_PARTNER.DELIVERY_PARTNER_KEY
+
+relationship AutoDetected_a5535bf6-7d05-4c57-bde0-fe170e27c8e5
+	fromColumn: F_SALES_ARTICLE_DAILY.ORDER_TYPE_KEY
+	toColumn: Dim_ORDER_TYPE.ORDER_TYPE_KEY
+
+relationship AutoDetected_24df8fc0-9b52-45d4-a213-0a200ef1f28f
+	fromColumn: F_SALES_ARTICLE_DAILY.CHANNEL_KEY
+	toColumn: Dim_CHANNEL.CHANNEL_KEY
+
+relationship AutoDetected_db084632-bb9c-4f53-a210-6c8534c8e542
+	fromColumn: F_SALES_ARTICLE_DAILY.LINE_ITEM_ROLE_KEY
+	toColumn: Dim_LINE_ITEM_ROLE.LINE_ITEM_ROLE_KEY
+
+relationship AutoDetected_9a9e3521-e130-4d17-b20e-027393b8fff2
+	fromColumn: Dim_FISCAL_DATE.'LCD Name'
+	toColumn: LCD.Name
+
+relationship AutoDetected_2b3b66a2-8981-4d64-bba4-124676d94ec9
+	fromColumn: F_SALES_ARTICLE_DAILY.COUNTRY_KEY
+	toColumn: D_COUNTRY.COUNTRY_KEY
+
+relationship AutoDetected_9517fb6f-6c76-48dc-8ba3-723dc757278e
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: D_COUNTRY.COUNTRY_CODE
+	toColumn: Flags.'Country '
+
+relationship AutoDetected_5de3a08f-6840-44bd-b82b-93ffd70e55c0
+	fromColumn: F_SALES_ARTICLE_DAILY.FISCAL_DATE_KEY
+	toColumn: Dim_FISCAL_DATE.FISCAL_DATE_KEY
+
+relationship AutoDetected_7aa0efc3-42dd-4240-a983-d21e7b200b13
+	fromColumn: F_NUMBER_OF_RECEIPTS.FISCAL_DATE_KEY
+	toColumn: Dim_FISCAL_DATE.FISCAL_DATE_KEY
+
+relationship AutoDetected_5610b000-44e6-4976-a889-f5609446c799
+	fromColumn: F_NUMBER_OF_RECEIPTS.COUNTRY_KEY
+	toColumn: D_COUNTRY.COUNTRY_KEY
+
+relationship bc615715-d6d9-4d6c-2c38-78d2e341889e
+	fromColumn: F_SALES_ARTICLE_DAILY.IS_COMPARABLE
+	toColumn: 'Dim_COMPARABLE (CY)'.IS_COMPARABLE
+
+relationship AutoDetected_ac090939-3abf-46d3-8b96-a1c9e839a7e5
+	fromColumn: F_NUMBER_OF_RECEIPTS_LY.COUNTRY_KEY
+	toColumn: D_COUNTRY.COUNTRY_KEY
+
+relationship d34811ae-8031-da8b-90d4-d2e6a8c5658d
+	fromColumn: F_NUMBER_OF_RECEIPTS_LY.CY_DATE
+	toColumn: Dim_FISCAL_DATE.FISCAL_DATE
+
+relationship 509bf9a3-5e70-23ba-901b-34bab8c6749b
+	fromColumn: F_NUMBER_OF_RECEIPTS_LY.IS_COMPARABLE
+	toColumn: 'Dim_COMPARABLE (CY)'.IS_COMPARABLE
+
+relationship 06d3832b-6592-3177-45cc-21c5a99b3a36
+	fromColumn: F_NUMBER_OF_RECEIPTS.IS_COMPARABLE
+	toColumn: 'Dim_COMPARABLE (CY)'.IS_COMPARABLE
+

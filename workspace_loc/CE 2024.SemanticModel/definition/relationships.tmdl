@@ -1,0 +1,24 @@
+relationship AutoDetected_0524bff0-ef28-4e34-8fff-eca0fc79c1f3
+	fromColumn: ft_Sales.COUNTRY_KEY
+	toColumn: dim_COUNTRY.COUNTRY_KEY
+
+relationship AutoDetected_20765252-2332-4734-87e2-67d393c401f2
+	fromColumn: ft_2024.COUNTRY_KEY
+	toColumn: dim_COUNTRY.COUNTRY_KEY
+
+relationship 86f9acb2-564f-0d99-bd9c-abccdb3720a1
+	fromColumn: ft_Sales.FISCAL_DATE
+	toColumn: dim_date.FISCAL_MONTH_KEY
+
+relationship abf8d314-c3d7-76d6-d58d-b5d673404e7f
+	fromColumn: ft_2024.FISCAL_MONTH_KEY
+	toColumn: dim_date.FISCAL_MONTH_KEY
+
+relationship 44789e28-51c7-e5fb-82bf-25484e07200b
+	fromColumn: ft_2024.FISCAL_DAY_OF_WEEK_SHORT
+	toColumn: FISCAL_DAYS.Days
+
+relationship 1a9c4bd3-02be-3afe-c9e5-d3d7e513ad64
+	fromColumn: ft_Sales.FISCAL_DAY_OF_WEEK_SHORT
+	toColumn: FISCAL_DAYS.Days
+

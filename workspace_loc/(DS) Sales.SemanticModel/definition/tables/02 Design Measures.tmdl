@@ -1,0 +1,2047 @@
+table '02 Design Measures'
+	lineageTag: a390c1f0-c3a0-4388-9ae9-c8f5e3d53062
+
+	measure RowLb7Pos = ```
+			
+			VAR _FirstDate = CALCULATE(MIN('Dim_FISCAL_DATE'[FISCAL_DATE]), ALLSELECTED(Dim_FISCAL_DATE))
+			
+			// Set the offset for a rolling 12-week period
+			VAR _PeriodOffset = -12 * 7 // 12 weeks = 84 days
+			
+			// Calculate the start date of the rolling 12-week period
+			VAR _PeriodRowLb1 = _FirstDate + _PeriodOffset
+			
+			// Determine if the current fiscal date is within the rolling 12-week period
+			VAR _Lbl = 
+			    IF(
+			        MIN('Dim_FISCAL_DATE'[FISCAL_DATE]) <= _FirstDate &&
+			        MAX('Dim_FISCAL_DATE'[FISCAL_DATE]) >= _PeriodRowLb1,
+			        -1
+			        
+			    )
+			
+			RETURN
+			_Lbl
+			
+			
+			
+			
+			
+			
+			
+			```
+		formatString: 0
+		displayFolder: 10. DataTable\Filter 16 Weeks\Sales
+		lineageTag: 216779f3-f5f7-4a35-9034-fe50c4732795
+
+	measure 'RowValues 7Pos' = if( [01 Sales (Xw)]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\Filter 16 Weeks\Sales
+		lineageTag: 32d27f35-13fa-4311-bd1d-d6eed7492d5b
+
+	measure '12 Sales vs BU (Xw)' = [01 Sales (Xw)]-[04 Sales Budget (Xw)]
+		formatString: #,0
+		displayFolder: 10. DataTable\Filter 16 Weeks\Sales
+		lineageTag: 51cddf6d-c4f4-425f-8f35-fde4f1878b8a
+
+	measure RowValues1Pos = if( [01 Sales (Xw)]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\Filter 16 Weeks\Sales
+		lineageTag: 3233e0c2-5f16-4f46-8346-7e3e37967601
+
+	measure RowValues2Pos = if( [01 Sales (Xw)]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\Filter 16 Weeks\Sales
+		lineageTag: 3030d7bf-432f-4eb8-9ac5-eb5937d8c22e
+
+	measure 'Sales Flipped ' = if( [01 Sales]< 0,[01 Sales]*1.3,-[01 Sales]*-0.25)
+		displayFolder: 10. DataTable\Filter 16 Weeks\Sales
+		lineageTag: f3039562-194b-4b58-aafa-fc4f350ad986
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure RowLb1Pos = ```
+			
+			VAR _FirstDate = CALCULATE(MIN('Dim_FISCAL_DATE'[FISCAL_DATE]), ALLSELECTED(Dim_FISCAL_DATE))
+			
+			// Set the offset for a rolling 12-week period
+			VAR _PeriodOffset = -17 * 7 // 12 weeks = 84 days
+			
+			// Calculate the start date of the rolling 12-week period
+			VAR _PeriodRowLb1 = _FirstDate + _PeriodOffset
+			
+			// Determine if the current fiscal date is within the rolling 12-week period
+			VAR _Lbl = 
+			    IF(
+			        MIN('Dim_FISCAL_DATE'[FISCAL_DATE]) <= _FirstDate &&
+			        MAX('Dim_FISCAL_DATE'[FISCAL_DATE]) >= _PeriodRowLb1,
+			        -1
+			        
+			    )
+			
+			RETURN
+			_Lbl
+			
+			
+			
+			
+			
+			
+			
+			```
+		formatString: 0
+		displayFolder: 10. DataTable\Filter 16 Weeks\Sales
+		lineageTag: c0a376e0-80b3-4791-a791-f69ca196c160
+
+	measure RowLb2Pos = ```
+			
+			VAR _FirstDate = CALCULATE(MIN('Dim_FISCAL_DATE'[FISCAL_DATE]), ALLSELECTED(Dim_FISCAL_DATE))
+			
+			// Set the offset for a rolling 12-week period
+			VAR _PeriodOffset = -12 * 7 // 12 weeks = 84 days
+			
+			// Calculate the start date of the rolling 12-week period
+			VAR _PeriodRowLb1 = _FirstDate + _PeriodOffset
+			
+			// Determine if the current fiscal date is within the rolling 12-week period
+			VAR _Lbl = 
+			    IF(
+			        MIN('Dim_FISCAL_DATE'[FISCAL_DATE]) <= _FirstDate &&
+			        MAX('Dim_FISCAL_DATE'[FISCAL_DATE]) >= _PeriodRowLb1,
+			        -1,
+			        0
+			    )
+			
+			RETURN
+			_Lbl
+			
+			
+			
+			
+			
+			
+			
+			```
+		formatString: 0
+		displayFolder: 10. DataTable\Filter 16 Weeks\Sales
+		lineageTag: 7b99b88a-107c-421a-beb8-1637145ac6cf
+
+	measure '01 Sales (Xw)' = Calculate([Values],'F_SALES_RESTAURANT_DAILY'[Attribute] ="SALES_GROSS_AFTER_DISC",'Dim_FISCAL_DATE'[Last 16 Week] ="L16W")
+		displayFolder: 10. DataTable\Filter 16 Weeks\Sales
+		lineageTag: a1e530d3-41a3-4dc7-963e-836c9e329824
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '02 Sales LY (Xw)' = Calculate([Values],'F_SALES_RESTAURANT_DAILY'[Attribute] ="LY_SALES_GROSS_AFTER_DISC",'Dim_FISCAL_DATE'[Last 16 Week] ="L16W")
+		displayFolder: 10. DataTable\Filter 16 Weeks\Sales
+		lineageTag: b777fc39-8377-4e48-9d69-288ebe91d637
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '03 Sales LLY (Xw)' = Calculate([Values],'F_SALES_RESTAURANT_DAILY'[Attribute] ="LLY_SALES_GROSS_AFTER_DISC",'Dim_FISCAL_DATE'[Last 16 Week] ="L16W")
+		displayFolder: 10. DataTable\Filter 16 Weeks\Sales
+		lineageTag: d31633a0-e723-4b05-ac53-638ed3b16bb4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '04 Sales Budget (Xw)' = Calculate([Values_FCTBU], 'F_FORECAST_AND_BUDGET_DAILY'[Attribute]="Budget",'Dim_FISCAL_DATE'[Last 16 Week] ="L16W")
+		displayFolder: 10. DataTable\Filter 16 Weeks\Sales
+		lineageTag: 300f3276-d095-454f-9547-9a7d832dc944
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '05 Sales Forecast (Xw)' = Calculate([Values_FCTBU], 'F_FORECAST_AND_BUDGET_DAILY'[Attribute]="Forecast",'Dim_FISCAL_DATE'[Last 16 Week] ="L16W")
+		displayFolder: 10. DataTable\Filter 16 Weeks\Sales
+		lineageTag: b1e3045c-a4ed-4399-b159-9fe716107cc2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '06 Sales vs LY% (Xw)' =
+			VAR _result = IF(
+			    ISBLANK( [02 Sales LY (Xw)] ),
+			    BLANK( ),
+			    DIVIDE( [01 Sales (Xw)] -[02 Sales LY (Xw)] , ABS([02 Sales LY (Xw)] ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 10. DataTable\Filter 16 Weeks\Sales
+		lineageTag: fbf21183-4b4f-4f1b-a792-e357a977471b
+
+	measure '07 Sales vs LLY% (Xw)' =
+			VAR _result = IF(
+			    ISBLANK( [03 Sales LLY (Xw)] ),
+			    BLANK( ),
+			    DIVIDE([01 Sales (Xw)] -[03 Sales LLY (Xw)] , ABS([03 Sales LLY (Xw)] ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 10. DataTable\Filter 16 Weeks\Sales
+		lineageTag: 05899cd1-9e65-4325-afa6-478dc0608df3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '08 Sales vs BU%' =
+			VAR _result = IF(
+			    ISBLANK(  [04 Sales Budget (Xw)]),
+			    BLANK( ),
+			    DIVIDE( [01 Sales (Xw)] -[04 Sales Budget (Xw)] , ABS([04 Sales Budget (Xw)] ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 10. DataTable\Filter 16 Weeks\Sales
+		lineageTag: 6d635799-fc71-4494-ae81-1b5f5c5c49c0
+
+	measure '09 Sales vs FCT%' =
+			VAR _result = IF(
+			    ISBLANK([05 Sales Forecast (Xw)]),
+			    BLANK( ),
+			    DIVIDE( [01 Sales (Xw)]- [05 Sales Forecast (Xw)], ABS( [05 Sales Forecast (Xw)]) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 10. DataTable\Filter 16 Weeks\Sales
+		lineageTag: 96452ddf-e300-4a84-9228-62df5b5df7f9
+
+	measure 'RowEmpty ' = if ([01 Sales (Xw)] <> 0 || [RowLb1Pos] <> 0,-1.5)
+		displayFolder: 10. DataTable\Filter 16 Weeks\Sales
+		lineageTag: b9726101-10ca-4e3b-9506-e0275347548d
+
+	measure 'x-axis Labels' =
+			
+			
+			SWITCH(
+			    TRUE(),
+			    ISINSCOPE(Dim_FISCAL_DATE[LCWRank]) && [01 Sales (Xw)] <> 0, min(Dim_FISCAL_DATE[LCWRank]))
+		displayFolder: 10. DataTable\Filter 16 Weeks\Sales
+		lineageTag: 542099d5-5c95-46e1-8b96-82e8028223d1
+
+	measure RowLb3Pos = ```
+			
+			VAR _FirstDate = CALCULATE(MIN('Dim_FISCAL_DATE'[FISCAL_DATE]), ALLSELECTED(Dim_FISCAL_DATE))
+			
+			// Set the offset for a rolling 12-week period
+			VAR _PeriodOffset = -12 * 7 // 12 weeks = 84 days
+			
+			// Calculate the start date of the rolling 12-week period
+			VAR _PeriodRowLb1 = _FirstDate + _PeriodOffset
+			
+			// Determine if the current fiscal date is within the rolling 12-week period
+			VAR _Lbl = 
+			    IF(
+			        MIN('Dim_FISCAL_DATE'[FISCAL_DATE]) <= _FirstDate &&
+			        MAX('Dim_FISCAL_DATE'[FISCAL_DATE]) >= _PeriodRowLb1,
+			        -1
+			        
+			    )
+			
+			RETURN
+			_Lbl
+			
+			
+			
+			
+			
+			
+			
+			```
+		formatString: 0
+		displayFolder: 10. DataTable\Filter 16 Weeks\Sales
+		lineageTag: e7d35093-f36a-4c8e-8e7d-dc3ae5778172
+
+	measure 'RowValues 3Pos' = if( [01 Sales (Xw)]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\Filter 16 Weeks\Sales
+		lineageTag: 102d79ad-75b8-4ba7-946c-20b2c6b1ca3d
+
+	measure 'RowValues 4Pos' = if( [01 Sales (Xw)]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\Filter 16 Weeks\Sales
+		lineageTag: e497891a-9e19-48bf-956e-1358a9dfa9af
+
+	measure 'RowValues 5Pos' = if( [01 Sales (Xw)]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\Filter 16 Weeks\Sales
+		lineageTag: edc8a08d-5d0b-4cf1-80f9-6adad2e2f283
+
+	measure 'RowValues 6Pos' = if( [01 Sales (Xw)]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\Filter 16 Weeks\Sales
+		lineageTag: 71168446-fc16-4fd1-a953-1288b6dec3da
+
+	measure RowLb4Pos = ```
+			
+			VAR _FirstDate = CALCULATE(MIN('Dim_FISCAL_DATE'[FISCAL_DATE]), ALLSELECTED(Dim_FISCAL_DATE))
+			
+			// Set the offset for a rolling 12-week period
+			VAR _PeriodOffset = -12 * 7 // 12 weeks = 84 days
+			
+			// Calculate the start date of the rolling 12-week period
+			VAR _PeriodRowLb1 = _FirstDate + _PeriodOffset
+			
+			// Determine if the current fiscal date is within the rolling 12-week period
+			VAR _Lbl = 
+			    IF(
+			        MIN('Dim_FISCAL_DATE'[FISCAL_DATE]) <= _FirstDate &&
+			        MAX('Dim_FISCAL_DATE'[FISCAL_DATE]) >= _PeriodRowLb1,
+			        -1
+			        
+			    )
+			
+			RETURN
+			_Lbl
+			
+			
+			
+			
+			
+			
+			
+			```
+		formatString: 0
+		displayFolder: 10. DataTable\Filter 16 Weeks\Sales
+		lineageTag: e6520ef0-bdce-4169-8127-ef14aa5008b6
+
+	measure RowLb5Pos = ```
+			
+			VAR _FirstDate = CALCULATE(MIN('Dim_FISCAL_DATE'[FISCAL_DATE]), ALLSELECTED(Dim_FISCAL_DATE))
+			
+			// Set the offset for a rolling 12-week period
+			VAR _PeriodOffset = -12 * 7 // 12 weeks = 84 days
+			
+			// Calculate the start date of the rolling 12-week period
+			VAR _PeriodRowLb1 = _FirstDate + _PeriodOffset
+			
+			// Determine if the current fiscal date is within the rolling 12-week period
+			VAR _Lbl = 
+			    IF(
+			        MIN('Dim_FISCAL_DATE'[FISCAL_DATE]) <= _FirstDate &&
+			        MAX('Dim_FISCAL_DATE'[FISCAL_DATE]) >= _PeriodRowLb1,
+			        -1
+			        
+			    )
+			
+			RETURN
+			_Lbl
+			
+			
+			
+			
+			
+			
+			
+			```
+		formatString: 0
+		displayFolder: 10. DataTable\Filter 16 Weeks\Sales
+		lineageTag: 24e930c5-eefc-4bdf-8d21-35779cfcc890
+
+	measure RowLb6Pos = ```
+			
+			VAR _FirstDate = CALCULATE(MIN('Dim_FISCAL_DATE'[FISCAL_DATE]), ALLSELECTED(Dim_FISCAL_DATE))
+			
+			// Set the offset for a rolling 12-week period
+			VAR _PeriodOffset = -12 * 7 // 12 weeks = 84 days
+			
+			// Calculate the start date of the rolling 12-week period
+			VAR _PeriodRowLb1 = _FirstDate + _PeriodOffset
+			
+			// Determine if the current fiscal date is within the rolling 12-week period
+			VAR _Lbl = 
+			    IF(
+			        MIN('Dim_FISCAL_DATE'[FISCAL_DATE]) <= _FirstDate &&
+			        MAX('Dim_FISCAL_DATE'[FISCAL_DATE]) >= _PeriodRowLb1,
+			        -1
+			        
+			    )
+			
+			RETURN
+			_Lbl
+			
+			
+			
+			
+			
+			
+			
+			```
+		formatString: 0
+		displayFolder: 10. DataTable\Filter 16 Weeks\Sales
+		lineageTag: 3453eca9-a161-4454-919e-5dfc2f106a74
+
+	measure '10 Sales vs LY (Xw)' = [01 Sales (Xw)]-[02 Sales LY (Xw)]
+		formatString: #,0
+		displayFolder: 10. DataTable\Filter 16 Weeks\Sales
+		lineageTag: 52387530-d620-4600-b85c-d22a5e4f4d42
+
+	measure '11 Sales vs LLY (Xw)' = [01 Sales (Xw)]-[03 Sales LLY (Xw)]
+		formatString: #,0
+		displayFolder: 10. DataTable\Filter 16 Weeks\Sales
+		lineageTag: d2cc4d85-5764-4d0c-b4f4-bde9bca6e3f9
+
+	measure RowLb1Text = ```
+			"vs LY%"
+			 
+			 --if([RowLb11Pos]=-1, "Sales vs LY%")
+			```
+		displayFolder: 10. DataTable\FiscalYear
+		lineageTag: 6de0d186-5323-4f3a-a4ca-b1b7469a3ca9
+
+	measure RowLb2Text = ```
+			"vs BU%"
+			 
+			 --if([RowLb11Pos]=-1, "Sales vs LY%")
+			```
+		displayFolder: 10. DataTable\FiscalYear
+		lineageTag: ee468b07-e771-42ce-a372-6d8df950f88f
+
+	measure RowLb3Text = ```
+			"vs LLY%"
+			 
+			 --if([RowLb11Pos]=-1, "Sales vs LY%")
+			```
+		displayFolder: 10. DataTable\FiscalYear
+		lineageTag: 1d5adc7f-5616-4d95-af55-8e5c11a25517
+
+	measure RowLb4Text = ```
+			"Sales vs LY"
+			 
+			 --if([RowLb11Pos]=-1, "Sales vs LY%")
+			```
+		displayFolder: 10. DataTable\FiscalYear
+		lineageTag: 9cf9712a-6ffd-44c7-9d90-ccae027072bc
+
+	measure RowLb5Text = ```
+			"Sales vs LLY"
+			 
+			 --if([RowLb11Pos]=-1, "Sales vs LY%")
+			```
+		displayFolder: 10. DataTable\FiscalYear
+		lineageTag: 58cf6418-e839-4254-a136-887c35f469a6
+
+	measure RowLb6Text = ```
+			"Sales vs BU"
+			 
+			 --if([RowLb11Pos]=-1, "Sales vs LY%")
+			```
+		displayFolder: 10. DataTable\FiscalYear
+		lineageTag: 2881b9d3-3538-453c-92f8-5d32604c0916
+
+	measure RowLb7Text = ```
+			"TY"
+			 
+			 --if([RowLb11Pos]=-1, "Sales vs LY%")
+			```
+		displayFolder: 10. DataTable\FiscalYear
+		lineageTag: 2e1357fa-3ee6-41c5-88f6-f6ffff40e467
+
+	measure RowLb8Text = ```
+			"LY"
+			 
+			 --if([RowLb11Pos]=-1, "Sales vs LY%")
+			```
+		displayFolder: 10. DataTable\FiscalYear
+		lineageTag: 475cda88-aa7e-4351-96af-ffdaa89c7094
+
+	measure RowLb9Text = ```
+			"LLY"
+			 
+			 --if([RowLb11Pos]=-1, "Sales vs LY%")
+			```
+		displayFolder: 10. DataTable\FiscalYear
+		lineageTag: ea8b561e-cc8f-4d4e-9631-d6b59ae6557f
+
+	measure RowLb10Text = ```
+			"BU"
+			 
+			 --if([RowLb11Pos]=-1, "Sales vs LY%")
+			```
+		displayFolder: 10. DataTable\FiscalYear
+		lineageTag: 6aec433b-7d57-47b3-a582-3d596d901e4a
+
+	measure 'x-axis Labels FY' =
+			
+			
+			SWITCH(
+			    TRUE(),
+			    ISINSCOPE(Dim_FISCAL_DATE[LCWRank]) && [01 Sales] <> 0, min(Dim_FISCAL_DATE[LCWRank]))
+		displayFolder: 10. DataTable\FiscalYear
+		lineageTag: 90804756-2bf7-40bd-990b-e5321272feaa
+
+	measure 'RowEmpty FY' = if ([01 Sales] <> 0 || [RowLb1Pos] <> 0,-1.5)
+		displayFolder: 10. DataTable\FiscalYear
+		lineageTag: fae7f479-6a03-4854-8660-09edc1c44c0b
+
+	measure 'RowValues1Pos FY' = if( [01 Sales]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\FiscalYear
+		lineageTag: 2d317e58-6207-4bef-aab9-2ae2a1de3617
+
+	measure 'RowValues2Pos FY' = if( [01 Sales]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\FiscalYear
+		lineageTag: b6b9b55b-fe58-49aa-9c8a-9f14183c6b44
+
+	measure 'RowValues3Pos FY' = if( [01 Sales]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\FiscalYear
+		lineageTag: 3259c514-1129-4bc3-887c-323050a3b38c
+
+	measure 'RowValues4Pos FY' = if( [01 Sales]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\FiscalYear
+		lineageTag: a066a433-3b3f-47b5-851f-b662ec339a4c
+
+	measure 'RowValues5Pos FY' = if( [01 Sales]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\FiscalYear
+		lineageTag: 8cfdd48c-7303-48c5-b8b4-a26955256236
+
+	measure 'RowValues6Pos FY' = if( [01 Sales]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\FiscalYear
+		lineageTag: 658080c2-5c90-4c1e-898b-701bfa79c147
+
+	measure 'RowValues7Pos FY' = if( [01 Sales]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\FiscalYear
+		lineageTag: 36ea4190-70a7-46a0-9b0e-e13339585865
+
+	measure 'RowValues8Pos FY' = if( [01 Sales]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\FiscalYear
+		lineageTag: dd53a651-c68f-49bc-8678-801c95a628b8
+
+	measure 'RowValues9Pos FY' = if( [01 Sales]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\FiscalYear
+		lineageTag: d1c4d871-10dc-444e-8752-35473ef2d014
+
+	measure 'RowValues10Pos FY' = if( [01 Sales]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\FiscalYear
+		lineageTag: f93613f6-405d-48d4-9d71-87089a691a9b
+
+	measure 'Title Last Ccompleted Week (LCW)' = ```
+			
+			VAR IsLCWSelected = SELECTEDVALUE(Dim_FISCAL_DATE[LCWRank], "") = "LCW"
+			VAR SelectedWeeks = 
+			    IF(
+			        IsLCWSelected,
+			        "Last Completed Week (" & values(Dim_FISCAL_DATE[WeekText])&")",
+			        "Selected W: " & CONCATENATEX(
+			            TOPN(
+			                5, 
+			                VALUES(Dim_FISCAL_DATE[LCWRank]), 
+			                Dim_FISCAL_DATE[LCWRank], 
+			                ASC
+			            ), 
+			            Dim_FISCAL_DATE[LCWRank], 
+			            ", "
+			        )
+			    )
+			RETURN
+			SelectedWeeks
+			
+			--Last Completed Week (LCW)
+			```
+		displayFolder: 01. Dynamic Titles
+		lineageTag: ea056dc4-03e1-45e5-b3bc-2c60ede14f7b
+
+	measure 'Sales vs LY% Dynamic Text' =
+			VAR _salesTY = "SEK " & DIVIDE([01 Sales],1000000) & "M"
+			VAR _salesLY = "SEK " & DIVIDE([02 Sales LY],1000000) & "M"
+			VAR _diff = "SEK " & FORMAT( DIVIDE( [01 Sales]- [02 Sales LY], 1000000 ), "#,##0.0" ) & "M"
+			VAR _dev = FORMAT([01 Sales vs LY%], "#,##0.0 %")
+			RETURN
+			    IF([01 Sales vs LY%]>0,"▲ " & _diff & " (" &_dev & ") vs LY", "▼ " & _diff & "(" &_dev & ") vs LY")
+		displayFolder: 01. Dynamic Titles
+		lineageTag: 0ca343d4-03d4-47b2-a573-d6d9cb799d71
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales vs BU% Dynamic Text' =
+			VAR _salesTY = "SEK " & DIVIDE([01 Sales],1000000) & "M"
+			VAR _salesLY = "SEK " & DIVIDE([01 Sales Budget],1000000) & "M"
+			VAR _diff = "SEK " & FORMAT( DIVIDE( [01 Sales]- [01 Sales Budget], 1000000 ), "#,##0.0" ) & "M"
+			VAR _dev = FORMAT([01 Sales vs BU%], "#,##0.0 %")
+			RETURN
+			    IF([01 Sales vs BU%]>0,"▲ " & _diff & " (" &_dev & ") vs BU", "▼ " & _diff & "(" &_dev & ") vs BU")
+		displayFolder: 01. Dynamic Titles
+		lineageTag: 53133baf-1fc5-49ea-abae-856ab7c175e6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Check vs LY% Dynamic Text' = ```
+			VAR _salesTY = "Checks " & DIVIDE([01 Checks],100000) & "K"
+			VAR _salesLY = "Checks " & DIVIDE([02 Checks LY],100000) & "K"
+			VAR _diff = "Checks " & FORMAT( DIVIDE( [01 checks]- [02 checks LY], 100000 ), "#,##0.0" ) & "K"
+			VAR _dev = FORMAT([04 checks vs LY%], "#,##0.0 %")
+			RETURN
+			   -- IF([04 checks vs LY%]>0,"Up " & _diff & " (" &_dev & ") vs LY", "Down " & _diff & "(" &_dev & ") vs LY")
+			IF([04 checks vs LY%]>0,"▲ "& " (" &_dev & ") vs LY", "▼ "  & "(" &_dev & ") vs LY")
+			
+			```
+		displayFolder: 01. Dynamic Titles
+		lineageTag: 2d688d01-a437-4364-ba82-6986194eebd3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg check vs LY% Dynamic Text' = ```
+			VAR _salesTY = "Avg checks " & DIVIDE([01 Avg check],100000) & "K"
+			VAR _salesLY = "Avg checks " & DIVIDE([02 Avg check LY],100000) & "K"
+			VAR _diff = "Avg checks " & FORMAT( DIVIDE( [01 Avg check]- [02 Avg check LY], 100000 ), "#,##0.0" ) & "K"
+			VAR _dev = FORMAT([07 Avg check vs LY%], "#,##0.0 %")
+			RETURN
+			   -- IF([04 checks vs LY%]>0,"Up " & _diff & " (" &_dev & ") vs LY", "Down " & _diff & "(" &_dev & ") vs LY")
+			IF([07 Avg check vs LY%]>0,"▲ "& " (" &_dev & ") vs LY", "▼ "  & "(" &_dev & ") vs LY")
+			
+			```
+		displayFolder: 01. Dynamic Titles
+		lineageTag: 7241a8f0-4eb2-4d5c-bba5-895222a826cf
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Color Green' = "#228b22"
+		displayFolder: 02. Dynamic Colors
+		lineageTag: 832b91dd-c496-4da2-b97e-b2d968257c47
+
+	measure 'Color Red' = "#FF0000"
+		displayFolder: 02. Dynamic Colors
+		lineageTag: a6c94b66-7300-4363-9525-9eb9b9a2ca41
+
+	measure 'Sales vs LY% Color Code' =
+			
+			VAR _measure = [01 Sales vs LY%]
+			VAR _result =
+			    SWITCH(
+			        TRUE(),
+			           _measure > 0, "#228b22",       -- If the measure is positive, use Green
+			        _measure < 0, "#FF0000",         -- If the measure is negative, use Red
+			        "Black"                      -- Default color if none of the above conditions are met
+			    )
+			RETURN
+			_result
+		formatString: 0
+		displayFolder: 02. Dynamic Colors
+		lineageTag: 7924db0d-c9b2-4a12-a4c4-89bdb5fb1c53
+
+	measure 'Sales vs LLY% Color Code' =
+			VAR _measure = [02 Sales vs LLY%]
+			
+			VAR _result =
+			    SWITCH(
+			        TRUE(),
+			           _measure > 0, "#228b22",       -- If the measure is positive, use Green
+			        _measure < 0, "#FF0000",         -- If the measure is negative, use Red
+			        "Black"                         -- Default color if none of the above conditions are met
+			    )
+			RETURN
+			_result
+		displayFolder: 02. Dynamic Colors
+		lineageTag: 9c267bcf-2541-4d8f-9194-ca4a937caa86
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales vs BU% Color Code' = ```
+			
+			VAR _measure = [01 Sales vs BU%]
+			VAR _result =
+			    SWITCH(
+			        TRUE(),
+			        _measure > 0, "#228b22",       -- If the measure is positive, use Green
+			        _measure < 0, "#FF0000",         -- If the measure is negative, use Red
+			        "Black"                      -- Default color if none of the above conditions are met
+			    )
+			RETURN
+			_result
+			
+			```
+		formatString: 0
+		displayFolder: 02. Dynamic Colors
+		lineageTag: 8bebe5e7-dbef-448e-8ce7-8e0b435581cf
+
+	measure 'Checks vs LY% Color Code' = ```
+			VAR _measure = [04 checks vs LY%]
+			
+			VAR _result =
+			    SWITCH(
+			        TRUE(),
+			            _measure > 0, "#228b22",   -- If the measure is greater than 0.1, use Green
+			            _measure < 0, "#FF0000",  -- If the measure is less than -0.1, use Red
+			            --_measure >= 0 && _measure <= 0.01, "Black", -- If the measure is between -0.1 and 0.1, use Black
+			            "Black"                      -- Default color (should never be reached)
+			    )
+			RETURN
+			_result
+			
+			```
+		displayFolder: 02. Dynamic Colors
+		lineageTag: ecfed6a7-7fb2-4c0a-aef5-5b94d8a13d84
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg checks vs LY% Color Code' =
+			VAR _measure = [07 Avg check vs LY%]
+			
+			VAR _result =
+			    SWITCH(
+			        TRUE(),
+			             _measure > 0, "#228b22",       -- If the measure is positive, use Green
+			        _measure < 0, "#FF0000",         -- If the measure is negative, use Red
+			        "Black"                           -- Default color if none of the above conditions are met
+			    )
+			RETURN
+			_result
+		formatString: 0
+		displayFolder: 02. Dynamic Colors
+		lineageTag: 8c0b9ecc-693c-4e69-b5a6-db37af382c21
+
+	measure 'RowValues 8Pos' = if( [01 Sales (Xw)]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\Filter 16 Weeks\Sales
+		lineageTag: 6a55c17e-b423-48f0-9ada-76b920c067ec
+
+	measure RowLb11Text = ```
+			"BU vs LY%"
+			 
+			 --if([RowLb11Pos]=-1, "Sales vs LY%")
+			```
+		displayFolder: 10. DataTable\FiscalYear
+		lineageTag: 1b5e0026-41e5-40a3-8f0a-5599e9db3429
+
+	measure '01 Sales (w9)' = Calculate([Values],'F_SALES_RESTAURANT_DAILY'[Attribute] ="SALES_GROSS_AFTER_DISC",'Dim_FISCAL_DATE'[Last 8 Week] ="L8W")
+		displayFolder: 10. DataTable\Filter W9
+		lineageTag: 5ac85a67-5a83-4a98-8bea-c7eaf9f0e434
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '02 Sales LY (w9)' = Calculate([Values],'F_SALES_RESTAURANT_DAILY'[Attribute] ="LY_SALES_GROSS_AFTER_DISC",'Dim_FISCAL_DATE'[Last 8 Week] ="L8W")
+		displayFolder: 10. DataTable\Filter W9
+		lineageTag: 6f35e565-7e50-467e-bb35-33e98e716304
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '03 Sales LLY (w9)' = Calculate([Values],'F_SALES_RESTAURANT_DAILY'[Attribute] ="LLY_SALES_GROSS_AFTER_DISC",'Dim_FISCAL_DATE'[Last 8 Week] ="L8W")
+		displayFolder: 10. DataTable\Filter W9
+		lineageTag: f81d6f16-69c8-4208-9fcb-dda0abb442dc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '04 Sales BU (w9)' = Calculate([Values_FCTBU], 'F_FORECAST_AND_BUDGET_DAILY'[Attribute]="Budget",'Dim_FISCAL_DATE'[Last 8 Week] ="L8W")
+		displayFolder: 10. DataTable\Filter W9
+		lineageTag: 918735db-2fd4-44b2-8204-97c452ff54f3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'x-axis Labels (w9)' = ```
+			
+			 
+			
+			SWITCH(
+			    TRUE(),
+			    ISINSCOPE(Dim_FISCAL_DATE[LCWRank]) && [01 Sales (w9)] <> 0, min(Dim_FISCAL_DATE[LCWRank]))
+			```
+		displayFolder: 10. DataTable\Filter W9
+		lineageTag: e08e310b-2c8f-4b79-813d-211ad6d5dd68
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'RowLb1Pos (w9)' = ```
+			
+			VAR _FirstDate = CALCULATE(MIN('Dim_FISCAL_DATE'[FISCAL_DATE]), ALLSELECTED(Dim_FISCAL_DATE))
+			
+			// Set the offset for a rolling 9-week period
+			VAR _PeriodOffset = -9 * 7 // 12 weeks = 63 days
+			
+			// Calculate the start date of the rolling 12-week period
+			VAR _PeriodRowLb1 = _FirstDate + _PeriodOffset
+			
+			// Determine if the current fiscal date is within the rolling 12-week period
+			VAR _Lbl = 
+			    IF(
+			        MIN('Dim_FISCAL_DATE'[FISCAL_DATE]) <= _FirstDate &&
+			        MAX('Dim_FISCAL_DATE'[FISCAL_DATE]) >= _PeriodRowLb1,
+			        -1
+			        
+			    )
+			
+			RETURN
+			_Lbl
+			
+			
+			
+			
+			
+			
+			
+			```
+		formatString: 0
+		displayFolder: 10. DataTable\Filter W9
+		lineageTag: d7a63c21-7828-49eb-832b-b023520bcd9e
+
+	measure 'RowLb2Pos (w9)' = ```
+			
+			VAR _FirstDate = CALCULATE(MIN('Dim_FISCAL_DATE'[FISCAL_DATE]), ALLSELECTED(Dim_FISCAL_DATE))
+			
+			// Set the offset for a rolling 9-week period
+			VAR _PeriodOffset = -9 * 7 // 12 weeks = 63 days
+			
+			// Calculate the start date of the rolling 12-week period
+			VAR _PeriodRowLb1 = _FirstDate + _PeriodOffset
+			
+			// Determine if the current fiscal date is within the rolling 12-week period
+			VAR _Lbl = 
+			    IF(
+			        MIN('Dim_FISCAL_DATE'[FISCAL_DATE]) <= _FirstDate &&
+			        MAX('Dim_FISCAL_DATE'[FISCAL_DATE]) >= _PeriodRowLb1,
+			        -1
+			        
+			    )
+			
+			RETURN
+			_Lbl
+			
+			
+			
+			
+			
+			
+			
+			```
+		formatString: 0
+		displayFolder: 10. DataTable\Filter W9
+		lineageTag: 6aba0c2f-fe2c-435d-9fb8-017f5622b64f
+
+	measure 'RowLb3Pos (w9)' = ```
+			
+			VAR _FirstDate = CALCULATE(MIN('Dim_FISCAL_DATE'[FISCAL_DATE]), ALLSELECTED(Dim_FISCAL_DATE))
+			
+			// Set the offset for a rolling 9-week period
+			VAR _PeriodOffset = -9 * 7 // 12 weeks = 63 days
+			
+			// Calculate the start date of the rolling 12-week period
+			VAR _PeriodRowLb1 = _FirstDate + _PeriodOffset
+			
+			// Determine if the current fiscal date is within the rolling 12-week period
+			VAR _Lbl = 
+			    IF(
+			        MIN('Dim_FISCAL_DATE'[FISCAL_DATE]) <= _FirstDate &&
+			        MAX('Dim_FISCAL_DATE'[FISCAL_DATE]) >= _PeriodRowLb1,
+			        -1
+			        
+			    )
+			
+			RETURN
+			_Lbl
+			
+			
+			
+			
+			
+			
+			
+			```
+		formatString: 0
+		displayFolder: 10. DataTable\Filter W9
+		lineageTag: 7f1bf32e-7877-43d3-a92b-e62f886470a6
+
+	measure 'RowLb4Pos (w9)' = ```
+			
+			VAR _FirstDate = CALCULATE(MIN('Dim_FISCAL_DATE'[FISCAL_DATE]), ALLSELECTED(Dim_FISCAL_DATE))
+			
+			// Set the offset for a rolling 9-week period
+			VAR _PeriodOffset = -9 * 7 // 12 weeks = 63 days
+			
+			// Calculate the start date of the rolling 12-week period
+			VAR _PeriodRowLb1 = _FirstDate + _PeriodOffset
+			
+			// Determine if the current fiscal date is within the rolling 12-week period
+			VAR _Lbl = 
+			    IF(
+			        MIN('Dim_FISCAL_DATE'[FISCAL_DATE]) <= _FirstDate &&
+			        MAX('Dim_FISCAL_DATE'[FISCAL_DATE]) >= _PeriodRowLb1,
+			        -1
+			        
+			    )
+			
+			RETURN
+			_Lbl
+			
+			
+			
+			
+			
+			
+			
+			```
+		formatString: 0
+		displayFolder: 10. DataTable\Filter W9
+		lineageTag: cce0e962-90b4-41f5-9eb1-5139adbf568d
+
+	measure 'RowLb5Pos (w9)' = ```
+			
+			VAR _FirstDate = CALCULATE(MIN('Dim_FISCAL_DATE'[FISCAL_DATE]), ALLSELECTED(Dim_FISCAL_DATE))
+			
+			// Set the offset for a rolling 9-week period
+			VAR _PeriodOffset = -9 * 7 // 12 weeks = 63 days
+			
+			// Calculate the start date of the rolling 12-week period
+			VAR _PeriodRowLb1 = _FirstDate + _PeriodOffset
+			
+			// Determine if the current fiscal date is within the rolling 12-week period
+			VAR _Lbl = 
+			    IF(
+			        MIN('Dim_FISCAL_DATE'[FISCAL_DATE]) <= _FirstDate &&
+			        MAX('Dim_FISCAL_DATE'[FISCAL_DATE]) >= _PeriodRowLb1,
+			        -1
+			        
+			    )
+			
+			RETURN
+			_Lbl
+			
+			
+			
+			
+			
+			
+			
+			```
+		formatString: 0
+		displayFolder: 10. DataTable\Filter W9
+		lineageTag: 85cfaec4-2729-426a-8afe-5b8a09bb2902
+
+	measure 'RowLb6Pos (w9)' = ```
+			
+			VAR _FirstDate = CALCULATE(MIN('Dim_FISCAL_DATE'[FISCAL_DATE]), ALLSELECTED(Dim_FISCAL_DATE))
+			
+			// Set the offset for a rolling 9-week period
+			VAR _PeriodOffset = -9 * 7 // 12 weeks = 63 days
+			
+			// Calculate the start date of the rolling 12-week period
+			VAR _PeriodRowLb1 = _FirstDate + _PeriodOffset
+			
+			// Determine if the current fiscal date is within the rolling 12-week period
+			VAR _Lbl = 
+			    IF(
+			        MIN('Dim_FISCAL_DATE'[FISCAL_DATE]) <= _FirstDate &&
+			        MAX('Dim_FISCAL_DATE'[FISCAL_DATE]) >= _PeriodRowLb1,
+			        -1
+			        
+			    )
+			
+			RETURN
+			_Lbl
+			
+			
+			
+			
+			
+			
+			
+			```
+		formatString: 0
+		displayFolder: 10. DataTable\Filter W9
+		lineageTag: 7805b97d-7785-4a7f-be32-a20cc601db19
+
+	measure 'RowLb7Pos (w9)' = ```
+			
+			VAR _FirstDate = CALCULATE(MIN('Dim_FISCAL_DATE'[FISCAL_DATE]), ALLSELECTED(Dim_FISCAL_DATE))
+			
+			// Set the offset for a rolling 9-week period
+			VAR _PeriodOffset = -9 * 7 // 12 weeks = 63 days
+			
+			// Calculate the start date of the rolling 12-week period
+			VAR _PeriodRowLb1 = _FirstDate + _PeriodOffset
+			
+			// Determine if the current fiscal date is within the rolling 12-week period
+			VAR _Lbl = 
+			    IF(
+			        MIN('Dim_FISCAL_DATE'[FISCAL_DATE]) <= _FirstDate &&
+			        MAX('Dim_FISCAL_DATE'[FISCAL_DATE]) >= _PeriodRowLb1,
+			        -1
+			        
+			    )
+			
+			RETURN
+			_Lbl
+			
+			
+			
+			
+			
+			
+			
+			```
+		formatString: 0
+		displayFolder: 10. DataTable\Filter W9
+		lineageTag: 0d9489f5-465d-4333-a85e-e236061499a9
+
+	measure 'RowLb8Pos (w9)' = ```
+			
+			VAR _FirstDate = CALCULATE(MIN('Dim_FISCAL_DATE'[FISCAL_DATE]), ALLSELECTED(Dim_FISCAL_DATE))
+			
+			// Set the offset for a rolling 9-week period
+			VAR _PeriodOffset = -9 * 7 // 12 weeks = 63 days
+			
+			// Calculate the start date of the rolling 12-week period
+			VAR _PeriodRowLb1 = _FirstDate + _PeriodOffset
+			
+			// Determine if the current fiscal date is within the rolling 12-week period
+			VAR _Lbl = 
+			    IF(
+			        MIN('Dim_FISCAL_DATE'[FISCAL_DATE]) <= _FirstDate &&
+			        MAX('Dim_FISCAL_DATE'[FISCAL_DATE]) >= _PeriodRowLb1,
+			        -1
+			        
+			    )
+			
+			RETURN
+			_Lbl
+			
+			
+			
+			
+			
+			
+			
+			```
+		formatString: 0
+		displayFolder: 10. DataTable\Filter W9
+		lineageTag: 10e22e91-e64f-41f3-9851-6c7d5bfc8e63
+
+	measure 'RowLb9Pos (w9)' = ```
+			
+			VAR _FirstDate = CALCULATE(MIN('Dim_FISCAL_DATE'[FISCAL_DATE]), ALLSELECTED(Dim_FISCAL_DATE))
+			
+			// Set the offset for a rolling 9-week period
+			VAR _PeriodOffset = -9 * 7 // 12 weeks = 63 days
+			
+			// Calculate the start date of the rolling 12-week period
+			VAR _PeriodRowLb1 = _FirstDate + _PeriodOffset
+			
+			// Determine if the current fiscal date is within the rolling 12-week period
+			VAR _Lbl = 
+			    IF(
+			        MIN('Dim_FISCAL_DATE'[FISCAL_DATE]) <= _FirstDate &&
+			        MAX('Dim_FISCAL_DATE'[FISCAL_DATE]) >= _PeriodRowLb1,
+			        -1
+			        
+			    )
+			
+			RETURN
+			_Lbl
+			
+			
+			
+			
+			
+			
+			
+			```
+		formatString: 0
+		displayFolder: 10. DataTable\Filter W9
+		lineageTag: f845936b-bee8-4b8a-acfd-7cd1bc14417b
+
+	measure 'RowLb10Pos (w9)' = ```
+			
+			VAR _FirstDate = CALCULATE(MIN('Dim_FISCAL_DATE'[FISCAL_DATE]), ALLSELECTED(Dim_FISCAL_DATE))
+			
+			// Set the offset for a rolling 9-week period
+			VAR _PeriodOffset = -9 * 7 // 12 weeks = 63 days
+			
+			// Calculate the start date of the rolling 12-week period
+			VAR _PeriodRowLb1 = _FirstDate + _PeriodOffset
+			
+			// Determine if the current fiscal date is within the rolling 12-week period
+			VAR _Lbl = 
+			    IF(
+			        MIN('Dim_FISCAL_DATE'[FISCAL_DATE]) <= _FirstDate &&
+			        MAX('Dim_FISCAL_DATE'[FISCAL_DATE]) >= _PeriodRowLb1,
+			        -1
+			        
+			    )
+			
+			RETURN
+			_Lbl
+			
+			
+			
+			
+			
+			
+			
+			```
+		formatString: 0
+		displayFolder: 10. DataTable\Filter W9
+		lineageTag: 5c844961-75bb-4e96-bfb3-68bf742ee441
+
+	measure 'RowValues1Pos (w9)' = if( [01 Sales (w9)]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\Filter W9
+		lineageTag: 38131536-7336-47e1-8df4-76e60b9d8af8
+
+	measure 'RowValues2Pos (w9)' = if( [01 Sales (w9)]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\Filter W9
+		lineageTag: eb06df59-ece2-499a-8f18-d371d679f30f
+
+	measure 'RowValues3Pos (w9)' = if( [01 Sales (w9)]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\Filter W9
+		lineageTag: ff928306-4d3f-4c44-9bfa-5cf854563531
+
+	measure 'RowValues4Pos (w9)' = if( [01 Sales (w9)]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\Filter W9
+		lineageTag: eb57dab8-0000-472e-9f09-ee9fb13c3b41
+
+	measure 'RowValues5Pos (w9)' = if( [01 Sales (w9)]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\Filter W9
+		lineageTag: a67eea29-37ac-40d3-b792-d6162ca17bf8
+
+	measure 'RowValues6Pos (w9)' = if( [01 Sales (w9)]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\Filter W9
+		lineageTag: 7dd50d93-1d7b-4540-bdc8-de1f4d337d94
+
+	measure 'RowValues7Pos (w9)' = if( [01 Sales (w9)]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\Filter W9
+		lineageTag: 97b84321-f3ce-4afd-837c-6b071258efe5
+
+	measure 'RowValues8Pos (w9)' = if( [01 Sales (w9)]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\Filter W9
+		lineageTag: f8a19b13-6b2c-4867-9c7e-7c9adf14e759
+
+	measure 'RowValues9Pos (w9)' = if( [01 Sales (w9)]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\Filter W9
+		lineageTag: 82120496-b34f-4d7f-95b8-94fe6c590d86
+
+	measure 'RowValues10Pos (w9)' = if( [01 Sales (w9)]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\Filter W9
+		lineageTag: c8f2a8ba-776e-4729-bae7-bc00d7d0d0eb
+
+	measure 'RowEmpty (w9)' = if ([01 Sales (w9)] <> 0 || [RowLb1Pos (w9)] <> 0,-1.5)
+		displayFolder: 10. DataTable\Filter W9
+		lineageTag: ccb93506-237e-4dcd-b5ee-9a2a91d42315
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '05 Sales vs LY% (w9)' =
+			VAR _result = IF(
+			    ISBLANK( [02 Sales LY (W9)] ),
+			    BLANK( ),
+			    DIVIDE( [01 Sales (w9)] -[02 Sales LY (w9)] , ABS([02 Sales LY (w9)] ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 10. DataTable\Filter W9
+		lineageTag: 7dcf5e46-9ae6-4722-b29c-b0b10cadaab1
+
+	measure '08 Sales vs BU% (w9)' =
+			VAR _result = IF(
+			    ISBLANK(  [04 Sales BU (w9)]),
+			    BLANK( ),
+			    DIVIDE( [01 Sales (w9)] -[04 Sales BU (w9)] , ABS([04 Sales BU (w9)] ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 10. DataTable\Filter W9
+		lineageTag: b57e8989-5685-4206-bb70-f8a327d938c5
+
+	measure Label = ```
+			
+			
+			FORMAT([01 Sales Share of Total (per Channel)], "0%") 
+			--& 
+			--" | " & 
+			--FORMAT([01 Sales vs LY%], "0%") & " (LY)"
+			
+			
+			```
+		displayFolder: 02. Dynamic Colors
+		lineageTag: a662b00d-2e19-413c-a854-0886653d4a1c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales vs LY% Dynamic Text %%' =
+			VAR _salesTY = "SEK " & DIVIDE([01 Sales],1000000) & "M"
+			VAR _salesLY = "SEK " & DIVIDE([02 Sales LY],1000000) & "M"
+			VAR _diff = "SEK " & FORMAT( DIVIDE( [01 Sales]- [02 Sales LY], 1000000 ), "#,##0.0" ) & "M"
+			VAR _dev = FORMAT([01 Sales vs LY%], "#,##0.0 %")
+			RETURN
+			        IF([01 Sales vs LY%]>0,"▲ " &  " (" &_dev & ") vs LY", "▼ " &  "(" &_dev & ") vs LY")
+		displayFolder: 01. Dynamic Titles
+		lineageTag: 28976943-201e-4845-bebd-c0401e7f03e0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales vs BU% Dynamic Text %%' =
+			VAR _salesTY = "SEK " & DIVIDE([01 Sales],1000000) & "M"
+			VAR _salesLY = "SEK " & DIVIDE([01 Sales Budget],1000000) & "M"
+			VAR _diff = "SEK " & FORMAT( DIVIDE( [01 Sales]- [01 Sales Budget], 1000000 ), "#,##0.0" ) & "M"
+			VAR _dev = FORMAT([01 Sales vs BU%], "#,##0.0 %")
+			RETURN
+			  IF([01 Sales vs BU%]>0,"▲ " &   " (" &_dev & ") vs BU", "▼ " &   "(" &_dev & ") vs BU")
+		displayFolder: 01. Dynamic Titles
+		lineageTag: 68cd36ed-d030-4230-827b-c3227c95b1ae
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales Flipped Avg Check' = if( [01 Avg check]< 0,[01 Avg check]*1.3,-[01 Avg check]*(-0.7))
+		displayFolder: 10. DataTable\Filter 16 Weeks\Avg Check
+		lineageTag: f8c2c8e9-0ced-4b88-8d81-a1c019dfa5bc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Time Latest MonthKey' = ```
+			
+			    MAX('Latest Complete Month'[Last Completed Month])
+			
+			```
+		displayFolder: 10. DataTable\R12M
+		lineageTag: 3429a608-3f36-410c-88f6-f030a817fef8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '01 Sales (R12M)' = Calculate([Values],'F_SALES_RESTAURANT_DAILY'[Attribute] ="SALES_GROSS_AFTER_DISC", 'Dim_FISCAL_DATE'[WithinRange]=1)
+		displayFolder: 10. DataTable\R12M
+		lineageTag: 8e3cb36a-3689-492c-b59f-0598c4293e68
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '02 Sales LY(R12M)' = Calculate([Values],'F_SALES_RESTAURANT_DAILY'[Attribute] ="LY_SALES_GROSS_AFTER_DISC",'Dim_FISCAL_DATE'[WithinRange]=1)
+		displayFolder: 10. DataTable\R12M
+		lineageTag: a9a79915-b60f-4552-b225-cf978c4a866f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '03 Sales LLY (R12M)' = Calculate([Values],'F_SALES_RESTAURANT_DAILY'[Attribute] ="LLY_SALES_GROSS_AFTER_DISC",'Dim_FISCAL_DATE'[WithinRange]=1)
+		displayFolder: 10. DataTable\R12M
+		lineageTag: 118810df-b9ed-47f0-90a5-32defea3085e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '04 Sales Budget (R12M)' = Calculate([Values_FCTBU], 'F_FORECAST_AND_BUDGET_DAILY'[Attribute]="Budget",'Dim_FISCAL_DATE'[WithinRange]=1)
+		displayFolder: 10. DataTable\R12M
+		lineageTag: 016be80c-c6ea-4ecd-b049-934d750c9ea5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '05 Sales Forecast (R12M)' = Calculate([Values_FCTBU], 'F_FORECAST_AND_BUDGET_DAILY'[Attribute]="Forecast",'Dim_FISCAL_DATE'[WithinRange]=1)
+		displayFolder: 10. DataTable\R12M
+		lineageTag: f0b3aed5-f6e1-4159-918c-a07867a73081
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '06 Sales vs LY% (R12M)' =
+			VAR _result = IF(
+			    ISBLANK( [02 Sales LY(R12M)]),
+			    BLANK( ),
+			    DIVIDE( [01 Sales (R12M)] -[02 Sales LY(R12M)] , ABS([02 Sales LY(R12M)] ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 10. DataTable\R12M
+		lineageTag: 47419363-6c9e-4273-bde6-2dc6b0d9c3f5
+
+	measure '07 Sales vs LLY% (R12M)' =
+			VAR _result = IF(
+			    ISBLANK( [03 Sales LLY (R12M)] ),
+			    BLANK( ),
+			    DIVIDE( [01 Sales (R12M)]-[03 Sales LLY (R12M)] , ABS( [03 Sales LLY (R12M)]) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 10. DataTable\R12M
+		lineageTag: b548e13b-c6bb-40cc-b5b3-8a9e0d5f64b4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '08 Sales vs BU% (R12M)' =
+			VAR _result = IF(
+			    ISBLANK( [04 Sales Budget (R12M)] ),
+			    BLANK( ),
+			    DIVIDE(  [01 Sales (R12M)]-[04 Sales Budget (R12M)], ABS([04 Sales Budget (R12M)] ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 10. DataTable\R12M
+		lineageTag: 0b194b77-0f86-45b5-9b24-be2eca009586
+
+	measure '09 Sales vs FCT% (R12M)' =
+			VAR _result = IF(
+			    ISBLANK([05 Sales Forecast (R12M)]),
+			    BLANK( ),
+			    DIVIDE( [01 Sales (R12M)]- [05 Sales Forecast (R12M)], ABS([05 Sales Forecast (R12M)] ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 10. DataTable\R12M
+		lineageTag: bc17de9c-c9c4-4eba-8fef-686cea79d088
+
+	measure 'RowValues1Pos R12M' = if( [01 Sales (R12M)]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\R12M
+		lineageTag: 2f84abff-2398-4b99-90a2-fb5df2145a9e
+
+	measure 'RowLb1Pos R12M' = ```
+			
+			VAR _FirstDate = CALCULATE(MIN('Dim_FISCAL_DATE'[FISCAL_DATE]), ALLSELECTED(Dim_FISCAL_DATE))
+			
+			// Set the offset for a rolling 12-week period
+			VAR _PeriodOffset = -17 * 7 // 12 weeks = 84 days
+			
+			// Calculate the start date of the rolling 12-week period
+			VAR _PeriodRowLb1 = _FirstDate + _PeriodOffset
+			
+			// Determine if the current fiscal date is within the rolling 12-week period
+			VAR _Lbl = 
+			    IF(
+			        MIN('Dim_FISCAL_DATE'[FISCAL_DATE]) <= _FirstDate &&
+			        MAX('Dim_FISCAL_DATE'[FISCAL_DATE]) >= _PeriodRowLb1,
+			        -1
+			        
+			    )
+			
+			RETURN
+			_Lbl
+			
+			
+			
+			
+			
+			
+			
+			
+			```
+		displayFolder: 10. DataTable\R12M
+		lineageTag: c451be7c-293d-4c6e-96d0-ecc4c05b6e65
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'RowValues2Pos R12M' = if( [01 Sales (R12M)]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\R12M
+		lineageTag: 87c4e36a-e47f-4ffd-bef4-e8f9a60e8c9a
+
+	measure 'RowValues3Pos R12M' = if( [01 Sales (R12M)]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\R12M
+		lineageTag: 8bdb5067-cc80-43f8-8434-f3e95790ca9e
+
+	measure 'RowValues4Pos R12M' = if( [01 Sales (R12M)]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\R12M
+		lineageTag: aea17041-1cbc-4e1e-bd54-f91a446a479d
+
+	measure 'RowValues5Pos R12M' = if( [01 Sales (R12M)]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\R12M
+		lineageTag: 4783a0a7-b4d2-4c60-b85a-23aef8a424bc
+
+	measure 'RowValues6Pos R12M' = if( [01 Sales (R12M)]<> 0,-1)
+		formatString: 0
+		displayFolder: 10. DataTable\R12M
+		lineageTag: a477d8e2-0e01-4d26-bb79-5b38db4024e8
+
+	measure 'Sales Flipped R12M' = if( [01 Sales (R12M)]< 0,[01 Sales (R12M)]*1.3,-[01 Sales (R12M)]*0.2)
+		displayFolder: 10. DataTable\R12M
+		lineageTag: 5418fb7f-4dd8-4ef7-bac0-6558811df5d3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'RowLb2Pos R12M' = ```
+			
+			VAR _FirstDate = CALCULATE(MIN('Dim_FISCAL_DATE'[FISCAL_DATE]), ALLSELECTED(Dim_FISCAL_DATE))
+			
+			// Set the offset for a rolling 12-week period
+			VAR _PeriodOffset = -17 * 7 // 12 weeks = 84 days
+			
+			// Calculate the start date of the rolling 12-week period
+			VAR _PeriodRowLb1 = _FirstDate + _PeriodOffset
+			
+			// Determine if the current fiscal date is within the rolling 12-week period
+			VAR _Lbl = 
+			    IF(
+			        MIN('Dim_FISCAL_DATE'[FISCAL_DATE]) <= _FirstDate &&
+			        MAX('Dim_FISCAL_DATE'[FISCAL_DATE]) >= _PeriodRowLb1,
+			        -1
+			        
+			    )
+			
+			RETURN
+			_Lbl
+			
+			
+			
+			
+			
+			
+			
+			```
+		formatString: 0
+		displayFolder: 10. DataTable\R12M
+		lineageTag: 817ade6f-4e77-4c06-8b1e-df5a2824a134
+
+	measure 'RowEmpty  R12M' = if ([01 Sales (R12M)] <> 0 || [RowLb1Pos] <> 0,-1.5)
+		displayFolder: 10. DataTable\R12M
+		lineageTag: edeafd71-6fce-4863-a80c-1d620ea252c9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'x-axis Labels R12M' =
+			
+			
+			SWITCH(
+			    TRUE(),
+			    ISINSCOPE(Dim_FISCAL_DATE[LCM ]) && [01 Sales (R12M)]<> 0, min(Dim_FISCAL_DATE[LCM ]))
+			   --ISINSCOPE(Dim_FISCAL_DATE[MonthYear]) && [01 Sales (R12M)]<> 0, min(Dim_FISCAL_DATE[MonthYear]))
+		displayFolder: 10. DataTable\R12M
+		lineageTag: 545abd5e-c928-436c-973b-8e01663d7097
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'RowLb3Pos R12M' = ```
+			
+			VAR _FirstDate = CALCULATE(MIN('Dim_FISCAL_DATE'[FISCAL_DATE]), ALLSELECTED(Dim_FISCAL_DATE))
+			
+			// Set the offset for a rolling 12-week period
+			VAR _PeriodOffset = -17 * 7 // 12 weeks = 84 days
+			
+			// Calculate the start date of the rolling 12-week period
+			VAR _PeriodRowLb1 = _FirstDate + _PeriodOffset
+			
+			// Determine if the current fiscal date is within the rolling 12-week period
+			VAR _Lbl = 
+			    IF(
+			        MIN('Dim_FISCAL_DATE'[FISCAL_DATE]) <= _FirstDate &&
+			        MAX('Dim_FISCAL_DATE'[FISCAL_DATE]) >= _PeriodRowLb1,
+			        -1
+			        
+			    )
+			
+			RETURN
+			_Lbl
+			
+			
+			
+			
+			
+			
+			
+			```
+		formatString: 0
+		displayFolder: 10. DataTable\R12M
+		lineageTag: c872fa8c-65b8-4416-b0b0-23487a1ec1de
+
+	measure 'RowLb4Pos R12M' = ```
+			
+			VAR _FirstDate = CALCULATE(MIN('Dim_FISCAL_DATE'[FISCAL_DATE]), ALLSELECTED(Dim_FISCAL_DATE))
+			
+			// Set the offset for a rolling 12-week period
+			VAR _PeriodOffset = -17 * 7 // 12 weeks = 84 days
+			
+			// Calculate the start date of the rolling 12-week period
+			VAR _PeriodRowLb1 = _FirstDate + _PeriodOffset
+			
+			// Determine if the current fiscal date is within the rolling 12-week period
+			VAR _Lbl = 
+			    IF(
+			        MIN('Dim_FISCAL_DATE'[FISCAL_DATE]) <= _FirstDate &&
+			        MAX('Dim_FISCAL_DATE'[FISCAL_DATE]) >= _PeriodRowLb1,
+			        -1
+			        
+			    )
+			
+			RETURN
+			_Lbl
+			
+			
+			
+			
+			
+			
+			
+			```
+		formatString: 0
+		displayFolder: 10. DataTable\R12M
+		lineageTag: c49387c4-5db7-4358-873c-b9b0469d332f
+
+	measure 'RowLb5Pos R12M' = ```
+			
+			VAR _FirstDate = CALCULATE(MIN('Dim_FISCAL_DATE'[FISCAL_DATE]), ALLSELECTED(Dim_FISCAL_DATE))
+			
+			// Set the offset for a rolling 12-week period
+			VAR _PeriodOffset = -17 * 7 // 12 weeks = 84 days
+			
+			// Calculate the start date of the rolling 12-week period
+			VAR _PeriodRowLb1 = _FirstDate + _PeriodOffset
+			
+			// Determine if the current fiscal date is within the rolling 12-week period
+			VAR _Lbl = 
+			    IF(
+			        MIN('Dim_FISCAL_DATE'[FISCAL_DATE]) <= _FirstDate &&
+			        MAX('Dim_FISCAL_DATE'[FISCAL_DATE]) >= _PeriodRowLb1,
+			        -1
+			        
+			    )
+			
+			RETURN
+			_Lbl
+			
+			
+			
+			
+			
+			
+			
+			```
+		formatString: 0
+		displayFolder: 10. DataTable\R12M
+		lineageTag: 19ec1caf-6c80-403f-bb4c-259a28102479
+
+	measure 'RowLb6Pos R12M' = ```
+			
+			VAR _FirstDate = CALCULATE(MIN('Dim_FISCAL_DATE'[FISCAL_DATE]), ALLSELECTED(Dim_FISCAL_DATE))
+			
+			// Set the offset for a rolling 12-week period
+			VAR _PeriodOffset = -17 * 7 // 12 weeks = 84 days
+			
+			// Calculate the start date of the rolling 12-week period
+			VAR _PeriodRowLb1 = _FirstDate + _PeriodOffset
+			
+			// Determine if the current fiscal date is within the rolling 12-week period
+			VAR _Lbl = 
+			    IF(
+			        MIN('Dim_FISCAL_DATE'[FISCAL_DATE]) <= _FirstDate &&
+			        MAX('Dim_FISCAL_DATE'[FISCAL_DATE]) >= _PeriodRowLb1,
+			        -1
+			        
+			    )
+			
+			RETURN
+			_Lbl
+			
+			
+			
+			
+			
+			
+			
+			```
+		formatString: 0
+		displayFolder: 10. DataTable\R12M
+		lineageTag: e5231ad6-d1a2-4588-87af-c2b32eb9bbc1
+
+	measure 'Title Current Month (CM)' = ```
+			
+			VAR CurrentMonthName = SELECTEDVALUE(Dim_FISCAL_DATE[Current Month]) // Retrieves the name of the current month
+			VAR YearMonth = SELECTEDVALUE(Dim_FISCAL_DATE[MonthYear]) // Retrieves the Year-Month format
+			RETURN
+			"Current Month: " & CurrentMonthName & " (" & YearMonth & ")"
+			
+			```
+		displayFolder: 01. Dynamic Titles
+		lineageTag: 1f9228ae-4c67-4ef9-8aef-ea67a60158fc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '01 Avg Checks (Xw)' = ```
+			Var _Sales = Calculate([Values],'F_SALES_RESTAURANT_DAILY'[Attribute] ="SALES_GROSS_AFTER_DISC",'Dim_FISCAL_DATE'[Last 16 Week] ="L16W")
+			Var _checks = Calculate([Values],'F_SALES_RESTAURANT_DAILY'[Attribute] ="CHECKS",'Dim_FISCAL_DATE'[Last 16 Week] ="L16W")
+			
+			Return 
+			
+			divide(_Sales,_checks,0)
+			
+			```
+		displayFolder: 10. DataTable\Filter 16 Weeks\Avg Check
+		lineageTag: b126781a-a8a4-4021-af9c-f9d8cb868b05
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '02 Avg Checks LY (Xw)' = ```
+			Var _Sales = Calculate([Values],'F_SALES_RESTAURANT_DAILY'[Attribute] ="LY_SALES_GROSS_AFTER_DISC",'Dim_FISCAL_DATE'[Last 16 Week] ="L16W")
+			
+			Var _checks = Calculate([Values],'F_SALES_RESTAURANT_DAILY'[Attribute] ="LY_CHECKS",'Dim_FISCAL_DATE'[Last 16 Week] ="L16W")
+			
+			Return 
+			
+			divide(_Sales,_checks,0)
+			
+			```
+		displayFolder: 10. DataTable\Filter 16 Weeks\Avg Check
+		lineageTag: 426077cf-a825-4b2f-94d0-64e6f350a5d3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '03 Avg Checks vs LY% (Xw)' =
+			VAR _result = IF(
+			    ISBLANK([02 Avg Checks LY (Xw)] ),
+			    BLANK( ),
+			    DIVIDE([01 Avg Checks (Xw)]  -[02 Avg Checks LY (Xw)], ABS([02 Avg Checks LY (Xw)] ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 10. DataTable\Filter 16 Weeks\Avg Check
+		lineageTag: 9c394929-b177-41d5-b323-d6731de860c4
+
+	measure 'Sales Flipped Check' = if( [01 checks]< 0,[01 checks]*1.3,-[01 checks]*(-0.55))
+		displayFolder: 10. DataTable\Filter 16 Weeks\Checks
+		lineageTag: de943e55-0187-49f0-8554-5955d8edbd55
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '01 Checks (Xw)' = ```
+			
+			Var _checks = Calculate([Values],'F_SALES_RESTAURANT_DAILY'[Attribute] ="CHECKS",'Dim_FISCAL_DATE'[Last 16 Week] ="L16W")
+			
+			Return 
+			
+			_checks
+			
+			```
+		displayFolder: 10. DataTable\Filter 16 Weeks\Checks
+		lineageTag: 75bfba31-2f8e-404f-b4db-c8cd6168a077
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '02 Checks LY (Xw)' = ```
+			
+			
+			Var _checks = Calculate([Values],'F_SALES_RESTAURANT_DAILY'[Attribute] ="LY_CHECKS",'Dim_FISCAL_DATE'[Last 16 Week] ="L16W")
+			
+			Return 
+			
+			_checks
+			
+			```
+		displayFolder: 10. DataTable\Filter 16 Weeks\Checks
+		lineageTag: 16539d18-d3cd-4bd9-b204-11db3e0f9993
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '03 Checks vs LY% (Xw)' =
+			VAR _result = IF(
+			    ISBLANK([02 Checks LY (Xw)] ),
+			    BLANK( ),
+			    DIVIDE( [01 Checks (Xw)] -[02 Checks LY (Xw)]  , ABS([02 Checks LY (Xw)]  ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 10. DataTable\Filter 16 Weeks\Checks
+		lineageTag: 8f15a4b6-9754-4b29-8514-65d503e6168c
+
+	measure 'Sales Flipped 2' = if( [01 Sales]< 0,[01 Sales]*1.3,-[01 Sales]*-(0.8))
+		displayFolder: 10. DataTable\Filter 16 Weeks\Sales
+		lineageTag: 8526c7fa-15d0-4e94-84ab-fb7c3765b3ce
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '01 Sales vs LY% TAKT' = ```
+			VAR _result = IF(
+			    ISBLANK( [02 Sales LY] ),
+			    BLANK( ),
+			    DIVIDE( [01 Sales] -[02 Sales LY] , ABS([02 Sales LY] ) )
+			)
+			RETURN
+			   ( [01 Sales] /[02 Sales LY]) *100
+			    
+			```
+		formatString: 0.0
+		displayFolder: 02. Dynamic Colors
+		lineageTag: d67e52b7-935c-40eb-9744-d56bb083b18f
+
+	measure 'Discount Sales Flipped' = if( [01 Discount]< 0,[01 Discount]*2.9,-[01 Discount]*1.55)
+		displayFolder: 10. DataTable\Filter 16 Weeks\Discount
+		lineageTag: fc892dbd-b54b-4f35-8278-5506a38e13f7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '06 Discount vs LY% (Xw)' =
+			VAR _result = IF(
+			    ISBLANK([02 Discount LY] ),
+			    BLANK( ),
+			    DIVIDE( [01 Discount]-[02 Discount LY] , ABS([02 Discount LY] ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 10. DataTable\Filter 16 Weeks\Discount
+		lineageTag: af84355b-139f-4215-9634-e733ea6a0b27
+
+	measure 'Discount vs LY% Color Code' =
+			
+			VAR _measure = [10 Discount vs LY%]
+			VAR _result =
+			    SWITCH(
+			        TRUE(),
+			           _measure > 0, "#228b22",       -- If the measure is positive, use Green
+			        _measure < 0, "#FF0000",         -- If the measure is negative, use Red
+			        "Black"                      -- Default color if none of the above conditions are met
+			    )
+			RETURN
+			_result
+		formatString: 0
+		displayFolder: 02. Dynamic Colors
+		lineageTag: 2d7fa797-2801-4389-af42-fece837b7642
+
+	measure 'Avg check vs LY% Dynamic Text 2' = ```
+			VAR _salesTY = "Avg checks " & DIVIDE([01 Avg check],100000) & "K"
+			VAR _salesLY = "Avg checks " & DIVIDE([02 Avg check LY],100000) & "K"
+			VAR _diff = "Avg checks " & FORMAT( DIVIDE( [01 Avg check]- [02 Avg check LY], 100000 ), "#,##0.0" ) & "K"
+			VAR _dev = FORMAT([07 Avg check vs LY%], "#,##0.0 %")
+			RETURN
+			   -- IF([04 checks vs LY%]>0,"Up " & _diff & " (" &_dev & ") vs LY", "Down " & _diff & "(" &_dev & ") vs LY")
+			IF([07 Avg check vs LY%]>0,"▲ "& " (" &_dev & ") vs LY", "▼ "  & "(" &_dev & ") vs LY")
+			
+			```
+		displayFolder: 01. Dynamic Titles
+		lineageTag: 8791d2e2-ec9c-4d98-ad59-47726f867d56
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Check vs LY% Dynamic Text 2' = ```
+			VAR _salesTY = "Checks " & DIVIDE([01 Checks],100000) & "K"
+			VAR _salesLY = "Checks " & DIVIDE([02 Checks LY],100000) & "K"
+			VAR _diff = "Checks " & FORMAT( DIVIDE( [01 checks]- [02 checks LY], 100000 ), "#,##0.0" ) & "K"
+			VAR _dev = FORMAT([04 checks vs LY%], "#,##0.0 %")
+			RETURN
+			   -- IF([04 checks vs LY%]>0,"Up " & _diff & " (" &_dev & ") vs LY", "Down " & _diff & "(" &_dev & ") vs LY")
+			IF([04 checks vs LY%]>0,"▲ "& " (" &_dev & ") vs LY", "▼ "  & "(" &_dev & ") vs LY")
+			
+			```
+		displayFolder: 01. Dynamic Titles
+		lineageTag: 8b154ef6-60f9-459d-b58e-f8a71cc20973
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Acccumulated result  (LCW)' = ```
+			
+			VAR IsLCWSelected = SELECTEDVALUE(Dim_FISCAL_DATE[LCWRank], "") = "LCW"
+			VAR SelectedWeeks = 
+			    IF(
+			        IsLCWSelected,
+			        "Accumulated results: 2025W01 - " & values(Dim_FISCAL_DATE[WeekText])&" ",
+			        "Selected W: " & CONCATENATEX(
+			            TOPN(
+			                5, 
+			                VALUES(Dim_FISCAL_DATE[LCWRank]), 
+			                Dim_FISCAL_DATE[LCWRank], 
+			                ASC
+			            ), 
+			            Dim_FISCAL_DATE[LCWRank], 
+			            ", "
+			        )
+			    )
+			RETURN
+			SelectedWeeks
+			
+			--Last Completed Week (LCW)
+			
+			```
+		displayFolder: 01. Dynamic Titles
+		lineageTag: 169aeb8e-75e2-494a-8b63-c31030de53e6
+
+	measure 'Label Avg Check' =
+			
+			Format ( [07 Avg check vs LY%], "0.0%")
+		displayFolder: 01. Dynamic Titles
+		lineageTag: 23e5134c-a352-427c-804c-2bb2a0cd7fb9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Base Line' = 200
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 01. Dynamic Titles
+		lineageTag: 77f7f1cb-37a3-4dde-82e8-7dc2dad0213c
+
+	measure 'Avg check vs LY% Dynamic Text 3' = ```
+			VAR _salesTY = "Avg checks " & DIVIDE([01 Avg check],100000) & "K"
+			VAR _salesLY = "Avg checks " & DIVIDE([02 Avg check LY],100000) & "K"
+			VAR _diff = "Avg checks " & FORMAT( DIVIDE( [01 Avg check]- [02 Avg check LY], 100000 ), "#,##0.0" ) & "K"
+			VAR _dev = FORMAT([07 Avg check vs LY%], "#,##0.0 %")
+			RETURN
+			   -- IF([04 checks vs LY%]>0,"Up " & _diff & " (" &_dev & ") vs LY", "Down " & _diff & "(" &_dev & ") vs LY")
+			IF([07 Avg check vs LY%]>0,"▲ "& " (" &_dev & ")", "▼ "  & "(" &_dev & ")")
+			
+			```
+		displayFolder: 01. Dynamic Titles
+		lineageTag: 81771db7-7012-4ff3-8d00-f850f958ee2f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Check vs LY% Dynamic Text 3' = ```
+			VAR _salesTY = "Checks " & DIVIDE([01 Checks],100000) & "K"
+			VAR _salesLY = "Checks " & DIVIDE([02 Checks LY],100000) & "K"
+			VAR _diff = "Checks " & FORMAT( DIVIDE( [01 checks]- [02 checks LY], 100000 ), "#,##0.0" ) & "K"
+			VAR _dev = FORMAT([04 checks vs LY%], "#,##0.0 %")
+			RETURN
+			   -- IF([04 checks vs LY%]>0,"Up " & _diff & " (" &_dev & ") vs LY", "Down " & _diff & "(" &_dev & ") vs LY")
+			IF([04 checks vs LY%]>0,"▲ "& " (" &_dev & ")", "▼ "  & "(" &_dev & ")")
+			
+			```
+		displayFolder: 01. Dynamic Titles
+		lineageTag: dd60cdb0-2255-44f8-abfe-6d501968ce82
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Discount vs LY% Dynamic Text 3' = ```
+			VAR _salesTY = "Checks " & DIVIDE([01 Checks],100000) & "K"
+			VAR _salesLY = "Checks " & DIVIDE([02 Checks LY],100000) & "K"
+			VAR _diff = "Checks " & FORMAT( DIVIDE( [01 checks]- [02 checks LY], 100000 ), "#,##0.0" ) & "K"
+			VAR _dev = FORMAT([10 Discount vs LY%], "#,##0.0 %")
+			RETURN
+			   -- IF([04 checks vs LY%]>0,"Up " & _diff & " (" &_dev & ") vs LY", "Down " & _diff & "(" &_dev & ") vs LY")
+			IF([10 Discount vs LY%]>0,"▲ "& " (" &_dev & ")", "▼ "  & "(" &_dev & ")")
+			
+			```
+		displayFolder: 01. Dynamic Titles
+		lineageTag: 2baad7b7-77dd-429c-af66-786e2847b4a5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales vs LY% Dynamic Text 3' =
+			VAR _salesTY = "Checks " & DIVIDE([01 Checks],100000) & "K"
+			VAR _salesLY = "Checks " & DIVIDE([02 Checks LY],100000) & "K"
+			VAR _diff = "Checks " & FORMAT( DIVIDE( [01 checks]- [02 checks LY], 100000 ), "#,##0.0" ) & "K"
+			VAR _dev = FORMAT([01 Sales vs LY%], "0.0 %")
+			RETURN
+			   -- IF([04 checks vs LY%]>0,"Up " & _diff & " (" &_dev & ") vs LY", "Down " & _diff & "(" &_dev & ") vs LY")
+			  IF( [01 Sales vs LY%]>0,"▲ "& " (" &_dev & ")", "▼ "  & "(" &_dev & ")")
+		displayFolder: 01. Dynamic Titles
+		lineageTag: 7a1e2641-ecc6-4c4c-85f2-a7d9654f3ef9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales vs LY% On Prem' =
+			
+			
+			Var _TY= CALCULATE([01 Sales],Dim_CHANNEL[Channel GP] = "On PREM")
+			Var _LY= CALCULATE([02 Sales LY],Dim_CHANNEL[Channel GP] = "On PREM")
+			
+			VAR _result = IF(
+			    ISBLANK( _LY ),
+			    BLANK( ),
+			    DIVIDE( _TY -_LY, ABS(_LY ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 02. Dynamic Colors
+		lineageTag: df73e014-c757-4850-af5f-0305bb2b4af3
+
+	measure 'Sales vs LY% Delivery' =
+			
+			
+			Var _TY= CALCULATE([01 Sales],Dim_CHANNEL[Channel GP] = "Delivery")
+			Var _LY= CALCULATE([02 Sales LY],Dim_CHANNEL[Channel GP] = "Delivery")
+			
+			VAR _result = IF(
+			    ISBLANK( _LY ),
+			    BLANK( ),
+			    DIVIDE( _TY -_LY, ABS(_LY ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 02. Dynamic Colors
+		lineageTag: 783ef5a9-be27-4481-a3e5-906c28cf6784
+
+	measure 'Cecks vs LY% On Prem' =
+			
+			
+			Var _TY= CALCULATE([01 Checks],Dim_CHANNEL[Channel GP] = "On PREM")
+			Var _LY= CALCULATE([02 Checks LY],Dim_CHANNEL[Channel GP] = "On PREM")
+			
+			VAR _result = IF(
+			    ISBLANK( _LY ),
+			    BLANK( ),
+			    DIVIDE( _TY -_LY, ABS(_LY ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 02. Dynamic Colors
+		lineageTag: aa8715eb-6c09-4dbe-b07c-690041c66138
+
+	measure 'Checks vs LY% Delivery' =
+			
+			Var _TY= CALCULATE([01 Checks],Dim_CHANNEL[Channel GP] = "Delivery")
+			Var _LY= CALCULATE([02 Checks LY],Dim_CHANNEL[Channel GP] = "Delivery")
+			
+			VAR _result = IF(
+			    ISBLANK( _LY ),
+			    BLANK( ),
+			    DIVIDE( _TY -_LY, ABS(_LY ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: 02. Dynamic Colors
+		lineageTag: f8432f34-b30b-4042-a742-7e07da9161db
+
+	measure 'Biggest Diff vs LY%' = ```
+			
+			
+			VAR _MAX= MAXX(
+			    FILTER(
+			        CROSSJOIN(
+			            ALLSELECTED(Dim_CHANNEL[CHANNEL_NAME]),
+			            ALLSELECTED(Dim_FISCAL_DATE[LCWRank])
+			        ),
+			        NOT(ISBLANK([04 Checks vs LY%]))
+			    ),
+			    [04 Checks vs LY%]
+			)
+			
+			
+			Return
+			
+			if (_MAX > 1 , 1 ,_MAX)
+			
+			
+			
+			
+			
+			
+			       
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			```
+		displayFolder: 02. Dynamic Colors
+		lineageTag: 0abfa783-0ed5-42b3-94b6-37201b4c102f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Line 0%' = 0
+		displayFolder: 02. Dynamic Colors
+		lineageTag: 6c2d1420-923b-41fc-9b30-2c3c87339c0d
+
+	measure '01 Sales vs LY% (-)' = ```
+			
+			VAR _result =
+			    IF(
+			        ISBLANK([02 Sales LY]),
+			        BLANK(),
+			        DIVIDE([01 Sales] - [02 Sales LY], ABS([02 Sales LY]))
+			    )
+			RETURN
+			    -ABS(_result)
+			
+			
+			```
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		lineageTag: db7b7900-a741-46d0-ae1e-4215c7476c89
+
+	measure '04 Checks vs LY% (+)' = ```
+			
+			VAR _result =
+			    IF(
+			        ISBLANK([02 Checks LY]),
+			        BLANK(),
+			        DIVIDE([01 Checks] - [02 Checks LY], ABS([02 Checks LY]))
+			    )
+			RETURN
+			    ABS(
+			        IF(
+			            ABS(_result) > 10,
+			            IF(_result < 0, -10, 10),
+			            _result
+			        )
+			    )
+			
+			```
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		lineageTag: 334e8188-afe8-4e18-ab50-eb5f5fef2903
+
+	measure 'Positive Restaurants' = ```
+			
+			COUNTROWS(
+			    FILTER(
+			        VALUES(Dim_RESTAURANT[RESTAURANT_NAME]),
+			        NOT ISBLANK([01 Sales vs LY%]) && [01 Sales vs LY%] > 0
+			    )
+			)
+			
+			```
+		lineageTag: 971273ae-01e1-4e8b-a9b4-598a7647d418
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Share of restaurants' = DIVIDE([Positive Restaurants] ,[Distinct RESTAURANT_NAME])
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		lineageTag: 72b68ef2-fb6d-49ca-994b-af374e43af71
+
+	measure 'Distinct RESTAURANT_NAME' = ```
+			
+			CALCULATE(
+			    DISTINCTCOUNT(Dim_RESTAURANT[RESTAURANT_NAME]),
+			    FILTER(
+			        Dim_RESTAURANT,
+			        [01 Sales] > 0
+			    )
+			)
+			
+			```
+		lineageTag: 73802c0e-a4ac-4d15-92b6-a93bbba0ec21
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Positive Restaurants Budget' = ```
+			
+			COUNTROWS(
+			    FILTER(
+			        VALUES(Dim_RESTAURANT[RESTAURANT_NAME]),
+			        NOT ISBLANK([01 Sales vs BU%]) && [01 Sales vs BU%] > 0
+			    )
+			)
+			
+			```
+		lineageTag: aabd2858-48e0-4943-9730-bd621977a983
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Share of restaurants Budget' = DIVIDE([Positive Restaurants Budget] ,[Distinct RESTAURANT_NAME])
+		lineageTag: 269a46e5-e1c0-4ff3-ac6d-a0a74dc94426
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition '02 Design Measures' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Column1"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

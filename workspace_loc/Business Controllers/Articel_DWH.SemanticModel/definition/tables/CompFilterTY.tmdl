@@ -1,0 +1,24 @@
+table CompFilterTY
+	lineageTag: 73477bb9-b761-4819-88bb-0d1627e04744
+
+	column CompFilterTY
+		dataType: string
+		lineageTag: f5b4cda2-a3c3-415f-8354-8b3ccb747388
+		summarizeBy: none
+		sourceColumn: CompFilterTY
+
+		annotation SummarizationSetBy = Automatic
+
+	partition CompFilterTY = m
+		mode: import
+		queryGroup: filter
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WMjIwMlWKjQUA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [CompTY = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"CompTY", Int64.Type}}),
+				    CompTY = #"Changed Type"[CompTY]
+				in
+				    CompTY
+
+	annotation PBI_ResultType = List
+

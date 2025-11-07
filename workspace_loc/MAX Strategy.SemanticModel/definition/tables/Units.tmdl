@@ -1,0 +1,105 @@
+table Units
+	lineageTag: a294f149-065d-4504-8e02-84a8db6aca21
+
+	measure 'Calculation (Numeric)' =
+			
+			SWITCH (
+			    TRUE (),
+			
+			    -- Financial targets
+			    [User Selection] = "EBIT Margin, %",                         IF ( [EBIT Margin %] = 0, BLANK (), [EBIT Margin %] ),
+			    [User Selection] = "Sales",                                  IF ( [Sales] = 0, BLANK (), [Sales] ),
+			    [User Selection] = "Profit (EBIT)",                          IF ( [Profit (EBIT)] = 0, BLANK (), [Profit (EBIT)] ),
+			    [User Selection] = "ROIC",                                   IF ( [ROIC] = 0, BLANK (), [ROIC] ),
+			    -- [User Selection] = "Profit before OH",                    IF ( [Profit before OH (%)] = 0, BLANK (), [Profit before OH (%)] ),
+			    [User Selection] = "Central Unit Costs, % of sales",         IF ( [Central Unit Costs, % of sales] = 0, BLANK (), [Central Unit Costs, % of sales] ),
+			    [User Selection] = "No of restaurants",                      IF ( [No of Restaurants] = 0, BLANK (), [No of Restaurants] ),
+			
+			    -- G
+			    [User Selection] = "Preference",                             IF ( [Preference] = 0, BLANK (), [Preference] ),
+			    [User Selection] = "Price Premium",                          IF ( [Price Premium] = 0, BLANK (), [Price Premium] ),
+			    [User Selection] = "Value for money",                        IF ( [Value for money] = 0, BLANK (), [Value for money] ),
+			    [User Selection] = "Taste Perception",                       IF ( [Taste Perception] = 0, BLANK (), [Taste Perception] ),
+			    [User Selection] = "Brand Awareness",                        IF ( [Brand Awareness] = 0, BLANK (), [Brand Awareness] ),
+			    [User Selection] = "Guest satisfaction - service",           IF ( [Guest satisfaction - service] = 0, BLANK (), [Guest satisfaction - service] ),
+			    [User Selection] = "Weighted average service time",          IF ( [Weighted average service time] = 0, BLANK (), [Weighted average service time] ),
+			    [User Selection] = "% of orders above x min",                IF ( [% of orders above x min] = 0, BLANK (), [% of orders above x min] ),
+			    [User Selection] = "Smooth ordering experience (tracking)",  IF ( [Smooth ordering experience (tracking)] = 0, BLANK (), [Smooth ordering experience (tracking)] ),
+			
+			    -- U
+			    [User Selection] = "eNPS",                                   IF ( [eNPS] = 0, BLANK (), [eNPS] ),
+			    [User Selection] = "Engagement index",                       IF ( [Engagement index] = 0, BLANK (), [Engagement index] ),
+			    [User Selection] = "Employer brand preference",              IF ( [Employer brand preference] = 0, BLANK (), [Employer brand preference] ),
+			    [User Selection] = "Staff turnover",                         IF ( [Staff turnover] = 0, BLANK (), [Staff turnover] ),
+			
+			    -- E
+			    [User Selection] = "Avg Unit volume, Local currency",        IF ( [Avg Unit volume, Local currency] = 0, BLANK (), [Avg Unit volume, Local currency] ),
+			    [User Selection] = "New opening success rate (Hit rate)",    IF ( [New opening success rate (Hit rate)] = 0, BLANK (), [New opening success rate (Hit rate)] ),
+			    [User Selection] = "Checks, LFL",                            IF ( [Checks, LFL] = 0, BLANK (), [Checks, LFL] ),
+			    [User Selection] = "Sales, LFL",                             IF ( [Sales, LFL] = 0, BLANK (), [Sales, LFL] ),
+			    [User Selection] = "Market share vs McDonalds",              IF ( [Market share vs McDonalds] = 0, BLANK (), [Market share vs McDonalds] ),
+			
+			    -- S
+			    [User Selection] = "Climate leadership, external",           IF ( [Climate leadership, external] = 0, BLANK (), [Climate leadership, external] ),
+			    [User Selection] = "Carbon footprint (kgCO2e per 1000 kcal)",IF ( [Carbon footprint (kgCO2e per 1000 kcal)] = 0, BLANK (), [Carbon footprint (kgCO2e per 1000 kcal)] ),
+			    [User Selection] = "Good healthy food",                      IF ( [Good healthy food] = 0, BLANK (), [Good healthy food] ),
+			    [User Selection] = "Climate leadership, internal",           IF ( [Climate leadership, internal] = 0, BLANK (), [Climate leadership, internal] ),
+			
+			    -- T
+			    [User Selection] = "Shoppability",                           IF ( [Shoppability] = 0, BLANK (), [Shoppability] ),
+			    [User Selection] = "Availability",                           IF ( [Availability] = 0, BLANK (), [Availability] ),
+			    [User Selection] = "Failed orders",                          IF ( [Failed orders] = 0, BLANK (), [Failed orders] ),
+			    [User Selection] = "Order time (open app to confirmed order)", IF ( [Order time] = 0, BLANK (), [Order time] ),  -- keep numeric, format in model as mm:ss
+			    [User Selection] = "Guest satisfaction – user experience in app", IF ( [Guest satisfaction – user experience in app] = 0, BLANK (), [Guest satisfaction – user experience in app] ),
+			    [User Selection] = "Security",                               IF ( [Security] = 0, BLANK (), [Security] ),
+			    [User Selection] = "Cost per security incident",             IF ( [Cost per security incident] = 0, BLANK (), [Cost per security incident] ),
+			    [User Selection] = "Technical Fit",                          IF ( [Technical Fit] = 0, BLANK (), [Technical Fit] ),
+			    [User Selection] = "Preference",                             IF ( [Preference] = 0, BLANK (), [Preference] ),
+			    [User Selection] = "No Business critical applications lower than appropriate",
+			                                                                 IF ( [No Business critical applications lower than appropriate] = 0, BLANK (), [No Business critical applications lower than appropriate] ),
+			
+			    BLANK ()
+			)
+		displayFolder: 99 Base Values
+		lineageTag: b4936186-577b-45cd-9c2f-0d66701b2ef6
+
+		formatStringDefinition = SELECTEDVALUE(Units[Value])
+
+	column Units
+		dataType: string
+		lineageTag: f2ce4ddf-484d-4527-8bf5-dd1fd84b3595
+		summarizeBy: none
+		sourceColumn: Units
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value
+		dataType: string
+		lineageTag: 92d153da-e9c8-4aa5-80c0-8eb63631568c
+		summarizeBy: none
+		sourceColumn: Value
+
+		annotation SummarizationSetBy = Automatic
+
+	column Order
+		dataType: int64
+		formatString: 0
+		lineageTag: fd6427fb-bc36-4acf-bb1a-1eab6e0aa8cc
+		summarizeBy: sum
+		sourceColumn: Order
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Units = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WCkgtSk7NK0lMT1XSUTLQMzBQBdKGSrE60UqheZklxUCeMlAYSBmBBUMyc0EqY5Ryc62Ki2OUgGxjpdhYAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Units = _t, Value = _t, Order = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Units", type text}, {"Value", type text}, {"Order", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

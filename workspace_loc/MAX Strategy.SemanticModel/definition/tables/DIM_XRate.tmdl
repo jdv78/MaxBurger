@@ -1,0 +1,42 @@
+table DIM_XRate
+	lineageTag: ef246aeb-bfa6-4593-ae30-335e786288d4
+
+	column Currency
+		dataType: string
+		lineageTag: f9c9bd97-1e4f-4b91-a918-a257d44cafd1
+		summarizeBy: none
+		sourceColumn: Currency
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value
+		dataType: double
+		lineageTag: 2311183b-7163-472c-8288-37fbf7941bca
+		summarizeBy: sum
+		sourceColumn: Value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Country
+		dataType: string
+		lineageTag: 79e919c3-3d6a-4a25-a750-a4ec7bd70854
+		summarizeBy: none
+		sourceColumn: Country
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DIM_XRate = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WCnb1VtJRMtQxMABSweWpKal5SrE60Up+/kjifvlF5YmVYHEXb4i4KUjcJTUvN7EoGywR4OMHFDHSMQNJBOTnJOalKMXGAgA=", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Currency = _t, Value = _t, Country = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Value", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,4 @@
+relationship AutoDetected_77188320-20fe-4f6f-ba5e-06df08587ac8
+	fromColumn: Dim_FISCAL_DATE.'LCD Name'
+	toColumn: LCD.Name
+

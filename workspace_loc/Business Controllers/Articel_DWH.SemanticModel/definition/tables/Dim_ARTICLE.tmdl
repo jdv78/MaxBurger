@@ -1,0 +1,137 @@
+table Dim_ARTICLE
+	lineageTag: d668821e-270a-4159-afb3-d27dd0faa764
+
+	column ARTICLE_KEY
+		dataType: double
+		lineageTag: 995c10e8-0a83-4b02-9f08-1be51caeb7b6
+		summarizeBy: none
+		sourceColumn: ARTICLE_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SKU
+		dataType: double
+		lineageTag: e2d923a5-5cc4-4601-a0dd-cf96af8b166e
+		summarizeBy: sum
+		sourceColumn: SKU
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ARTICLE_NAME
+		dataType: string
+		lineageTag: b48c8be3-9558-40e3-ac13-fd38d33a575e
+		summarizeBy: none
+		sourceColumn: ARTICLE_NAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column MAJOR_GROUP
+		dataType: string
+		lineageTag: 9799dbdf-90e3-4ac0-9bb4-c99e3f43b39a
+		summarizeBy: none
+		sourceColumn: MAJOR_GROUP
+
+		annotation SummarizationSetBy = Automatic
+
+	column FAMILY_GROUP
+		dataType: string
+		lineageTag: f4d17190-0021-4eec-8a27-ad25e08de05f
+		summarizeBy: none
+		sourceColumn: FAMILY_GROUP
+
+		annotation SummarizationSetBy = Automatic
+
+	column IS_FICTIVE_ARTICLE
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 77f6db9b-d905-4c1c-8294-a56ac2a96d8b
+		summarizeBy: none
+		sourceColumn: IS_FICTIVE_ARTICLE
+
+		annotation SummarizationSetBy = Automatic
+
+	column IS_FREE_ARTICLE
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 302fa033-c60c-4349-9dc0-9c23bdd774aa
+		summarizeBy: none
+		sourceColumn: IS_FREE_ARTICLE
+
+		annotation SummarizationSetBy = Automatic
+
+	column IS_CAMPAIGN_ARTICLE
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 10a4dbf5-d294-4cef-83d6-5dbee236e683
+		summarizeBy: none
+		sourceColumn: IS_CAMPAIGN_ARTICLE
+
+		annotation SummarizationSetBy = Automatic
+
+	column SOURCE_SYSTEM
+		dataType: string
+		lineageTag: 6f14a9e2-487e-407f-8fcc-7d3c73f321f5
+		summarizeBy: none
+		sourceColumn: SOURCE_SYSTEM
+
+		annotation SummarizationSetBy = Automatic
+
+	column MAJOR_SORT_INDEX
+		dataType: double
+		lineageTag: 76c58ff1-bd8c-4b7f-a7a5-0d44d3e7974e
+		summarizeBy: sum
+		sourceColumn: MAJOR_SORT_INDEX
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FAMILY_SORT_INDEX
+		dataType: double
+		lineageTag: c2372f12-9cda-4889-b237-b38ab44d4ac8
+		summarizeBy: sum
+		sourceColumn: FAMILY_SORT_INDEX
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ARTICLE_SORT_INDEX
+		dataType: double
+		lineageTag: fd5e02b1-b3e5-4d26-90b7-473f069dadd1
+		summarizeBy: sum
+		sourceColumn: ARTICLE_SORT_INDEX
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Group
+		dataType: string
+		lineageTag: c8e3db88-2e8c-41a9-9455-4aff9192de81
+		summarizeBy: none
+		sourceColumn: Group
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_ARTICLE = m
+		mode: import
+		queryGroup: dim
+		source =
+				let
+				    Source = Snowflake.Databases("maxburgers-analytics.snowflakecomputing.com","ANALYSIS"),
+				    GOLD_Database = Source{[Name="GOLD",Kind="Database"]}[Data],
+				    CORE_Schema = GOLD_Database{[Name="CORE",Kind="Schema"]}[Data],
+				    D_ARTICLE_Table = CORE_Schema{[Name="D_ARTICLE",Kind="Table"]}[Data],
+				    Custom1 = Table.AddColumn(D_ARTICLE_Table, "Group", each if [FAMILY_GROUP] = "GDL burgers" then "GDL & Double" else if [FAMILY_GROUP] = "Double burgers" then "GDL & Double" else if [FAMILY_GROUP] = "Kids menus" then "Kids/Mini Menus" else if [FAMILY_GROUP] = "Mini menus" then "Kids/Mini Menus" else if [FAMILY_GROUP] = "Burgers" then "Medium Price" else if [FAMILY_GROUP] = "Chicken burgers" then "Medium Price" else if [FAMILY_GROUP] = "Fish burgers" then "Medium Price" else if [FAMILY_GROUP] = "Veg burgers" then "Medium Price" else "Other")
+				in
+				    Custom1
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

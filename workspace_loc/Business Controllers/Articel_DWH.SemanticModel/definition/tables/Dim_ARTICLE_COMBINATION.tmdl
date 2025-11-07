@@ -1,0 +1,47 @@
+table Dim_ARTICLE_COMBINATION
+	lineageTag: 1ac2d9e8-7d18-43b6-a444-1379aa808a3f
+
+	column ARTICLE_KEY
+		dataType: double
+		lineageTag: 1655bef5-79ba-4c3d-9035-44828cfd68c2
+		summarizeBy: none
+		sourceColumn: ARTICLE_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column OTHER_ARTICLE_KEY
+		dataType: double
+		lineageTag: dec8d6d9-844f-4d4a-93d5-e27ec6890f27
+		summarizeBy: sum
+		sourceColumn: OTHER_ARTICLE_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column OTHER_ARTICLE_NAME
+		dataType: string
+		lineageTag: b4e356de-bf9c-4e0a-b62f-77a7abc45853
+		summarizeBy: none
+		sourceColumn: OTHER_ARTICLE_NAME
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_ARTICLE_COMBINATION = m
+		mode: import
+		queryGroup: dim
+		source =
+				let
+				    Source = Snowflake.Databases("maxburgers-analytics.snowflakecomputing.com","ANALYSIS"),
+				    GOLD_Database = Source{[Name="GOLD",Kind="Database"]}[Data],
+				    CORE_Schema = GOLD_Database{[Name="CORE",Kind="Schema"]}[Data],
+				    D_ARTICLE_COMBINATION_Table = CORE_Schema{[Name="D_ARTICLE_COMBINATION",Kind="Table"]}[Data]
+				in
+				    D_ARTICLE_COMBINATION_Table
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

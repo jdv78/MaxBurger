@@ -1,0 +1,163 @@
+table 'MB Retention All workers'
+	lineageTag: f43fbee2-65ac-46f9-959e-e4d3b74d7c7a
+
+	column 'CF EE Worker Region'
+		dataType: string
+		lineageTag: df8f835a-576f-43c9-aa31-a3e343d5a55f
+		summarizeBy: none
+		sourceColumn: CF EE Worker Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'CF EE Worker District'
+		dataType: string
+		lineageTag: 2e7993bf-52fc-4e77-8c84-393e43f3ea9d
+		summarizeBy: none
+		sourceColumn: CF EE Worker District
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Supervisory Organization'
+		dataType: string
+		lineageTag: e3a7b738-c4c1-4a18-a2a4-c520cd1fb935
+		summarizeBy: none
+		sourceColumn: Supervisory Organization
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Employee Type'
+		dataType: string
+		lineageTag: 7cb883fc-5b82-4189-b008-83680851d475
+		summarizeBy: none
+		sourceColumn: Employee Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Job Profile Name'
+		dataType: string
+		lineageTag: 50eb6ca6-ef21-407a-b1c2-1f05269b1a3b
+		summarizeBy: none
+		sourceColumn: Job Profile Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column Company
+		dataType: string
+		lineageTag: e58bd8a3-76d2-4ad9-b43f-f49cdde472aa
+		summarizeBy: none
+		sourceColumn: Company
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Job Profile'
+		dataType: string
+		lineageTag: 473b5670-6fa1-4e1d-a78f-0b0d984e625c
+		summarizeBy: none
+		sourceColumn: Job Profile
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Default Weekly Hours'
+		dataType: int64
+		formatString: 0
+		lineageTag: c8f8f7e8-8214-4a8c-a163-1ed40bf20449
+		summarizeBy: sum
+		sourceColumn: Default Weekly Hours
+
+		annotation SummarizationSetBy = Automatic
+
+	column Location
+		dataType: string
+		lineageTag: e1053fc4-77ae-464a-8b50-9e1d709f6f35
+		summarizeBy: none
+		sourceColumn: Location
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Hire Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: bbecaba6-9ef2-4688-8515-797ad028d38f
+		summarizeBy: none
+		sourceColumn: Hire Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Continuous Service Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 47450a77-b196-4236-9284-5fb6099eb780
+		summarizeBy: none
+		sourceColumn: Continuous Service Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Termination Date - All'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 56cf7ffc-342d-4801-a90b-47070bbab9b1
+		summarizeBy: none
+		sourceColumn: Termination Date - All
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'End Employment Date'
+		dataType: string
+		lineageTag: 2f772813-e742-4ffa-bdf2-41eeed0c12d3
+		summarizeBy: none
+		sourceColumn: End Employment Date
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Termination Date - all nr '
+		dataType: double
+		lineageTag: e58418c2-97d5-4c80-98f7-2a507d24faf1
+		summarizeBy: sum
+		sourceColumn: "Termination Date - all nr "
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'End Employment Date Nr'
+		dataType: double
+		lineageTag: 0640268e-7b6f-43fe-99cd-c9659c609e26
+		summarizeBy: sum
+		sourceColumn: End Employment Date Nr
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Employee ID'
+		dataType: string
+		lineageTag: deda34c7-e1ee-4c08-a1e2-9c9d1fbfdb40
+		summarizeBy: none
+		sourceColumn: Employee ID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'MB Retention All workers' = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\dv1891\MAX Burgers AB\MAX Controlling Page - Documents\MAX Project\MAX Power BI\HR\240114 Retention V.2.xlsx"), null, true),
+				    #"MB Retention All workers_Sheet" = Source{[Item="MB Retention All workers",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(#"MB Retention All workers_Sheet", [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"CF EE Worker Region", type text}, {"CF EE Worker District", type text}, {"Supervisory Organization", type text}, {"Employee Type", type text}, {"Job Profile Name", type text}, {"Company", type text}, {"Job Profile", type text}, {"Default Weekly Hours", Int64.Type}, {"Location", type text}, {"Hire Date", type date}, {"Continuous Service Date", type date}, {"Termination Date - All", type date}, {"End Employment Date", type any}}),
+				    #"Added Conditional Column" = Table.AddColumn(#"Changed Type", "Termination Date - all nr ", each if [#"Termination Date - All"] = null then 0 else 1),
+				    #"Added Conditional Column1" = Table.AddColumn(#"Added Conditional Column", "End Employment Date Nr", each if [End Employment Date] = null then 0 else 1),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Added Conditional Column1",{{"End Employment Date Nr", type number}, {"Termination Date - all nr ", type number}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

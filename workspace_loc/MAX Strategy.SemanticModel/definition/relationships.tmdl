@@ -1,0 +1,34 @@
+relationship AutoDetected_cee45d9e-b5ff-4c02-8490-512d5480d66b
+	fromColumn: ft_Max.Country
+	toColumn: dim_country.Country
+
+relationship AutoDetected_b8620742-3acc-4e6f-bf8f-430f8674aa89
+	fromColumn: dim_tbl_structure.Group
+	toColumn: dim_group.Group
+
+relationship 6b112e83-37a5-0b07-98cf-ab11b8fe47d1
+	fromColumn: ft_Max.Measures
+	toColumn: dim_tbl_structure.Measures
+
+relationship AutoDetected_03543956-7105-4fd2-aaab-4604474b43ba
+	fromColumn: ft_Max.Attribute
+	toColumn: dim_period.Attribute
+
+relationship AutoDetected_759e4658-8a3a-4fbe-8725-a597b77b8d8c
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'Slicer Table'.Index
+	toColumn: dim_tbl_structure.Index
+
+relationship b34b6b59-8421-cd2d-2ee6-720195a510bf
+	fromColumn: ft_Max.Act_Target
+	toColumn: 'Measure Type'.Type
+
+relationship AutoDetected_b92dd6ef-735a-44fc-8f16-adc1944646e3
+	fromColumn: 'Sales TYFC 2025'.Country
+	toColumn: dim_country.Country
+
+relationship 6531fdae-99f1-47e4-4fa5-706d717bb7f3
+	fromColumn: 'Sales TYFC 2025'.Year
+	toColumn: dim_period.Attribute
+

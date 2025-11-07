@@ -1,0 +1,52 @@
+table Flags
+	isHidden
+	lineageTag: 102d12bb-add5-444c-830a-7f40898163d8
+
+	column 'Country '
+		dataType: string
+		isHidden
+		lineageTag: b5f51d0a-d6f3-4821-8ceb-3a0e7188a8b7
+		summarizeBy: none
+		sourceColumn: "Country "
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column URL
+		dataType: string
+		isHidden
+		lineageTag: 5c97d063-f8b1-4c15-9e1d-42a26175265e
+		dataCategory: ImageUrl
+		summarizeBy: none
+		sourceColumn: URL
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Flags = m
+		mode: import
+		queryGroup: 'Web Region'
+		source =
+				let
+				    Source = SharePoint.Files("https://maxburgers.sharepoint.com/sites/MAXControllingAPP", [ApiVersion = 15]),
+				    #"Filtered Rows" = Table.SelectRows(Source, each Text.Contains([Folder Path], "MAX Project/MAX Power BI/PBI/Weekly")),
+				    #"Filtered Rows1" = Table.SelectRows(#"Filtered Rows", each ([Extension] = ".xlsx")),
+				    #"Removed Other Columns" = Table.SelectColumns(#"Filtered Rows1",{"Content"}),
+				    #"Added Custom" = Table.AddColumn(#"Removed Other Columns", "Custom", each Excel.Workbook([Content])),
+				    #"Removed Columns" = Table.RemoveColumns(#"Added Custom",{"Content"}),
+				    #"Expanded Custom" = Table.ExpandTableColumn(#"Removed Columns", "Custom", {"Name", "Data", "Item", "Kind", "Hidden"}, {"Name", "Data", "Item", "Kind", "Hidden"}),
+				    #"Removed Other Columns1" = Table.SelectColumns(#"Expanded Custom",{"Data"}),
+				    #"Expanded Data" = Table.ExpandTableColumn(#"Removed Other Columns1", "Data", {"Column1", "Column2"}, {"Column1", "Column2"}),
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Expanded Data", [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Country ", type text}, {"URL", type text}})
+				in
+				    #"Changed Type"
+
+	changedProperty = IsHidden
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

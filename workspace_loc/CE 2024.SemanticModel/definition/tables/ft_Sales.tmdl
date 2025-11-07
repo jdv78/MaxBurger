@@ -1,0 +1,75 @@
+table ft_Sales
+	lineageTag: 920670e3-9cdb-4b24-97c3-a4fde70cd39c
+
+	measure 'TY Sales' = CALCULATE(sum(ft_Sales[Value]), ft_Sales[Attribute] = "ACT_SALES")
+		lineageTag: db941b19-7c9f-4fe1-93f1-5db9ee91ce3d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'LY Sales' = CALCULATE(sum(ft_Sales[Value]), ft_Sales[Attribute] = "Last_Year_SALES")
+		lineageTag: 30b7fad7-079f-4329-824e-79cd295632d8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure LY% = DIVIDE([TY Sales],[LY Sales])-1
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		lineageTag: e93cc61d-fef6-488a-b3f7-0abc7b99003c
+
+	column FISCAL_DATE
+		dataType: string
+		lineageTag: 3517f1cb-1a9d-4372-b07b-06cd0660028a
+		summarizeBy: none
+		sourceColumn: FISCAL_DATE
+
+		annotation SummarizationSetBy = Automatic
+
+	column COUNTRY_KEY
+		dataType: double
+		lineageTag: 6c5dc881-60fd-40fb-b988-216ae1fd75b1
+		summarizeBy: none
+		sourceColumn: COUNTRY_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Attribute
+		dataType: string
+		lineageTag: 15a67d9e-f33f-4841-a2f6-4ce14651e607
+		summarizeBy: none
+		sourceColumn: Attribute
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value
+		dataType: double
+		lineageTag: 6c417fe7-4121-4648-acd6-27ddd8b29423
+		summarizeBy: sum
+		sourceColumn: Value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FISCAL_DAY_OF_WEEK_SHORT
+		dataType: string
+		lineageTag: 79d2c8fa-7932-4ab5-bc02-d2fc1ac5c517
+		summarizeBy: none
+		sourceColumn: FISCAL_DAY_OF_WEEK_SHORT
+
+		annotation SummarizationSetBy = Automatic
+
+	partition ft_Sales = m
+		mode: import
+		source =
+				let
+				    Source = Value.NativeQuery(Snowflake.Databases("ya34293.west-europe.azure.snowflakecomputing.com","ANALYSIS"){[Name="GOLD"]}[Data], "WITH CurrentYearData AS (#(lf)    SELECT #(lf)        DT.FISCAL_MONTH_KEY,#(lf)        DT.FISCAL_DAY_OF_WEEK_SHORT,#(lf)        CR.COUNTRY_CODE,#(lf)        FDS.RESTAURANT_KEY,#(lf)        FDS.COUNTRY_KEY,#(lf)        FDS.ORDER_TYPE_KEY,#(lf)        FDS.CHANNEL_KEY,#(lf)        SUM(FDS.REVENUE_LIKE_INSIKT) AS ACT_SALES,#(lf)        SUM(FDS.DISCOUNT_LIKE_INSIKT) AS Total_Discount,#(lf)        SUM(FDS.RECEIPTS) AS Total_Receipts#(lf)    FROM #(lf)        GOLD.SALES.F_DAILY_SALES AS FDS#(lf)    INNER JOIN #(lf)        GOLD_TEST.CORE.D_RESTAURANT DR ON FDS.RESTAURANT_KEY = DR.RESTAURANT_KEY#(lf)    INNER JOIN #(lf)        GOLD.CORE.D_FISCAL_DATE AS DT ON FDS.FISCAL_DATE_KEY = DT.FISCAL_DATE_KEY#(lf)    INNER JOIN #(lf)        GOLD.CORE.D_COUNTRY AS CR ON FDS.COUNTRY_KEY = CR.COUNTRY_KEY#(lf)            INNER JOIN #(lf)        GOLD.CORE.D_RESTAURANT_COMPARABLE AS COMP ON COMP.RESTAURANT_KEY = DR.RESTAURANT_KEY#(lf)    WHERE #(lf)        DT.FISCAL_DATE BETWEEN '2022-01-01' AND '2024-12-31'#(lf)        AND COMP.IS_COMPARABLE = 'TRUE'#(lf)        AND COMP.YEAR = '2024'    #(lf)    GROUP BY#(lf)        DT.FISCAL_MONTH_KEY,#(lf)        DT.FISCAL_DAY_OF_WEEK_SHORT,#(lf)        CR.COUNTRY_CODE,#(lf)        FDS.RESTAURANT_KEY,#(lf)        FDS.COUNTRY_KEY,#(lf)        FDS.ORDER_TYPE_KEY,#(lf)        FDS.CHANNEL_KEY#(lf)), LastYearData AS (#(lf)    SELECT #(lf)        DD.FISCAL_MONTH_KEY AS CY_Date,#(lf)        DD.FISCAL_DAY_OF_WEEK_SHORT,#(lf)        --DD.FISCAL_DATE_LAST_YEAR,#(lf)        FDS.RESTAURANT_KEY,#(lf)        FDS.COUNTRY_KEY,#(lf)        FDS.ORDER_TYPE_KEY,#(lf)        FDS.CHANNEL_KEY,#(lf)        SUM(FDS.REVENUE_LIKE_INSIKT) AS Last_Year_SALES,#(lf)        SUM(FDS.DISCOUNT_LIKE_INSIKT) AS Last_Year_TOTAL_DISCOUNT,#(lf)        SUM(FDS.RECEIPTS) AS Last_Year_TOTAL_RECEIPTS#(lf)    FROM #(lf)        GOLD.SALES.F_DAILY_SALES AS FDS#(lf)    INNER JOIN #(lf)        GOLD_TEST.CORE.D_RESTAURANT DR ON FDS.RESTAURANT_KEY = DR.RESTAURANT_KEY#(lf)    INNER JOIN #(lf)        GOLD.CORE.D_FISCAL_DATE DD on fds.dbt_expectations_test_date = dd.FISCAL_DATE_LAST_YEAR#(lf)    INNER JOIN #(lf)        GOLD.CORE.D_RESTAURANT_COMPARABLE AS COMP ON COMP.RESTAURANT_KEY = DR.RESTAURANT_KEY#(lf)    WHERE #(lf)        DD.FISCAL_DATE_LAST_YEAR BETWEEN '2021-01-01' AND '2023-12-31'#(lf)        AND COMP.IS_COMPARABLE = 'TRUE'#(lf)        AND COMP.YEAR = '2024'#(lf)#(lf)    GROUP BY#(lf)        DD.FISCAL_MONTH_KEY,#(lf)        DD.FISCAL_DAY_OF_WEEK_SHORT,#(lf)        --DD.FISCAL_DATE_LAST_YEAR,#(lf)        FDS.RESTAURANT_KEY,#(lf)        FDS.COUNTRY_KEY,#(lf)        FDS.ORDER_TYPE_KEY,#(lf)        FDS.CHANNEL_KEY#(lf))#(lf)SELECT #(lf)    --CYD.FISCAL_DATE AS CY_Date,#(lf)   -- LYD.CY_Date AS LY_Date,#(lf)    --CYD.COUNTRY_CODE,#(lf)    CYD.FISCAL_DAY_OF_WEEK_SHORT,#(lf)    COALESCE(CYD.FISCAL_MONTH_KEY, LYD.CY_Date) AS FISCAL_DATE,#(lf)    COALESCE(CYD.COUNTRY_KEY, LYD.COUNTRY_KEY) AS COUNTRY_KEY,#(lf)   -- COALESCE(CYD.RESTAURANT_KEY,LYD.RESTAURANT_KEY) as RESTAURANT_KEY,#(lf)   -- CYD.COUNTRY_KEY,#(lf)   -- COALESCE(CYD.ORDER_TYPE_KEY,LYD.ORDER_TYPE_KEY) as ORDER_TYPE_KEY,#(lf)    --COALESCE(CYD.CHANNEL_KEY,LYD.CHANNEL_KEY) as CHANNEL_KEY,#(lf)    CYD.ACT_SALES,#(lf)    CYD.Total_Discount AS CY_Total_Discount,#(lf)    CYD.Total_Receipts AS CY_Total_Receipts,#(lf)    LYD.Last_Year_SALES,#(lf)    LYD.Last_Year_TOTAL_DISCOUNT,#(lf)    LYD.Last_Year_TOTAL_RECEIPTS#(lf)FROM #(lf)    CurrentYearData CYD#(lf)full JOIN #(lf)    LastYearData LYD ON CYD.RESTAURANT_KEY = LYD.RESTAURANT_KEY#(lf)                     AND CYD.COUNTRY_KEY = LYD.COUNTRY_KEY#(lf)                     AND CYD.ORDER_TYPE_KEY = LYD.ORDER_TYPE_KEY#(lf)                     AND CYD.CHANNEL_KEY = LYD.CHANNEL_KEY#(lf)                     AND CYD.FISCAL_MONTH_KEY = LYD.CY_Date#(lf)                     and CYD.FISCAL_DAY_OF_WEEK_SHORT = LYD.FISCAL_DAY_OF_WEEK_SHORT#(lf)                     --AND CYD.FISCAL_DATE > LYD.FISCAL_DATE_LAST_YEAR#(lf)#(lf)                     #(lf)                     --where  CYD.ORDER_TYPE_KEY = '-1717717285064877015'", null, [EnableFolding=true]),
+				    #"Unpivoted Columns" = Table.UnpivotOtherColumns(Source, {"FISCAL_DATE", "COUNTRY_KEY","FISCAL_DAY_OF_WEEK_SHORT"}, "Attribute", "Value"),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Unpivoted Columns",{{"FISCAL_DATE", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

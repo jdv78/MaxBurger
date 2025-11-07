@@ -1,0 +1,79 @@
+table LCM
+	isHidden
+	lineageTag: 3a72d943-d144-4724-8639-f06a09b01948
+
+	column Refresh
+		dataType: dateTime
+		isHidden
+		formatString: General Date
+		lineageTag: a9ea6763-191f-4fb9-ad92-8c1f705b2c4c
+		summarizeBy: none
+		sourceColumn: Refresh
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Last Completed Day'
+		dataType: dateTime
+		isHidden
+		formatString: Long Date
+		lineageTag: b6beb56e-8a79-42bb-9976-423e5b1e2a92
+		summarizeBy: none
+		sourceColumn: Last Completed Day
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Rolling 12M Start'
+		dataType: dateTime
+		isHidden
+		formatString: Long Date
+		lineageTag: 62aafc4f-f91c-4bc6-a445-070e2202ea9f
+		summarizeBy: none
+		sourceColumn: Rolling 12M Start
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition LCM = m
+		mode: import
+		queryGroup: Time
+		source =
+				let
+				    // Get the current date and time with timezone adjustment
+				    Source = DateTimeZone.SwitchZone(DateTimeZone.LocalNow(), 10),
+				
+				    // Convert to a table
+				    #"Converted to Table" = #table(1, {{Source}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Converted to Table", {{"Column1", "Refresh"}}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Renamed Columns", {{"Refresh", type datetime}}),
+				
+				    // Calculate the last completed day (previous day's date)
+				    #"Last Completed Day" = Table.AddColumn(#"Changed Type", "Last Completed Day", each Date.AddDays(DateTime.Date([Refresh]), -1), type date),
+				
+				    // Calculate the last completed month (first day of the previous month)
+				    #"Last Completed Month" = Table.AddColumn(#"Last Completed Day", "Last Completed Month", each Date.StartOfMonth(Date.AddMonths([Refresh], -1)), type date),
+				
+				    // Calculate the rolling 12-month start date (12 months before the last completed month)
+				    #"Rolling 12M Start" = Table.AddColumn(#"Last Completed Month", "Rolling 12M Start", each Date.AddMonths([Last Completed Month], -11), type date),
+				
+				    // Set the rolling 12-month end date to the last completed month
+				    #"Rolling 12M End" = Table.AddColumn(#"Rolling 12M Start", "Rolling 12M End", each [Last Completed Month], type date),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Rolling 12M End",{{"Rolling 12M Start", type date}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type1",{"Last Completed Month", "Rolling 12M End"})
+				in
+				    #"Removed Columns"
+
+	changedProperty = IsHidden
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

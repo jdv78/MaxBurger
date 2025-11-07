@@ -1,0 +1,60 @@
+table Dim_RESTAURANT_COMPARABLE
+	isHidden
+	lineageTag: 61a59217-4f74-4f59-ada3-b15a34eff98f
+
+	column RESTAURANT_KEY
+		dataType: int64
+		isHidden
+		lineageTag: 7981e12d-6049-46d8-a209-558a33163a2e
+		summarizeBy: none
+		sourceColumn: RESTAURANT_KEY
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column YEAR
+		dataType: int64
+		isHidden
+		lineageTag: 75608e23-dd90-490f-b605-a32ba95d6800
+		summarizeBy: sum
+		sourceColumn: YEAR
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column IS_COMPARABLE
+		dataType: boolean
+		isHidden
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 398bd024-2d3b-4f33-b04b-025181a5fd88
+		summarizeBy: none
+		sourceColumn: IS_COMPARABLE
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_RESTAURANT_COMPARABLE = m
+		mode: import
+		queryGroup: dim
+		source =
+				let
+				    Source = Snowflake.Databases("maxburgers-analytics.snowflakecomputing.com","ANALYSIS"),
+				    GOLD_Database = Source{[Name="GOLD",Kind="Database"]}[Data],
+				    CORE_Schema = GOLD_Database{[Name="CORE",Kind="Schema"]}[Data],
+				    D_RESTAURANT_COMPARABLE_Table = CORE_Schema{[Name="D_RESTAURANT_COMPARABLE",Kind="Table"]}[Data]
+				in
+				    D_RESTAURANT_COMPARABLE_Table
+
+	changedProperty = IsHidden
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

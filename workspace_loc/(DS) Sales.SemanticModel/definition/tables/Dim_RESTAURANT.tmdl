@@ -1,0 +1,353 @@
+table Dim_RESTAURANT
+	lineageTag: 2f132a4c-bace-47ad-835d-98fb98c003ff
+
+	column RESTAURANT_KEY
+		dataType: int64
+		lineageTag: 3a58b549-69d3-4d37-89cb-4ce4b6e00005
+		summarizeBy: none
+		sourceColumn: RESTAURANT_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SIMPHONY_LOCATION_ID
+		dataType: int64
+		lineageTag: bfa4d35e-750c-4215-a515-a5289d39b013
+		summarizeBy: count
+		sourceColumn: SIMPHONY_LOCATION_ID
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column RA_LOCATION_ID
+		dataType: int64
+		lineageTag: 00190d9a-5e4d-435c-ae34-05a6428ddfef
+		summarizeBy: count
+		sourceColumn: RA_LOCATION_ID
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column COST_CENTER
+		dataType: int64
+		lineageTag: f2e752ff-3088-4e29-9295-10ca89ef230d
+		summarizeBy: sum
+		sourceColumn: COST_CENTER
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column REFERENCE_NUMBER
+		dataType: int64
+		lineageTag: b4170ab9-07ae-476f-8621-50055e95c57e
+		summarizeBy: sum
+		sourceColumn: REFERENCE_NUMBER
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column RESTAURANT_NAME
+		dataType: string
+		lineageTag: 5b040f80-58c6-4e0a-8d52-5f580d88c563
+		summarizeBy: none
+		sourceColumn: RESTAURANT_NAME
+		sortByColumn: COST_CENTER
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column COUNTRY_CODE
+		dataType: string
+		lineageTag: d57bd9e8-7553-4f44-956e-1b75bc850a24
+		summarizeBy: none
+		sourceColumn: COUNTRY_CODE
+
+		annotation SummarizationSetBy = Automatic
+
+	column RESTAURANT_CURRENCY
+		dataType: string
+		lineageTag: 96951aee-22e0-4e87-a7ac-2407fa7d38bd
+		summarizeBy: none
+		sourceColumn: RESTAURANT_CURRENCY
+
+		annotation SummarizationSetBy = Automatic
+
+	column REGION
+		dataType: string
+		lineageTag: 38094b6f-01d5-4c3e-804e-d9cdc2145796
+		summarizeBy: none
+		sourceColumn: REGION
+
+		annotation SummarizationSetBy = Automatic
+
+	column DISTRICT
+		dataType: string
+		lineageTag: 4bd8b79d-7a3c-48c4-bdd8-9f5b5014ce19
+		summarizeBy: none
+		sourceColumn: DISTRICT
+
+		annotation SummarizationSetBy = Automatic
+
+	column LOCATION
+		dataType: string
+		lineageTag: a4aeb304-eb7b-44ae-8a5b-7b459d6ddd03
+		summarizeBy: none
+		sourceColumn: LOCATION
+
+		annotation SummarizationSetBy = Automatic
+
+	column DRIVE
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 6ea82e7e-fd22-450f-8998-4a8891dcaf0a
+		summarizeBy: none
+		sourceColumn: DRIVE
+
+		annotation SummarizationSetBy = Automatic
+
+	column OWNED_RENTED_LEASED
+		dataType: string
+		lineageTag: 37770e72-9bec-42f8-ae02-101071937e55
+		summarizeBy: none
+		sourceColumn: OWNED_RENTED_LEASED
+
+		annotation SummarizationSetBy = Automatic
+
+	column PRICE_GROUP
+		dataType: string
+		lineageTag: 312580dc-f918-4146-96df-8ca9ff274672
+		summarizeBy: none
+		sourceColumn: PRICE_GROUP
+
+		annotation SummarizationSetBy = Automatic
+
+	column DELIVERY
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 49dc2691-cdcc-4007-9e2a-d4d4fd402672
+		summarizeBy: none
+		sourceColumn: DELIVERY
+
+		annotation SummarizationSetBy = Automatic
+
+	column CARRY_OUT_TO_CAR
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 473f4a25-9fe9-405e-aa5a-9753ec762236
+		summarizeBy: none
+		sourceColumn: CARRY_OUT_TO_CAR
+
+		annotation SummarizationSetBy = Automatic
+
+	column FREE_STANDING_INSTORE
+		dataType: string
+		lineageTag: 8d05b5b6-2325-4e1b-9ae7-8b8e45f987cc
+		summarizeBy: none
+		sourceColumn: FREE_STANDING_INSTORE
+
+		annotation SummarizationSetBy = Automatic
+
+	column HOUSE_TYPE
+		dataType: string
+		lineageTag: 9a897005-3fec-479b-8a8e-0453c20e1d31
+		summarizeBy: none
+		sourceColumn: HOUSE_TYPE
+
+		annotation SummarizationSetBy = Automatic
+
+	column RESTAURANT_AREA
+		dataType: int64
+		lineageTag: c0a8d8b9-e4e6-47a0-874a-c2e360747dd1
+		summarizeBy: sum
+		sourceColumn: RESTAURANT_AREA
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column OPENING_DATE
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 9e4327c4-faba-42bf-9b47-c1db9367d6fa
+		summarizeBy: none
+		sourceColumn: OPENING_DATE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column PLACE
+		dataType: string
+		lineageTag: 73171806-ad4a-4d6c-bbd2-53db3038b4ee
+		summarizeBy: none
+		sourceColumn: PLACE
+
+		annotation SummarizationSetBy = Automatic
+
+	column CITY
+		dataType: string
+		lineageTag: e605f010-2ee7-449a-972f-41e94cf55b8c
+		summarizeBy: none
+		sourceColumn: CITY
+
+		annotation SummarizationSetBy = Automatic
+
+	column ADDRESS
+		dataType: string
+		lineageTag: 2d79140b-40ba-40df-9eb4-7b4d72d5e019
+		summarizeBy: none
+		sourceColumn: ADDRESS
+
+		annotation SummarizationSetBy = Automatic
+
+	column ZIP_CODE
+		dataType: string
+		lineageTag: 03da9bd8-8b72-4b90-ba99-05e117b6e37b
+		summarizeBy: none
+		sourceColumn: ZIP_CODE
+
+		annotation SummarizationSetBy = Automatic
+
+	column COORDINATES
+		dataType: string
+		lineageTag: 83682662-aeec-40e3-b768-158bf0119328
+		summarizeBy: none
+		sourceColumn: COORDINATES
+
+		annotation SummarizationSetBy = Automatic
+
+	column LATITUDE
+		dataType: double
+		lineageTag: eff392a4-4767-4e97-bde5-97c49115619e
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: LATITUDE
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column LONGITUDE
+		dataType: double
+		lineageTag: 0cc14c8c-bbc2-4306-bbb3-6a018003b0e4
+		dataCategory: Uncategorized
+		summarizeBy: none
+		sourceColumn: LONGITUDE
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column IS_TEST_RESTAURANT
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 95461e21-fd4d-4ca8-94d9-76a01c4847c2
+		summarizeBy: none
+		sourceColumn: IS_TEST_RESTAURANT
+
+		annotation SummarizationSetBy = Automatic
+
+	column YEXT_ID
+		dataType: string
+		lineageTag: 7c6971ff-28d7-47dc-8ee8-47391775ced0
+		summarizeBy: none
+		sourceColumn: YEXT_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column YEAR
+		dataType: int64
+		lineageTag: 50116c62-8c89-432f-b422-c6be7ad54936
+		summarizeBy: sum
+		sourceColumn: YEAR
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Comp & NonComp TY'
+		dataType: string
+		lineageTag: de2db5f6-7dcc-47cd-abba-7b4e14c26852
+		summarizeBy: none
+		sourceColumn: Comp & NonComp TY
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Text After Delimiter'
+		dataType: string
+		lineageTag: 42a5c953-e1d0-496e-b179-b738b214ea64
+		summarizeBy: none
+		sourceColumn: Text After Delimiter
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'ShortCut Name'
+		dataType: string
+		lineageTag: e4425b27-d592-4d31-a950-f14a1481b6b2
+		summarizeBy: none
+		sourceColumn: ShortCut Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Region.1'
+		dataType: string
+		lineageTag: 28e95afe-4bf5-4980-95aa-b62e54e38403
+		summarizeBy: none
+		sourceColumn: Region.1
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'City.1'
+		dataType: string
+		lineageTag: c500795a-94eb-47f7-8cc1-43be327bf585
+		summarizeBy: none
+		sourceColumn: City.1
+
+		annotation SummarizationSetBy = Automatic
+
+	column Country
+		dataType: string
+		lineageTag: 9bc9eca3-e7c1-4555-bb53-83e8ac3a05a1
+		summarizeBy: none
+		sourceColumn: Country
+
+		annotation SummarizationSetBy = Automatic
+
+	column COUNTRY_KEY
+		dataType: int64
+		lineageTag: c8b711b9-4d95-404d-89e5-a0077157f028
+		summarizeBy: sum
+		sourceColumn: COUNTRY_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition Dim_RESTAURANT = m
+		mode: import
+		queryGroup: dim
+		source =
+				let
+				    Source = Snowflake.Databases("maxburgers-analytics.snowflakecomputing.com","ANALYSIS"),
+				    GOLD_Database = Source{[Name="GOLD",Kind="Database"]}[Data],
+				    CORE_Schema = GOLD_Database{[Name="CORE",Kind="Schema"]}[Data],
+				    D_RESTAURANT_Table = CORE_Schema{[Name="D_RESTAURANT",Kind="Table"]}[Data],
+				    #"Merged Queries" = Table.NestedJoin(D_RESTAURANT_Table, {"RESTAURANT_KEY"}, #"Dim_COMPARABLE (CY)", {"RESTAURANT_KEY"}, "Dim_COMPARABLE (CY)", JoinKind.LeftOuter),
+				    #"Expanded Dim_COMPARABLE (CY)" = Table.ExpandTableColumn(#"Merged Queries", "Dim_COMPARABLE (CY)", {"YEAR", "Comp & NonComp TY"}, {"YEAR", "Comp & NonComp TY"}),
+				    #"Inserted Text After Delimiter" = Table.AddColumn(#"Expanded Dim_COMPARABLE (CY)", "Text After Delimiter", each Text.AfterDelimiter([RESTAURANT_NAME], "- "), type text),
+				    #"Added Custom" = Table.AddColumn(#"Inserted Text After Delimiter", "ShortCut Name", each if [Text After Delimiter] = "" then [RESTAURANT_NAME] else [Text After Delimiter]),
+				    #"Merged Queries1" = Table.NestedJoin(#"Added Custom", {"ShortCut Name"}, Sweden, {"City"}, "Sweden", JoinKind.LeftOuter),
+				    #"Expanded Sweden" = Table.ExpandTableColumn(#"Merged Queries1", "Sweden", {"City", "Region", "Country"}, {"City.1", "Region.1", "Country"})
+				in
+				    #"Expanded Sweden"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Exception
+

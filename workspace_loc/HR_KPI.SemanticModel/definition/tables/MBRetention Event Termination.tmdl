@@ -1,0 +1,85 @@
+table 'MBRetention Event Termination'
+	lineageTag: 6b29e97e-5dfd-4352-9d0e-db1eebed248a
+
+	column Region
+		dataType: string
+		lineageTag: f7d1da20-56c2-4238-b839-be6d5213cfbf
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column District
+		dataType: string
+		lineageTag: 5151971d-97e2-4098-9f54-c2e02c7a6768
+		summarizeBy: none
+		sourceColumn: District
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Termination Date'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 5c50e086-63a1-4018-b267-0c334a7947d5
+		summarizeBy: none
+		sourceColumn: Termination Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Employee Type'
+		dataType: string
+		lineageTag: 2d53cb99-834e-450f-899d-a1a5c994a058
+		summarizeBy: none
+		sourceColumn: Employee Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Job Category'
+		dataType: string
+		lineageTag: 1c2d06f6-c7c6-49d0-bef9-d5c700073db0
+		summarizeBy: none
+		sourceColumn: Job Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Termination Reason'
+		dataType: string
+		lineageTag: e0ce4c4c-f323-4657-a086-a7e0532a704f
+		summarizeBy: none
+		sourceColumn: Termination Reason
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Business Site'
+		dataType: string
+		lineageTag: ded316e8-c50e-4ffd-9179-bfbfa2b55879
+		summarizeBy: none
+		sourceColumn: Business Site
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Employee Number'
+		dataType: string
+		lineageTag: 4f9161c1-e268-434f-aed5-8ff14fc4b096
+		summarizeBy: none
+		sourceColumn: Employee Number
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'MBRetention Event Termination' = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\dv1891\MAX Burgers AB\MAX Controlling Page - Documents\MAX Project\MAX Power BI\HR\240114 Retention V.2.xlsx"), null, true),
+				    #"MBRetention Event Termination_Sheet" = Source{[Item="MBRetention Event Termination",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(#"MBRetention Event Termination_Sheet", [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Region", type text}, {"District", type text}, {"Termination Date", type date}, {"Employee Type", type text}, {"Job Category", type text}, {"Termination Reason", type text}, {"Business Site", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

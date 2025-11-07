@@ -1,0 +1,69 @@
+table Hr_Cost
+	lineageTag: cb0e7645-edfe-4bd3-be73-9e5da0ab1e61
+
+	measure 'Recruitment Cost per Person' = ```
+			
+			CALCULATE(
+			    SUM(Hr_Cost[Value]),
+			    Hr_Cost[Attribute] <> "Career Journey"
+			)
+			
+			
+			
+			```
+		formatString: 0
+		lineageTag: 15c791d4-ff0b-4580-b1c9-909d776a408e
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Career Journey Cost' =
+			CALCULATE(
+			    SUM(Hr_Cost[Value]),
+			    Hr_Cost[Attribute] = "Career Journey"
+			)
+		formatString: 0
+		lineageTag: d0573298-b73d-4ec1-82d5-ec424ad34829
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	column Positions
+		dataType: string
+		lineageTag: 1f75d295-cd32-4e2d-be5e-24ecf51ec5a1
+		summarizeBy: none
+		sourceColumn: Positions
+
+		annotation SummarizationSetBy = Automatic
+
+	column Attribute
+		dataType: string
+		lineageTag: 452cd47a-97c4-463b-9d5c-1be42a60087f
+		summarizeBy: none
+		sourceColumn: Attribute
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value
+		dataType: double
+		formatString: 0
+		lineageTag: f6855eb7-be84-4806-993c-67269097b172
+		summarizeBy: sum
+		sourceColumn: Value
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Hr_Cost = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("jY67DsIwDEV/JcrswY6TulkpX4DYog5FGKkSZYiQ+vvkAYiR6V7J58g3JXuaLFjDAohoag0efGg1UkAs6TyXo50h2UPHXYThjXsBz2OtIthwCvTBj3m9Pe96XbJWViBKbBY7GF2zPHVLyhNp0jkvj1WbQN9ZNPQtzL9Z8SnrbjbdLpr/UuYX", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Positions = _t, #"Kostnad utbildning" = _t, Lön = _t, #"Total Cost" = _t, #"Career Journey" = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Positions", type text}, {"Kostnad utbildning", Int64.Type}, {"Lön", Int64.Type}, {"Total Cost", Int64.Type}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Total Cost"}),
+				    #"Unpivoted Columns" = Table.UnpivotOtherColumns(#"Removed Columns", {"Positions"}, "Attribute", "Value"),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Unpivoted Columns",{{"Value", type number}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

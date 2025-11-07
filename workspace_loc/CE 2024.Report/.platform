@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "CE 2024"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "f18ff411-4c61-b37e-4256-5632ac123b34"
+  }
+}

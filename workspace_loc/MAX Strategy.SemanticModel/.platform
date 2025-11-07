@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "MAX Strategy"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "7dd061f7-a9ff-8f7e-464a-5f2601197b7a"
+  }
+}

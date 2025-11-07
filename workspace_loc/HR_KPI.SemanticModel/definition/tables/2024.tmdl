@@ -1,0 +1,44 @@
+table 2024
+	lineageTag: fbc44a83-f3cb-4c99-abb4-9163e031f509
+
+	measure 'Total Employee' = sum('2024'[Value])
+		formatString: 0
+		lineageTag: a93f38bd-baae-4835-8ac8-b57fbd3949e4
+
+	measure 'Retention Rate%' = DIVIDE([total Finish per Month],[Total Employee],0)
+		formatString: 0%;-0%;0%
+		lineageTag: 9421b9db-eab3-48c0-aa65-810270d1dcb1
+
+	column Positions
+		dataType: string
+		lineageTag: d5d71d1f-ce69-4192-b0d3-b10cd2fca04a
+		summarizeBy: none
+		sourceColumn: Positions
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value
+		dataType: int64
+		formatString: 0
+		lineageTag: 0ef40c28-4285-4d29-ae5d-721df42e61b5
+		summarizeBy: sum
+		sourceColumn: Value
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 2024 = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WcgpyVtJRMjI2UYrViVZyKcpMK8lJTUksSgWKGhoYGIKFQ4oSM/NSQUJmZqZgEbAuQzNLMMe5KLVcITc1Nym1CChqbG4ENCwWAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Positions = _t, Value = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Positions", type text}, {"Value", Int64.Type}}),
+				    #"Cleaned Text" = Table.TransformColumns(#"Changed Type",{{"Positions", Text.Clean, type text}}),
+				    #"Trimmed Text" = Table.TransformColumns(#"Cleaned Text",{{"Positions", Text.Trim, type text}}),
+				    #"Replaced Value" = Table.ReplaceValue(#"Trimmed Text","Trainee","Traniee",Replacer.ReplaceText,{"Positions"})
+				in
+				    #"Replaced Value"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

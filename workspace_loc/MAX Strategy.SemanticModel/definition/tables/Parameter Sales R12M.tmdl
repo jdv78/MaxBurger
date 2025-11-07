@@ -1,0 +1,50 @@
+table 'Parameter Sales R12M'
+	lineageTag: 96d8fff9-75bf-4b03-929f-679d763b4837
+
+	column 'Parameter Sales R12M'
+		lineageTag: 4d855c8d-b273-4c96-8963-597b41c32347
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Parameter Sales R12M Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Parameter Sales R12M Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Sales R12M Fields'
+		isHidden
+		lineageTag: 92073f74-d87f-4502-9c1d-307e45d7d631
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Parameter Sales R12M Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Sales R12M Order'
+		isHidden
+		formatString: 0
+		lineageTag: 24bb36b6-3da2-4a14-a693-614a46cbe889
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Parameter Sales R12M' = calculated
+		mode: import
+		source =
+				{
+				    ("Guest Actual", NAMEOF('00 measure'[Guest Actual]), 0),
+				    ("Guest Actual and Target", NAMEOF('00 measure'[Guest Actual and Target]), 1),
+				    ("Guest Bench", NAMEOF('00 measure'[Guest Bench]), 2),
+				    ("Guest Target", NAMEOF('00 measure'[Guest Target]), 3)
+				}
+
+	annotation PBI_Id = fc16a2b31cc241e9a1845982e76fd5dc
+

@@ -1,0 +1,54 @@
+table 'Parameter Sales FY'
+	isHidden
+	lineageTag: 704139a9-4f61-4792-97f6-037e687626ef
+
+	column 'Parameter Sales FY'
+		isHidden
+		lineageTag: 672ce1f2-9a84-4ba8-b012-b5f2631b15a0
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Parameter Sales FY Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Parameter Sales FY Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Sales FY Fields'
+		isHidden
+		lineageTag: b2616d57-717d-4f6a-ae68-4ebe17b3fb6b
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Parameter Sales FY Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Sales FY Order'
+		isHidden
+		formatString: 0
+		lineageTag: 41f8361c-b3cf-4441-8523-0bf9eaba4fd5
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Parameter Sales FY' = calculated
+		mode: import
+		source =
+				{
+				    ("01 Sales", NAMEOF('01 Sales Measures'[01 Sales]), 0),
+				    ("02 Sales LY", NAMEOF('01 Sales Measures'[02 Sales LY]), 1),
+				    ("03 Sales LLY", NAMEOF('01 Sales Measures'[03 Sales LLY]), 2),
+				    ("01 Sales Budget", NAMEOF('01 Sales Measures'[01 Sales Budget]), 3),
+				    ("02 Sales Forecast", NAMEOF('01 Sales Measures'[02 Sales Forecast]), 4),
+				    ("03 Sales TYFC", NAMEOF('01 Sales Measures'[03 Sales TYFC]), 5)
+				}
+
+	annotation PBI_Id = 5220c4e323404690bf1573c2e2bbff46
+

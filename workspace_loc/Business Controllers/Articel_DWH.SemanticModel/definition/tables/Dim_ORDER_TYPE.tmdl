@@ -1,0 +1,55 @@
+table Dim_ORDER_TYPE
+	lineageTag: 06a0d2f0-3e7d-4501-b7c8-e00ae6f59f4c
+
+	column ORDER_TYPE_KEY
+		dataType: double
+		lineageTag: 7a835874-352f-4e9f-902b-0b6285166a4a
+		summarizeBy: none
+		sourceColumn: ORDER_TYPE_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ORDER_TYPE_NAME
+		dataType: string
+		lineageTag: 58a68eca-e405-4a6f-8211-23bfed73ea87
+		summarizeBy: none
+		sourceColumn: ORDER_TYPE_NAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column ORDER_TYPE_NUMBER
+		dataType: double
+		lineageTag: 667f1ab1-4ba4-40ac-b7b9-6c58230547b1
+		summarizeBy: none
+		sourceColumn: ORDER_TYPE_NUMBER
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SOURCE_SYSTEM
+		dataType: string
+		lineageTag: e9bbcb9d-eb35-4b97-b3cf-fa97079a8883
+		summarizeBy: none
+		sourceColumn: SOURCE_SYSTEM
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_ORDER_TYPE = m
+		mode: import
+		queryGroup: dim
+		source =
+				let
+				    Source = Snowflake.Databases("maxburgers-analytics.snowflakecomputing.com","ANALYSIS"),
+				    GOLD_Database = Source{[Name="GOLD",Kind="Database"]}[Data],
+				    SALES_Schema = GOLD_Database{[Name="SALES",Kind="Schema"]}[Data],
+				    D_ORDER_TYPE_Table = SALES_Schema{[Name="D_ORDER_TYPE",Kind="Table"]}[Data]
+				in
+				    D_ORDER_TYPE_Table
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

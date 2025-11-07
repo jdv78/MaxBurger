@@ -1,0 +1,32 @@
+table YearFilter
+	isHidden
+	lineageTag: 7c58bd36-c56e-4643-b0ff-d9dada83fbfb
+
+	column YearFilter
+		dataType: string
+		isHidden
+		lineageTag: d963e140-db3e-408a-b65b-9af7eccfff26
+		summarizeBy: none
+		sourceColumn: YearFilter
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition YearFilter = m
+		mode: import
+		queryGroup: filter
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WMjIwMlaK1QEzTGAMU6XYWAA=", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Year = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Year", Int64.Type}}),
+				    Year = #"Changed Type"[Year]
+				in
+				    Year
+
+	changedProperty = IsHidden
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = List
+

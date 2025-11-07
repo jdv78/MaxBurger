@@ -1,0 +1,52 @@
+table 'Parameter Sales R12M'
+	isHidden
+	lineageTag: a7547860-f369-4a70-838a-45c8913c2929
+
+	column 'Parameter Sales R12M'
+		isHidden
+		lineageTag: afcd138e-04d3-4255-93aa-f7d1be124459
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Parameter Sales R12M Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Parameter Sales R12M Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Sales R12M Fields'
+		isHidden
+		lineageTag: f51d9246-88db-49ce-97ed-6c16c3181257
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Parameter Sales R12M Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Sales R12M Order'
+		isHidden
+		formatString: 0
+		lineageTag: 0cbc7f7e-c47a-44cf-9d26-7997e78f85fe
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Parameter Sales R12M' = calculated
+		mode: import
+		source =
+				{
+				    ("Sales", NAMEOF('02 Design Measures'[01 Sales (R12M)]), 0),
+				    ("LY", NAMEOF('02 Design Measures'[02 Sales LY(R12M)]), 1),
+				    --("LLY", NAMEOF('02 Design Measures'[03 Sales LLY (R12M)]), 2),
+				    ("Budget", NAMEOF('02 Design Measures'[04 Sales Budget (R12M)]), 3)
+				}
+
+	annotation PBI_Id = 2ba9ed7b1b6d425dac88b096197ec6f6
+

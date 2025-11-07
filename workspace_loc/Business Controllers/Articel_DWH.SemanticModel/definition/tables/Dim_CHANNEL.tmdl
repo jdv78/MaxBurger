@@ -1,0 +1,82 @@
+table Dim_CHANNEL
+	lineageTag: b0b777de-3f43-4b58-aa83-e3415e30d185
+
+	column CHANNEL_KEY
+		dataType: double
+		lineageTag: 5d95d334-9d9f-4107-8d66-488d5bbcecf6
+		summarizeBy: none
+		sourceColumn: CHANNEL_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CHANNEL_NAME
+		dataType: string
+		lineageTag: 24ec4292-3519-463b-8f94-bd12afb7228e
+		summarizeBy: none
+		sourceColumn: CHANNEL_NAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column CHANNEL_ID
+		dataType: double
+		lineageTag: 288865a6-ff7e-4e03-97a4-193780145fa8
+		summarizeBy: none
+		sourceColumn: CHANNEL_ID
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SOURCE_SYSTEM
+		dataType: string
+		lineageTag: ab80404c-f11f-4e4e-b964-acb2d12b7cc3
+		summarizeBy: none
+		sourceColumn: SOURCE_SYSTEM
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Channel Group '
+		dataType: string
+		lineageTag: 29d075a3-8afa-4aa9-9aca-4d50062d871f
+		summarizeBy: none
+		sourceColumn: "Channel Group "
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Channel GP'
+		dataType: string
+		lineageTag: 3e57ffe0-7835-41c3-8b04-c3f239523c19
+		summarizeBy: none
+		sourceColumn: Channel GP
+
+		annotation SummarizationSetBy = Automatic
+
+	column Channel_N
+		dataType: string
+		lineageTag: 9ea53484-0d2c-4f69-acc6-529134b27443
+		summarizeBy: none
+		sourceColumn: Channel_N
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_CHANNEL = m
+		mode: import
+		queryGroup: dim
+		source =
+				let
+				    Source = Snowflake.Databases("maxburgers-analytics.snowflakecomputing.com","ANALYSIS"),
+				    GOLD_Database = Source{[Name="GOLD",Kind="Database"]}[Data],
+				    CORE_Schema = GOLD_Database{[Name="CORE",Kind="Schema"]}[Data],
+				    D_CHANNEL_Table = CORE_Schema{[Name="D_CHANNEL",Kind="Table"]}[Data],
+				    #"Added Conditional Column" = Table.AddColumn(D_CHANNEL_Table, "Channel Group ", each if [CHANNEL_NAME] = "Drive" then "Drive" else "Indoor"),
+				    #"Added Conditional Column1" = Table.AddColumn(#"Added Conditional Column", "Channel GP", each if [CHANNEL_NAME] = "Delivery" then "Delivery" else "On Prem"),
+				    #"Added Conditional Column2" = Table.AddColumn(#"Added Conditional Column1", "Channel_N", each if [CHANNEL_NAME] = "Restaurant" then "Cashier" else [CHANNEL_NAME])
+				in
+				    #"Added Conditional Column2"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

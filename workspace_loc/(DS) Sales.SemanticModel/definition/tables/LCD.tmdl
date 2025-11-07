@@ -1,0 +1,49 @@
+table LCD
+	isHidden
+	lineageTag: cd3c7f09-fe2d-489e-9de4-8fc07638a9bb
+
+	column LCD
+		dataType: dateTime
+		isHidden
+		formatString: Long Date
+		lineageTag: b3a1d8ee-18d9-4950-b15d-0e0121e579b7
+		summarizeBy: none
+		sourceColumn: LCD
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Name
+		dataType: string
+		isHidden
+		lineageTag: 5283ee3f-2879-4798-bf22-aadaf244e4a9
+		summarizeBy: none
+		sourceColumn: Name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition LCD = m
+		mode: import
+		queryGroup: Time
+		source =
+				let
+				    Today = DateTime.Date(DateTime.LocalNow()),
+				    OneDayBefore = Date.AddDays(Today, -1),
+				    #"Converted to Table" = #table(1, {{OneDayBefore}}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Converted to Table",{{"Column1", type date}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"Column1", "LCD"}}),
+				    #"Added Custom" = Table.AddColumn(#"Renamed Columns", "Name", each "LCD")
+				in
+				    #"Added Custom"
+
+	changedProperty = IsHidden
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

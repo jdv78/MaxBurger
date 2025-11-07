@@ -1,0 +1,51 @@
+table Flags
+	isHidden
+	lineageTag: 3c8fa24f-9d49-4636-8adc-909cce176906
+
+	column 'Country '
+		dataType: string
+		isHidden
+		lineageTag: cf85adb3-1705-411f-9594-2936c05c1900
+		summarizeBy: none
+		sourceColumn: "Country "
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column URL
+		dataType: string
+		isHidden
+		lineageTag: 74c79cab-3ea4-4e13-83a3-11608e3a45c7
+		summarizeBy: none
+		sourceColumn: URL
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Flags = m
+		mode: import
+		queryGroup: 'Web Region'
+		source =
+				let
+				    Source = SharePoint.Files("https://maxburgers.sharepoint.com/sites/MAXControllingAPP", [ApiVersion = 15]),
+				    #"Filtered Rows" = Table.SelectRows(Source, each Text.Contains([Folder Path], "MAX Project/MAX Power BI/PBI/Weekly")),
+				    #"Filtered Rows1" = Table.SelectRows(#"Filtered Rows", each ([Extension] = ".xlsx")),
+				    #"Removed Other Columns" = Table.SelectColumns(#"Filtered Rows1",{"Content"}),
+				    #"Added Custom" = Table.AddColumn(#"Removed Other Columns", "Custom", each Excel.Workbook([Content])),
+				    #"Removed Columns" = Table.RemoveColumns(#"Added Custom",{"Content"}),
+				    #"Expanded Custom" = Table.ExpandTableColumn(#"Removed Columns", "Custom", {"Name", "Data", "Item", "Kind", "Hidden"}, {"Name", "Data", "Item", "Kind", "Hidden"}),
+				    #"Removed Other Columns1" = Table.SelectColumns(#"Expanded Custom",{"Data"}),
+				    #"Expanded Data" = Table.ExpandTableColumn(#"Removed Other Columns1", "Data", {"Column1", "Column2"}, {"Column1", "Column2"}),
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Expanded Data", [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Country ", type text}, {"URL", type text}})
+				in
+				    #"Changed Type"
+
+	changedProperty = IsHidden
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

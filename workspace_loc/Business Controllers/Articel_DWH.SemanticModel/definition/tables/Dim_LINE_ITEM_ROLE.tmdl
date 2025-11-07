@@ -1,0 +1,46 @@
+table Dim_LINE_ITEM_ROLE
+	lineageTag: 45485420-0fb6-4dd3-808e-68b5070bbe21
+
+	column LINE_ITEM_ROLE_KEY
+		dataType: double
+		lineageTag: 208961cd-8440-4090-949f-2f5bc90fe25a
+		summarizeBy: none
+		sourceColumn: LINE_ITEM_ROLE_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column LINE_ITEM_ROLE
+		dataType: string
+		lineageTag: 6d11b047-4fb1-4c67-8466-c2ee54827429
+		summarizeBy: none
+		sourceColumn: LINE_ITEM_ROLE
+
+		annotation SummarizationSetBy = Automatic
+
+	column LINE_ITEM_ROLE_NEW
+		dataType: string
+		lineageTag: 133b67e1-4b58-4ee0-838c-1c417e6a098c
+		summarizeBy: none
+		sourceColumn: LINE_ITEM_ROLE_NEW
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dim_LINE_ITEM_ROLE = m
+		mode: import
+		queryGroup: dim
+		source =
+				let
+				    Source = Snowflake.Databases("maxburgers-analytics.snowflakecomputing.com","ANALYSIS"),
+				    GOLD_Database = Source{[Name="GOLD",Kind="Database"]}[Data],
+				    SALES_Schema = GOLD_Database{[Name="SALES",Kind="Schema"]}[Data],
+				    D_LINE_ITEM_ROLE_Table = SALES_Schema{[Name="D_LINE_ITEM_ROLE",Kind="Table"]}[Data],
+				    #"Added Conditional Column" = Table.AddColumn(D_LINE_ITEM_ROLE_Table, "LINE_ITEM_ROLE_NEW", each if [LINE_ITEM_ROLE] = "Meal Item Poland" then "Meal Item" else [LINE_ITEM_ROLE])
+				in
+				    #"Added Conditional Column"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

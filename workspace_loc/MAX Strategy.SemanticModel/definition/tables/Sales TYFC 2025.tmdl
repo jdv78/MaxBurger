@@ -1,0 +1,74 @@
+table 'Sales TYFC 2025'
+	lineageTag: 291968de-689e-45e0-922b-b2c5af6f6214
+
+	column Country
+		dataType: string
+		lineageTag: 676871e6-03cd-43ba-bd65-0e16f11b5dd7
+		summarizeBy: none
+		sourceColumn: Country
+
+		annotation SummarizationSetBy = Automatic
+
+	column Account
+		dataType: string
+		lineageTag: 4e736de2-b2b7-406b-a22b-d1258ce9753a
+		summarizeBy: none
+		sourceColumn: Account
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value
+		dataType: int64
+		formatString: 0
+		lineageTag: 8292511b-cc55-4f80-9a3c-9ad9b38e1b07
+		summarizeBy: sum
+		sourceColumn: Value
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Value.1'
+		dataType: double
+		lineageTag: ceaf16da-73b4-40de-b270-d630e3a24c2a
+		summarizeBy: sum
+		sourceColumn: Value.1
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Values SEK'
+		dataType: double
+		lineageTag: 4e8cb83a-ea1d-4d6b-9523-6290793d9ae7
+		summarizeBy: sum
+		sourceColumn: Values SEK
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: c62471f5-7fc1-460d-921a-cede34a2f8a2
+		summarizeBy: none
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Sales TYFC 2025' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WCi5PTUnNU9JRCk7MSS0G0iaW5hZAysjAyFQpVgdJgauTZwhI3hhFOiA/JzEvBUm/oYUZVnmodl1jE2Rpv/yi8sRKJO1GpqZY5WHaDc2RpV1S83ITi7KRrTc0w64AboAhXD4WAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Country = _t, Account = _t, Value = _t, Year = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Country", type text}, {"Account", type text}, {"Value", Int64.Type}}),
+				    #"Merged Queries" = Table.NestedJoin(#"Changed Type", {"Country"}, DIM_XRate, {"Country"}, "DIM_XRate", JoinKind.LeftOuter),
+				    #"Expanded DIM_XRate" = Table.ExpandTableColumn(#"Merged Queries", "DIM_XRate", {"Value"}, {"Value.1"}),
+				    #"Added Custom" = Table.AddColumn(#"Expanded DIM_XRate", "Values SEK", each [Value]*[Value.1]),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Added Custom",{{"Year", Int64.Type}, {"Values SEK", type number}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

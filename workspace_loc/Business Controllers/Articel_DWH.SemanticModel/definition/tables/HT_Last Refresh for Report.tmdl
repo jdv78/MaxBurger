@@ -1,0 +1,34 @@
+table 'HT_Last Refresh for Report'
+	isHidden
+	lineageTag: cde73743-cacf-43e2-a049-7a798c0ea1c6
+
+	column 'Date Last Refreshed'
+		dataType: dateTime
+		isHidden
+		formatString: General Date
+		lineageTag: 1045bc20-5da2-4512-8878-187378a4b87e
+		summarizeBy: none
+		sourceColumn: Date Last Refreshed
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'HT_Last Refresh for Report' = m
+		mode: import
+		queryGroup: Time
+		source =
+				let
+				
+				Source = #table(type table[Date Last Refreshed=datetime], {{DateTime.LocalNow()}})
+				
+				in
+				
+				Source
+
+	changedProperty = IsHidden
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

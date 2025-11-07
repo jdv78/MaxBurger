@@ -1,0 +1,50 @@
+table 'Measures Switch'
+	isHidden
+	lineageTag: c6a92798-4ec5-452a-b3a2-6931f4f91b37
+
+	calculationGroup
+
+		calculationItem Absolute = Selectedmeasure()
+
+			formatStringDefinition = "#.0"
+
+		calculationItem '% of Total' =
+				divide (
+				selectedmeasure(),
+				calculate(
+				selectedmeasure(),REMOVEFILTERS('dim_CHANNEL')))
+
+			formatStringDefinition = "0.0%"
+
+		calculationItem ' vs LY%' = ```
+				VAR _result = IF(
+				    ISBLANK( [02 Sales LY] ),
+				    BLANK( ),
+				    DIVIDE( [01 Sales] -[02 Sales LY] , ABS([02 Sales LY] ) )
+				)
+				RETURN
+				   -- IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+				   [01 Sales] -[02 Sales LY] 
+				```
+
+			formatStringDefinition = "#.0"
+
+	column Name
+		dataType: string
+		isHidden
+		lineageTag: 2c6d5752-8704-42d6-9d39-0fcaa4743391
+		summarizeBy: none
+		sourceColumn: Name
+		sortByColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ordinal
+		dataType: int64
+		isHidden
+		lineageTag: 29689ac5-4ea2-4a66-87c9-83f3a2f17481
+		summarizeBy: sum
+		sourceColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+

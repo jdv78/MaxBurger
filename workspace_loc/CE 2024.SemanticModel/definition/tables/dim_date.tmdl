@@ -1,0 +1,94 @@
+table dim_date
+	excludeFromModelRefresh
+	lineageTag: 4fbc108b-317e-47c8-a493-504933923c16
+
+	column FISCAL_YEAR
+		dataType: double
+		lineageTag: 4ccc53ec-c107-4fe9-93b0-629d9896243a
+		summarizeBy: sum
+		sourceColumn: FISCAL_YEAR
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FISCAL_QUARTER
+		dataType: double
+		lineageTag: bcb6679b-ef10-456c-a847-6fbfb7d87ab0
+		summarizeBy: sum
+		sourceColumn: FISCAL_QUARTER
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FISCAL_MONTH
+		dataType: double
+		lineageTag: cac2e65a-e1fb-40b5-86c0-64c13b5f8e80
+		summarizeBy: sum
+		sourceColumn: FISCAL_MONTH
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FISCAL_QUARTER_NAME
+		dataType: string
+		lineageTag: 1e2725de-163e-4d35-9831-10a821b1b257
+		summarizeBy: none
+		sourceColumn: FISCAL_QUARTER_NAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column FISCAL_MONTH_NAME
+		dataType: string
+		lineageTag: e42a63f4-9db9-4908-a398-2cd29a1f799e
+		summarizeBy: none
+		sourceColumn: FISCAL_MONTH_NAME
+		sortByColumn: FISCAL_MONTH
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column FISCAL_MONTH_NAME_SHORT
+		dataType: string
+		lineageTag: 3dc46080-a94b-4a25-85ee-c40a8c655f5a
+		summarizeBy: none
+		sourceColumn: FISCAL_MONTH_NAME_SHORT
+		sortByColumn: FISCAL_MONTH
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column FISCAL_QUARTER_KEY
+		dataType: string
+		lineageTag: 3a02f13a-e4d1-4a43-a644-f3294f475ba7
+		summarizeBy: none
+		sourceColumn: FISCAL_QUARTER_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column FISCAL_MONTH_KEY
+		dataType: string
+		lineageTag: 2f81669a-13cc-4a6b-ae34-d4528ba4e8cb
+		summarizeBy: none
+		sourceColumn: FISCAL_MONTH_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_date = m
+		mode: import
+		queryGroup: dim
+		source =
+				let
+				    Source = Value.NativeQuery(Snowflake.Databases("ya34293.west-europe.azure.snowflakecomputing.com","ANALYSIS"){[Name="GOLD"]}[Data], "SELECT #(lf)    FISCAL_YEAR,  #(lf)    FISCAL_QUARTER, #(lf)    FISCAL_MONTH,  #(lf)    FISCAL_QUARTER_NAME, #(lf)    FISCAL_MONTH_NAME, #(lf)    FISCAL_MONTH_NAME_SHORT, #(lf)    FISCAL_QUARTER_KEY, #(lf)    FISCAL_MONTH_KEY #(lf)#(lf)FROM #(lf)    GOLD.CORE.D_FISCAL_DATE#(lf)WHERE #(lf)    FISCAL_YEAR BETWEEN '2022' AND '2024'#(lf)GROUP BY #(lf)    FISCAL_YEAR,  #(lf)    FISCAL_QUARTER, #(lf)    FISCAL_MONTH,  #(lf)    FISCAL_QUARTER_NAME, #(lf)    FISCAL_MONTH_NAME, #(lf)    FISCAL_MONTH_NAME_SHORT, #(lf)    FISCAL_QUARTER_KEY, #(lf)    FISCAL_MONTH_KEY", null, [EnableFolding=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"FISCAL_MONTH_KEY", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

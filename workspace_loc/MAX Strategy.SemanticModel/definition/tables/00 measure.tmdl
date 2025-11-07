@@ -1,0 +1,1502 @@
+table '00 measure'
+	lineageTag: 3a8f0d5c-4b44-483c-9bbd-be570fefa2e5
+
+	measure Value_base = sumx(ft_Max,ft_Max[Internal Mng])
+		displayFolder: 99 Base Values
+		lineageTag: bc1074c1-2a25-4fae-b6ea-cc1fdc94539f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Sales = ```
+			
+			VAR _base = CALCULATE ( [GPB Value], ft_Max[Measures] = "Sales" )
+			
+			
+			
+			RETURN
+			   _base
+			    
+			
+			
+			```
+		displayFolder: 01.Financial targets\00 Financial KPI
+		lineageTag: 0cd22f18-cca4-47a7-9fd1-152240b2625e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'User Selection' = SELECTEDVALUE('Slicer Table'[Value])
+		displayFolder: 99 Base Values
+		lineageTag: 1f615e01-dbc0-4387-a0cd-5709d172f3ce
+
+	measure 'EBIT Margin %' = ```
+			
+			VAR _actual =
+			    DIVIDE(
+			        CALCULATE([EBIT], ft_Max[Act_Target] = "Actual"),
+			        CALCULATE([Sales], ft_Max[Act_Target] = "Actual")
+			    )
+			VAR _target =
+			    DIVIDE(
+			        CALCULATE([EBIT], ft_Max[Act_Target] = "Target"),
+			        CALCULATE([Sales], ft_Max[Act_Target] = "Target")
+			    )
+			VAR _chosen =
+			    IF (NOT ISBLANK(_actual) && _actual <> 0, _actual, _target)
+			RETURN
+			    IF (
+			        ISBLANK(_chosen) || _chosen <= -1,
+			        BLANK(),
+			        _chosen
+			    )
+			
+			```
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 01.Financial targets\00 Financial KPI
+		lineageTag: 0a7307b9-29f8-4a19-afd9-8214f43f680b
+
+	measure 'Profit (EBIT)' = CALCULATE([GPB Value],ft_Max[Measures] ="Profit (EBIT)")
+		displayFolder: 01.Financial targets\00 Financial KPI
+		lineageTag: d5d12dd3-9aea-43bd-b335-a8f7d4188139
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure ROIC = CALCULATE([Value_base],ft_Max[Measures] ="ROIC")
+		displayFolder: 01.Financial targets\00 Financial KPI
+		lineageTag: f40e5d11-4f1d-49fd-9a0b-10ef0e5d45a2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Central Unit Costs, % of sales' = CALCULATE([Value_base],ft_Max[Measures] ="Central Unit Costs, % of sales")
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 01.Financial targets\00 Financial KPI
+		lineageTag: fcc30e06-39b1-4714-9941-083bd08fda94
+
+	measure 'No of Restaurants' = CALCULATE([Value_base],ft_Max[Measures] ="No of restaurants")
+		displayFolder: 01.Financial targets\00 Financial KPI
+		lineageTag: 773760e9-f718-4787-ab6c-1a818960e0e2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Preference = CALCULATE([Value_base],ft_Max[Measures] ="Preference")
+		displayFolder: 02.G
+		lineageTag: 0915c634-96a4-4ffd-85ef-84c81fa8f981
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Price Premium' = CALCULATE([Value_base],ft_Max[Measures] ="Price Premium")
+		displayFolder: 02.G
+		lineageTag: 823d4a4b-f3ee-4626-89f8-7c36d598bcd1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Value for money' = CALCULATE([Value_base],ft_Max[Measures] ="Value for money")
+		displayFolder: 02.G
+		lineageTag: 207142d2-9ddc-431a-8405-b5ee3f8ddbde
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Taste Perception' = CALCULATE([Value_base],ft_Max[Measures] ="Taste Perception")
+		displayFolder: 02.G
+		lineageTag: 65f5b436-a53d-4a96-ae17-25cb35bd696f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Brand Awareness' = ```
+			CALCULATE([Value_base],ft_Max[Measures] ="Brand Awareness")
+			
+			```
+		displayFolder: 02.G
+		lineageTag: 2ceea0fb-8572-4017-a540-73cc9c59b965
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Guest satisfaction - service' = ```
+			CALCULATE([Value_base],ft_Max[Measures] ="Guest satisfaction - service")
+			
+			```
+		displayFolder: 02.G
+		lineageTag: 69284058-4220-445b-aded-263f83ab4bd2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Weighted average service time' = ```
+			CALCULATE([Value_base],ft_Max[Measures] ="Weighted average service time")
+			
+			```
+		displayFolder: 02.G
+		lineageTag: ca2f6097-fed7-47cb-a1b9-02c994cbc49c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '% of orders above x min' = ```
+			CALCULATE([Value_base],ft_Max[Measures] ="% of orders above x min")
+			
+			```
+		displayFolder: 02.G
+		lineageTag: 5e74cd45-d52d-4525-9dd8-d936b8022fd3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Smooth ordering experience (tracking)' = ```
+			CALCULATE([Value_base],ft_Max[Measures] ="Smooth ordering experience (tracking)")
+			
+			```
+		displayFolder: 02.G
+		lineageTag: 71f9bf22-e9e4-406e-af5e-9d0030631f07
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure eNPS = ```
+			CALCULATE([Value_base],ft_Max[Measures] ="eNPS")
+			
+			```
+		displayFolder: 03.U
+		lineageTag: 6de0e717-04f8-4fbd-b3dc-56437056bef3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Engagement index' = ```
+			CALCULATE([Value_base],ft_Max[Measures] ="Engagement index")
+			
+			```
+		displayFolder: 03.U
+		lineageTag: afbda964-d90f-45ec-85f9-eed4fcbe59bf
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Employer brand preference' = ```
+			CALCULATE([Value_base],ft_Max[Measures] ="Employer brand preference")
+			
+			```
+		displayFolder: 03.U
+		lineageTag: 1b78511e-5a79-4f88-90e2-03eb627d990e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Staff turnover' = ```
+			CALCULATE([Value_base],ft_Max[Measures] ="Staff turnover")
+			
+			```
+		displayFolder: 03.U
+		lineageTag: 48256d88-948b-49ba-bb34-1f609c08970f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg Unit volume, Local currency' = ```
+			CALCULATE([Value_base],ft_Max[Measures] ="Avg Unit volume, Local currency")
+			
+			```
+		displayFolder: 04.E
+		lineageTag: aaea9d80-6f30-47c0-835f-e42fd3bc5dd1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'New opening success rate (Hit rate)' = ```
+			CALCULATE([Value_base],ft_Max[Measures] ="New opening success rate (Hit rate)")
+			
+			```
+		displayFolder: 04.E
+		lineageTag: 869a9d70-fad0-4cbd-994c-f58e24ab3191
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Checks, LFL' = ```
+			CALCULATE([Value_base],ft_Max[Measures] ="Checks, LFL")
+			
+			```
+		displayFolder: 04.E
+		lineageTag: e70e5554-fa4d-4876-89bc-6d3b9b16bc76
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales, LFL' = ```
+			CALCULATE([Value_base],ft_Max[Measures] ="Sales, LFL")
+			
+			```
+		displayFolder: 04.E
+		lineageTag: 7c08f233-9ca9-4e1d-9ad3-2372c8fccf79
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Market share vs McDonalds' = ```
+			CALCULATE([Value_base],ft_Max[Measures] ="Market share vs McDonalds")
+			
+			```
+		formatString: 0\ %;-0\ %;0\ %
+		displayFolder: 04.E
+		lineageTag: 33adabae-8b4a-4bee-bcf9-603aa871a1c7
+
+	measure 'Climate leadership, external' = ```
+			CALCULATE([Value_base],ft_Max[Measures] ="Climate leadership, external")
+			
+			```
+		displayFolder: 05.S
+		lineageTag: 937b7435-46ef-402f-acf8-e2b5aefd9f7a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Carbon footprint (kgCO2e per 1000 kcal)' = ```
+			CALCULATE([Value_base],ft_Max[Measures] ="Carbon footprint (kgCO2e per 1000 kcal)")
+			
+			```
+		displayFolder: 05.S
+		lineageTag: fc79cd08-e9b1-4d84-b0bf-0f95b3d2206a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Good healthy food' = ```
+			CALCULATE([Value_base],ft_Max[Measures] ="Good healthy food")
+			
+			```
+		displayFolder: 05.S
+		lineageTag: befc3625-de5e-4f11-b8c8-52f6a17a93e7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Climate leadership, internal' = ```
+			CALCULATE([Value_base],ft_Max[Measures] ="Climate leadership, internal")
+			
+			```
+		displayFolder: 05.S
+		lineageTag: 578db7c1-0fb5-406e-bf69-6577d2590f17
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Shoppability = ```
+			CALCULATE([Value_base],ft_Max[Measures] ="Shoppability")
+			
+			```
+		displayFolder: 06.T
+		lineageTag: 1968b371-82d5-4414-bb13-8478b1cfcf11
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Availability = ```
+			CALCULATE([Value_base],ft_Max[Measures] ="Availability")
+			
+			```
+		displayFolder: 06.T
+		lineageTag: caba8561-56ae-4877-bfa6-7e75581cd480
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Failed orders' = ```
+			CALCULATE([Value_base],ft_Max[Measures] ="Failed orders")
+			
+			```
+		displayFolder: 06.T
+		lineageTag: 93f500fc-8562-41db-aada-d318c06a0267
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Order time' = ```
+			
+			VAR t =
+			    CALCULATE (
+			        [Value_base],
+			        ft_Max[Measures] = "Order time (open app to confirmed order)"
+			    )
+			RETURN
+			// FORMAT ( t, "hh:mm" )
+			
+			t
+			
+			```
+		displayFolder: 06.T
+		lineageTag: 9d364e38-2698-4b43-961a-833d0061784a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Guest satisfaction – user experience in app' = ```
+			CALCULATE([Value_base],ft_Max[Measures] ="Guest satisfaction – user experience in app")
+			
+			```
+		displayFolder: 06.T
+		lineageTag: ad757bbf-a74d-45c1-b94c-94190a208edf
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Security = ```
+			CALCULATE([Value_base],ft_Max[Measures] ="Security")
+			
+			```
+		displayFolder: 06.T
+		lineageTag: 062cb58d-639c-473e-8242-6e64d221061e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Cost per security incident' = ```
+			CALCULATE([Value_base],ft_Max[Measures] ="Cost per security incident")
+			
+			```
+		displayFolder: 06.T
+		lineageTag: f80a0ab2-0a59-491f-a450-4ec5c148eae5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Technical Fit' = ```
+			CALCULATE([Value_base],ft_Max[Measures] ="Technical Fit
+			")
+			
+			```
+		displayFolder: 06.T
+		lineageTag: 21961e3b-2123-4d7c-b059-15733b7b95c0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'No Business critical applications lower than appropriate' = ```
+			CALCULATE([Value_base],ft_Max[Measures] ="No Business critical applications lower than appropriate")
+			
+			```
+		displayFolder: 06.T
+		lineageTag: eb6bb22f-60d3-4b29-a0a0-0f654fe06055
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales Act_Target' = ```
+			
+			VAR _actual =
+			    CALCULATE (
+			       [GPB Value],
+			        ft_Max[Measures] = "Sales",
+			        ft_Max[Act_Target] = "Actual"
+			    )
+			VAR _target =
+			  CALCULATE (
+			        [GPB Value],
+			        ft_Max[Measures] = "Sales",
+			        ft_Max[Act_Target] = "Target"
+			    )
+			VAR _chosen =
+			    IF ( NOT ISBLANK ( _actual ) && _actual <> 0, _actual, _target )
+			
+			RETURN
+			    IF ( ISBLANK ( _chosen ) || _chosen = 0, BLANK (), _chosen )
+			
+			
+			
+			
+			
+			```
+		formatString: #,0
+		displayFolder: 01.Financial targets\00 Financial KPI
+		lineageTag: c14be261-d86f-40d3-bfa2-cd4bc7fb694f
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure EBIT = ```
+			
+			
+			VAR _actual =
+			    CALCULATE ( [Profit (EBIT)], ft_Max[Act_Target] = "Actual" )
+			VAR _target =
+			    CALCULATE ( [Profit (EBIT)], ft_Max[Act_Target] = "Target" )
+			VAR _chosen =
+			    IF ( NOT ISBLANK ( _actual ) && _actual <> 0, _actual, _target )
+			RETURN
+			    IF ( ISBLANK ( _chosen ) || _chosen = 0, BLANK (), _chosen )
+			
+			```
+		formatString: 0
+		displayFolder: 01.Financial targets\00 Financial KPI
+		lineageTag: 5e163e62-f9c3-49d4-bbb8-3ed1439b3c9a
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure EBIT% = ```
+			
+			VAR _actual =
+			    divide(CALCULATE ( [EBIT], ft_Max[Act_Target] = "Actual" ),CALCULATE ( [Sales], ft_Max[Act_Target] = "Actual" ))
+			VAR _target =
+			    divide(CALCULATE ( [EBIT], ft_Max[Act_Target] = "Target" ),CALCULATE ( [Sales], ft_Max[Act_Target] = "Target" ))
+			VAR _chosen =
+			    IF ( NOT ISBLANK ( _actual ) && _actual <> 0, _actual, _target )
+			RETURN
+			    IF ( ISBLANK ( _chosen ) || _chosen = 0, BLANK (), _chosen )
+			
+			```
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 01.Financial targets\00 Financial KPI
+		lineageTag: ed47efc5-7a57-4e6f-a38d-27e855c3df17
+
+	measure 'Profit before OH%' = ```
+			
+			VAR _actual =
+			    DIVIDE(CALCULATE ( [Profit before OH], ft_Max[Act_Target] = "Actual" ),CALCULATE ( [Sales], ft_Max[Act_Target] = "Actual" ))
+			VAR _target =
+			    DIVIDE(CALCULATE ( [Profit before OH], ft_Max[Act_Target] = "Target" ),CALCULATE ( [Sales], ft_Max[Act_Target] = "Target" ))
+			VAR _chosen =
+			    IF ( NOT ISBLANK ( _actual ) && _actual <> 0, _actual, _target )
+			RETURN
+			    IF ( ISBLANK ( _chosen ) || _chosen = 0, BLANK (), _chosen )
+			
+			```
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 01.Financial targets\00 Financial KPI
+		lineageTag: 5a5d3568-3dfa-4105-a68b-c0431f52bbaa
+
+	measure 'Profit before OH' = CALCULATE([GPB Value],ft_Max[Measures] ="Profit before OH $")
+		formatString: #,0
+		displayFolder: 01.Financial targets\00 Financial KPI
+		lineageTag: f4ddf74c-8058-4b50-b094-6db3b973d097
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Central Cost %' =
+			
+			VAR _actual =
+			    DIVIDE(CALCULATE ( [Central Cost], ft_Max[Act_Target] = "Actual" ),CALCULATE ( [Sales], ft_Max[Act_Target] = "Actual" ))
+			VAR _target =
+			    DIVIDE(CALCULATE ( [Central Cost], ft_Max[Act_Target] = "Target" ),CALCULATE ( [Sales], ft_Max[Act_Target] = "Target" ))
+			VAR _chosen =
+			    IF ( NOT ISBLANK ( _actual ) && _actual <> 0, _actual, _target )
+			RETURN
+			    IF ( ISBLANK ( _chosen ) || _chosen = 0, BLANK (), _chosen )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 01.Financial targets\00 Financial KPI
+		lineageTag: 6c214235-f303-4f8e-b914-420c3c652db5
+
+	measure 'Central Cost' = CALCULATE([GPB Value],ft_Max[Measures] ="Central Unit Costs $")
+		formatString: #,0
+		displayFolder: 01.Financial targets\00 Financial KPI
+		lineageTag: cb5ec89f-3d9c-4d83-97b9-76e57bb05917
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'No of Resturants' =
+			VAR _actual =
+			    CALCULATE ( [No of Restaurants], ft_Max[Act_Target] = "Actual" )
+			VAR _target =
+			    CALCULATE ( [No of Restaurants], ft_Max[Act_Target] = "Target" )
+			VAR _chosen =
+			    IF ( NOT ISBLANK ( _actual ) && _actual <> 0, _actual, _target )
+			RETURN
+			    IF ( ISBLANK ( _chosen ) || _chosen = 0, BLANK (), _chosen )
+		formatString: 0
+		displayFolder: 01.Financial targets\00 Financial KPI
+		lineageTag: 7aebb0b1-d6c7-4888-af0e-7bb0f041bb92
+
+	measure Sales_Actual = ```
+			
+			    CALCULATE ( [Value_base],
+			        ft_Max[Measures] = "Sales",
+			        ft_Max[Act_Target] = "Actual"
+			    )
+			```
+		formatString: #,0
+		displayFolder: 01.Financial targets\Targets Act+ FCT\Graphs measures
+		lineageTag: c19e4571-9982-417b-b856-2c4f34c3123d
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure Sales_Target = ```
+			
+			 if(CALCULATE (
+			        [Value_base],
+			        ft_Max[Measures] = "Sales",
+			        ft_Max[Act_Target] = "Target"
+			    ) =0, BLANK(), CALCULATE (
+			        [Value_base],
+			        ft_Max[Measures] = "Sales",
+			        ft_Max[Act_Target] = "Target"))
+			```
+		formatString: #,0.0
+		displayFolder: 01.Financial targets\Targets Act+ FCT\Graphs measures
+		lineageTag: 9a4c4c57-536e-4819-9b7c-f6528d448f99
+
+	measure 'Sales LY' = ```
+			VAR CurrentYear = SELECTEDVALUE(dim_period[Year])
+			
+			VAR PreviousYearM = CurrentYear - 1
+			    
+			
+			VAr Result =
+			CALCULATE( [Sales Act_Target], all( 'dim_period'[Year] ), dim_period[Year] = PreviousYearM)
+			
+			Return
+			if(Result=BLANK(),BLANK(),Result)
+			```
+		displayFolder: 01.Financial targets\Targets Act+ FCT\Graphs measures
+		lineageTag: 5977bb65-b896-4f17-be8c-f9ed468308d6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales YoY %' =
+			VAR _result = IF(
+			    ISBLANK( [Sales LY] ),
+			    BLANK( ),
+			    DIVIDE( [Sales Act_Target] - [Sales LY], ABS( [Sales LY] ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 01.Financial targets\Targets Act+ FCT\Graphs measures
+		lineageTag: 1ba19253-65d9-425b-a7ac-49182af44343
+
+	measure 'EBIT LY' = ```
+			VAR CurrentYear = SELECTEDVALUE(dim_period[Year])
+			
+			VAR PreviousYearM = CurrentYear - 1
+			    
+			
+			VAr Result =
+			CALCULATE( [EBIT], all( 'dim_period'[Year] ), dim_period[Year] = PreviousYearM)
+			
+			Return
+			if(Result=BLANK(),BLANK(),Result)
+			```
+		displayFolder: 01.Financial targets\Targets Act+ FCT\Graphs measures
+		lineageTag: 496d3fa0-b5c0-438b-86ed-7396c707c2e8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'EBIT YoY %' =
+			VAR _result = IF(
+			    ISBLANK( [EBIT LY] ),
+			    BLANK( ),
+			    DIVIDE( [EBIT] - [EBIT LY] , ABS( [EBIT LY] ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 01.Financial targets\Targets Act+ FCT\Graphs measures
+		lineageTag: 417fc3b0-1a74-4f9a-85ed-393fdeb063b9
+
+	measure 'No of Restaurants LY' = ```
+			VAR CurrentYear = SELECTEDVALUE(dim_period[Year])
+			
+			VAR PreviousYearM = CurrentYear - 1
+			    
+			
+			VAr Result =
+			CALCULATE( [No of Restaurants], all( 'dim_period'[Year] ), dim_period[Year] = PreviousYearM)
+			
+			Return
+			if(Result=BLANK(),BLANK(),Result)
+			```
+		displayFolder: 01.Financial targets\Targets Act+ FCT\Graphs measures
+		lineageTag: fa491cd1-bdc3-4a8d-ac4e-7ef823b01931
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'No of Restaurants YoY %' =
+			VAR _result = IF(
+			    ISBLANK( [No of Restaurants LY] ),
+			    BLANK( ),
+			    DIVIDE( [No of Resturants] -[No of Restaurants LY], ABS( [No of Restaurants LY] ) )
+			)
+			RETURN
+			    IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 01.Financial targets\Targets Act+ FCT\Graphs measures
+		lineageTag: 11c0de8a-c546-4ce7-a923-c769c610589e
+
+	measure 'SALES CAGR 24-30' =
+			VAR _start_year = 2030
+			VAR _end_year = 2024
+			VAR _start_value = ABS( CALCULATE( [Sales Act_Target], ALL( dim_period[Year] ), dim_period[Year] = _start_year ) )
+			VAR _end_value = ABS(CALCULATE( [Sales Act_Target], ALL( dim_period[Year] ), dim_period[Year] = _end_year ))
+			VAR _n_years = _end_year - _start_year
+			VAR _result = IF(
+			        OR( ISBLANK( _start_value ), ISBLANK( _end_value ) ),
+			        BLANK( ),
+			        POWER( ( DIVIDE( _end_value, _start_value, BLANK() ) ), ( DIVIDE( 1, _n_years ) ) ) - 1
+			    )
+			RETURN
+			    IF( _result = - 1, BLANK(), _result )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 01.Financial targets\Targets Act+ FCT\CAGR
+		lineageTag: f53de788-8b5d-4cb9-9fc9-d99ac3703b7b
+
+	measure 'EBIT CAGR 24-30' =
+			VAR _start_year = 2030
+			VAR _end_year = 2024
+			VAR _start_value = ABS( CALCULATE( [EBIT], ALL( dim_period[Year] ), dim_period[Year] = _start_year ) )
+			VAR _end_value = ABS(CALCULATE( [EBIT], ALL( dim_period[Year] ), dim_period[Year] = _end_year ))
+			VAR _n_years = _end_year - _start_year
+			VAR _result = IF(
+			        OR( ISBLANK( _start_value ), ISBLANK( _end_value ) ),
+			        BLANK( ),
+			        POWER( ( DIVIDE( _end_value, _start_value, BLANK() ) ), ( DIVIDE( 1, _n_years ) ) ) - 1
+			    )
+			RETURN
+			    IF( _result = - 1, BLANK(), _result )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 01.Financial targets\Targets Act+ FCT\CAGR
+		lineageTag: 819e0d48-c20e-4fde-b8a8-cff4faf325c6
+
+	measure 'No of Restaurants CAGR 24-30' =
+			VAR _start_year = 2030
+			VAR _end_year = 2024
+			VAR _start_value = ABS( CALCULATE( [No of Restaurants], ALL( dim_period[Year] ), dim_period[Year] = _start_year ) )
+			VAR _end_value = ABS(CALCULATE( [No of Resturants], ALL( dim_period[Year] ), dim_period[Year] = _end_year ))
+			VAR _n_years = _end_year - _start_year
+			VAR _result = IF(
+			        OR( ISBLANK( _start_value ), ISBLANK( _end_value ) ),
+			        BLANK( ),
+			        POWER( ( DIVIDE( _end_value, _start_value, BLANK() ) ), ( DIVIDE( 1, _n_years ) ) ) - 1
+			    )
+			RETURN
+			    IF( _result = - 1, BLANK(), _result )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 01.Financial targets\Targets Act+ FCT\CAGR
+		lineageTag: 79f3d48a-8b9e-4963-9460-c74b532220ec
+
+	measure 'Central Cost CAGR 24-30' =
+			VAR _start_year = 2030
+			VAR _end_year = 2024
+			VAR _start_value = ABS( CALCULATE( [Central Cost], ALL( dim_period[Year] ), dim_period[Year] = _start_year ) )
+			VAR _end_value = ABS(CALCULATE( [Central Cost], ALL( dim_period[Year] ), dim_period[Year] = _end_year ))
+			VAR _n_years = _end_year - _start_year
+			VAR _result = IF(
+			        OR( ISBLANK( _start_value ), ISBLANK( _end_value ) ),
+			        BLANK( ),
+			        POWER( ( DIVIDE( _end_value, _start_value, BLANK() ) ), ( DIVIDE( 1, _n_years ) ) ) - 1
+			    )
+			RETURN
+			    IF( _result = - 1, BLANK(), _result )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 01.Financial targets\Targets Act+ FCT\CAGR
+		lineageTag: 473604fd-2c76-45f9-92c5-a32aa311fdb2
+
+	measure 'keep line' = if([Calculation]=blank(), BLANK(), rept("0",6))
+		displayFolder: 01.Financial targets\Targets Act+ FCT\Graphs measures
+		lineageTag: 1b0be451-825a-4758-a4d9-a789910f70a9
+
+	measure 'Butterfly Reverse Sales' = IF ( -[Sales YoY %] < 0, - [Sales YoY %], [Sales YoY %] )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 01.Financial targets\Targets Act+ FCT\Graphs measures
+		lineageTag: 65ff120c-1da3-42c8-b9c3-f753307f264a
+
+	measure 'No of Restaurants diff' = if ([No of Restaurants LY] = BLANK(), BLANK(),[No of Restaurants]-[No of Restaurants LY])
+		formatString: 0
+		displayFolder: 01.Financial targets\Targets Act+ FCT\Graphs measures
+		lineageTag: 2f4ee898-eba4-4916-971a-a8294befadad
+
+	measure 'No of Restaurants diff 24-30' =
+			VAR _start_year = 2030
+			VAR _end_year = 2024
+			VAR _start_value = ABS( CALCULATE( [No of Restaurants], ALL( dim_period[Year] ), dim_period[Year] = _start_year ) )
+			VAR _end_value = ABS(CALCULATE( [No of Resturants], ALL( dim_period[Year] ), dim_period[Year] = _end_year ))
+			VAR _n_years = _end_year - _start_year
+			VAR _result = IF(
+			        OR( ISBLANK( _start_value ), ISBLANK( _end_value ) ),
+			        BLANK( ),
+			        POWER( ( DIVIDE( _end_value, _start_value, BLANK() ) ), ( DIVIDE( 1, _n_years ) ) ) - 1
+			    )
+			RETURN
+			_start_value  - _end_value
+		formatString: 0
+		displayFolder: 01.Financial targets\Targets Act+ FCT\CAGR
+		lineageTag: d184c222-de18-438a-8543-5d1b9ca4b121
+
+	measure 'EBIT DIFF CAGR 24-30' =
+			
+			VAR _start_year = 2024
+			VAR _end_year   = 2030
+			VAR _start_value =
+			    CALCULATE (
+			        [EBIT%],
+			        ALL ( dim_period[Year] ),
+			        dim_period[Year] = _start_year
+			    )
+			VAR _end_value =
+			    CALCULATE (
+			        [EBIT%],
+			        ALL ( dim_period[Year] ),
+			        dim_period[Year] = _end_year
+			    )
+			RETURN
+			    SWITCH (
+			        TRUE(),
+			        -- case: start < 0 and end > 0 → show as positive improvement
+			        _start_value < 0 && _end_value > 0, ABS ( _end_value - _start_value ),
+			
+			        -- case: normal forward (end year > start year)
+			        _end_year > _start_year, _end_value - _start_value,
+			
+			        -- case: reverse (start year > end year)
+			        _start_value - _end_value
+			    )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 01.Financial targets\Targets Act+ FCT\CAGR
+		lineageTag: cef5f688-39f2-46d5-b77d-505a3944c85d
+
+	measure 'SALES DIFF 24-30' =
+			VAR _start_year = 2030
+			VAR _end_year = 2024
+			VAR _start_value = ABS( CALCULATE( [Sales Act_Target], ALL( dim_period[Year] ), dim_period[Year] = _start_year ) )
+			VAR _end_value = ABS(CALCULATE( [Sales Act_Target], ALL( dim_period[Year] ), dim_period[Year] = _end_year ))
+			VAR _n_years = _end_year - _start_year
+			VAR _result = IF(
+			        OR( ISBLANK( _start_value ), ISBLANK( _end_value ) ),
+			        BLANK( ),
+			        POWER( ( DIVIDE( _end_value, _start_value, BLANK() ) ), ( DIVIDE( 1, _n_years ) ) ) - 1
+			    )
+			RETURN
+			ROUNDUP(_start_value  - _end_value,-1)
+		displayFolder: 01.Financial targets\Targets Act+ FCT\CAGR
+		lineageTag: a78fc5b2-5e8c-4a10-bffe-de13cb376d74
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sale per Restaurants (M)' = DIVIDE([Sales Act_Target],[AVG Resturants])
+		formatString: 0.0
+		displayFolder: 01.Financial targets\Targets Act+ FCT\Graphs measures
+		lineageTag: 313964ef-fd73-4e1f-8414-040eb8ce92c2
+
+	measure 'Actual 1' = CALCULATE([Calculation], ft_Max[Act_Target] ="Actual")
+		displayFolder: 99 Base Values
+		lineageTag: 70a2d9c0-2db2-4c9c-bae0-1d64a62751af
+
+	measure 'EBIT% 2030' =
+			VAR _start_year = 2030
+			VAR _end_year = 2024
+			VAR _start_value = ABS( CALCULATE( [EBIT%], ALL( dim_period[Year] ), dim_period[Year] = _start_year ) )
+			VAR _end_value = ABS(CALCULATE( [EBIT%], ALL( dim_period[Year] ), dim_period[Year] = _end_year ))
+			VAR _n_years = _end_year - _start_year
+			VAR _result = IF(
+			        OR( ISBLANK( _start_value ), ISBLANK( _end_value ) ),
+			        BLANK( ),
+			        POWER( ( DIVIDE( _end_value, _start_value, BLANK() ) ), ( DIVIDE( 1, _n_years ) ) ) - 1
+			    )
+			RETURN
+			_start_value
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 01.Financial targets\Targets Act+ FCT\CAGR
+		lineageTag: 5966c0f1-2ff1-4161-bf52-593770f6cbb5
+
+	measure 'Order time (mm:ss)' = ```
+			
+			VAR t =
+			    CALCULATE (
+			        [Value_base],
+			        ft_Max[Measures] = "Order time (open app to confirmed order)"
+			    )
+			RETURN
+			IF (
+			    ISBLANK ( t ),
+			    BLANK(),
+			    TIME ( 0, MINUTE ( t ), SECOND ( t ) )
+			)
+			
+			
+			
+			```
+		formatString: d mmm yyyy hh:nn:ss
+		lineageTag: b9d3dacd-a70f-4035-827d-ce634431e5fa
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	measure 'Butterfly Reverse EBIT' =
+			
+			IF ( -[EBIT%] > 0, - [EBIT%], [EBIT%] )
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 01.Financial targets\Targets Act+ FCT\Graphs measures
+		lineageTag: 9f49f03c-bd1c-4e84-806d-2073b1cfa849
+
+	measure Label =
+			
+			FORMAT([Sales YoY %],"0.0%")
+		displayFolder: 01.Financial targets\Targets Act+ FCT\Graphs measures
+		lineageTag: 7dbe830e-6d03-441b-afa2-b8f7b6e71a6b
+
+	measure Calculation = ```
+			
+			
+			SWITCH (
+			    TRUE (),
+			
+			    --------------Financial targets----------------------
+			    [User Selection] = "EBIT Margin, %",
+			        IF ( [EBIT Margin %] = 0, BLANK (), FORMAT ( [EBIT Margin %], "0" ) ),
+			
+			    [User Selection] = "Sales",
+			         IF ( [Sales] = 0, BLANK (), FORMAT ( [Sales], "0" ) ),
+			        
+			
+			    [User Selection] = "Profit (EBIT)",
+			        IF ( [Profit (EBIT)] = 0, BLANK (), FORMAT ( [Profit (EBIT)], "0" ) ),
+			
+			    [User Selection] = "ROIC",
+			        IF ( [ROIC] = 0, BLANK (), FORMAT ( [ROIC], "0.0%" ) ),
+			
+			    // [User Selection] = "Profit before OH",
+			    //     IF ( [Profit before OH (%)] = 0, BLANK (), FORMAT ( [Profit before OH (%)], "0.0%" ) ),
+			
+			    [User Selection] = "Central Unit Costs, % of sales",
+			        IF ( [Central Unit Costs, % of sales] = 0, BLANK (), FORMAT ( [Central Unit Costs, % of sales], "0.0" ) ),
+			
+			    [User Selection] = "No of restaurants",
+			        IF ( [No of Restaurants] = 0, BLANK (), FORMAT ( [No of Restaurants], "0" ) ),
+			
+			    --------------G---------------
+			    [User Selection] = "Preference",                                 IF ( [Preference] = 0, BLANK (), FORMAT ( [Preference], "0.0" ) ),
+			    [User Selection] = "Price Premium",                              IF ( [Price Premium] = 0, BLANK (), FORMAT ( [Price Premium], "0.0" ) ),
+			    [User Selection] = "Value for money",                            IF ( [Value for money] = 0, BLANK (), FORMAT ( [Value for money], "0.0" ) ),
+			    [User Selection] = "Taste Perception",                           IF ( [Taste Perception] = 0, BLANK (), FORMAT ( [Taste Perception], "0.0" ) ),
+			    [User Selection] = "Brand Awareness",                            IF ( [Brand Awareness] = 0, BLANK (), FORMAT ( [Brand Awareness], "0.0" ) ),
+			    [User Selection] = "Guest satisfaction - service",               IF ( [Guest satisfaction - service] = 0, BLANK (), FORMAT ( [Guest satisfaction - service], "0.0" ) ),
+			    [User Selection] = "Weighted average service time",              IF ( [Weighted average service time] = 0, BLANK (), FORMAT ( [Weighted average service time], "0.0" ) ),
+			    [User Selection] = "% of orders above x min",                    IF ( [% of orders above x min] = 0, BLANK (), FORMAT ( [% of orders above x min], "0.0" ) ),
+			    [User Selection] = "Smooth ordering experience (tracking)",      IF ( [Smooth ordering experience (tracking)] = 0, BLANK (), FORMAT ( [Smooth ordering experience (tracking)], "0.0" ) ),
+			
+			    --------------U---------------
+			    [User Selection] = "eNPS",                          IF ( [eNPS] = 0, BLANK (), FORMAT ( [eNPS], "0.0" ) ),
+			    [User Selection] = "Engagement index",              IF ( [Engagement index] = 0, BLANK (), FORMAT ( [Engagement index], "0.0" ) ),
+			    [User Selection] = "Employer brand preference",     IF ( [Employer brand preference] = 0, BLANK (), FORMAT ( [Employer brand preference], "0.0" ) ),
+			    [User Selection] = "Staff turnover",                IF ( [Staff turnover] = 0, BLANK (), FORMAT ( [Staff turnover], "0.0%" ) ),
+			
+			    --------------E----------------
+			    [User Selection] = "Avg Unit volume, Local currency",            IF ( [Avg Unit volume, Local currency] = 0, BLANK (), FORMAT ( [Avg Unit volume, Local currency], "0.0" ) ),
+			    [User Selection] = "New opening success rate (Hit rate)",        IF ( [New opening success rate (Hit rate)] = 0, BLANK (), FORMAT ( [New opening success rate (Hit rate)], "0.0%" ) ),
+			    [User Selection] = "Checks, LFL",                                IF ( [Checks, LFL] = 0, BLANK (), FORMAT ( [Checks, LFL], "0.0%" ) ),
+			    [User Selection] = "Sales, LFL",                                 IF ( [Sales, LFL] = 0, BLANK (), FORMAT ( [Sales, LFL], "0.0%" ) ),
+			    [User Selection] = "Market share vs McDonalds",                  IF ( [Market share vs McDonalds] = 0, BLANK (), FORMAT ( [Market share vs McDonalds], "0.0%" ) ),
+			
+			    --------------S----------------
+			    [User Selection] = "Climate leadership, external",               IF ( [Climate leadership, external] = 0, BLANK (), FORMAT ( [Climate leadership, external], "0.0" ) ),
+			    [User Selection] = "Carbon footprint (kgCO2e per 1000 kcal)",    IF ( [Carbon footprint (kgCO2e per 1000 kcal)] = 0, BLANK (), FORMAT ( [Carbon footprint (kgCO2e per 1000 kcal)], "0.0" ) ),
+			    [User Selection] = "Good healthy food",                          IF ( [Good healthy food] = 0, BLANK (), FORMAT ( [Good healthy food], "0.0" ) ),
+			    [User Selection] = "Climate leadership, internal",               IF ( [Climate leadership, internal] = 0, BLANK (), FORMAT ( [Climate leadership, internal], "0.0" ) ),
+			
+			    --------------T----------------
+			    [User Selection] = "Shoppability",                               IF ( [Shoppability] = 0, BLANK (), FORMAT ( [Shoppability], "0.0" ) ),
+			    [User Selection] = "Availability",                               IF ( [Availability] = 0, BLANK (), FORMAT ( [Availability], "0.0" ) ),
+			    [User Selection] = "Failed orders",                              IF ( [Failed orders] = 0, BLANK (), FORMAT ( [Failed orders], "0.0" ) ),
+			    [User Selection] = "Order time (open app to confirmed order)",
+			    IF (
+			        [Order time] = 0 || ISBLANK ( [Order time] ),
+			        BLANK (),
+			        FORMAT ( MOD ( [Order time], 1 ), "hh:mm" )
+			    ),
+			    [User Selection] = "Guest satisfaction – user experience in app",IF ( [Guest satisfaction – user experience in app] = 0, BLANK (), FORMAT ( [Guest satisfaction – user experience in app], "0.0%" ) ),
+			    [User Selection] = "Security",                                   IF ( [Security] = 0, BLANK (), FORMAT ( [Security], "0.0" ) ),
+			    [User Selection] = "Cost per security incident",                 IF ( [Cost per security incident] = 0, BLANK (), FORMAT ( [Cost per security incident], "0.0" ) ),
+			    [User Selection] = "Technical Fit",                              IF ( [Technical Fit] = 0, BLANK (), FORMAT ( [Technical Fit], "0.0" ) ),
+			    [User Selection] = "Preference",                                 IF ( [Preference] = 0, BLANK (), FORMAT ( [Preference], "0.0" ) ),
+			    [User Selection] = "No Business critical applications lower than appropriate", IF ( [No Business critical applications lower than appropriate] = 0, BLANK (), FORMAT ( [No Business critical applications lower than appropriate], "0.0" ) ),
+			
+			    BLANK ()
+			)
+			
+			
+			```
+		displayFolder: 99 Base Values
+		lineageTag: 561a997e-df79-499b-b4d6-b1b8b25653f0
+
+	measure 'Guest Actual and Target' = ```
+			
+			VAR a  = CALCULATE ( [Calculation (Numeric)], ft_Max[Act_Target] = "Actual" )
+			VAR t  = CALCULATE ( [Calculation (Numeric)], ft_Max[Act_Target] = "Target" )
+			VAR an = IFERROR( VALUE(a), BLANK() )
+			VAR tn = IFERROR( VALUE(t), BLANK() )
+			RETURN IF( NOT ISBLANK(an) && an <> 0, an, tn )
+			
+			
+			
+			```
+		displayFolder: 99 Base Values
+		lineageTag: 10257933-2ed2-4c61-ac55-a8e24d9ea485
+
+		formatStringDefinition = SELECTEDVALUE(Units[Value])
+
+	measure 'Guest Target' =
+			
+			
+			VAR t  = CALCULATE ( [Calculation (Numeric)], ft_Max[Act_Target] = "Target" )
+			return
+			  DIVIDE ( t, 1.0 )
+		displayFolder: 99 Base Values
+		lineageTag: f0acf798-23c3-4fc0-8f2d-c249f28d199e
+
+		formatStringDefinition = SELECTEDVALUE(Units[Value])
+
+	measure 'Guest Bench' = ```
+			
+			VAR t =
+			    CALCULATE ( [Calculation (Numeric)], ft_Max[Act_Target] = "Bench" )
+			RETURN
+			    DIVIDE ( t, 1)
+			
+			```
+		displayFolder: 99 Base Values
+		lineageTag: 65b807cc-b6e0-4411-8e65-17b2c5712e2a
+
+		formatStringDefinition = SELECTEDVALUE(Units[Value])
+
+	measure 'Guest Actual' = ```
+			
+			
+			VAR t  = CALCULATE ( [Calculation (Numeric)], ft_Max[Act_Target] = "Actual" )
+			return
+			 DIVIDE ( t, 1)
+			 
+			```
+		displayFolder: 99 Base Values
+		lineageTag: cca44b60-dc7f-4669-ab59-b0f12a5e05f0
+
+		formatStringDefinition = SELECTEDVALUE(Units[Value])
+
+	measure Category = "Category: " & SELECTEDVALUE(dim_tbl_structure[Measures])
+		displayFolder: 01.Financial targets\Targets Act+ FCT\Graphs measures
+		lineageTag: b8f07ccd-7cdd-4140-b658-3278a65a17f9
+
+	measure 'EBIT Margin % LY' = ```
+			VAR CurrentYear = SELECTEDVALUE(dim_period[Year])
+			
+			VAR PreviousYearM = CurrentYear - 1
+			    
+			
+			VAr Result =
+			CALCULATE( [EBIT Margin %], all( 'dim_period'[Year] ), dim_period[Year] = PreviousYearM)
+			
+			Return
+			if(Result=BLANK(),BLANK(),Result)
+			```
+		displayFolder: 01.Financial targets\Targets Act+ FCT\Graphs measures
+		lineageTag: 71458ed2-8b03-4fd9-8df8-5a8dee9156e8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'GPB Value' =
+			IF (
+			    COUNTROWS ( VALUES ( DIM_XRate[Currency] ) ) = 1,
+			  [Value_base]/ MAX ( DIM_XRate[Value] ),
+			    0
+			)
+		displayFolder: 99 Base Values
+		lineageTag: ebac7f0b-afa7-46b8-a1aa-90253ea9943e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales LY 2dig' = ```
+			VAR CurrentYear = SELECTEDVALUE(dim_period[Year - 2dig])
+			
+			VAR PreviousYearM = CurrentYear - 1
+			    
+			
+			VAr Result =
+			CALCULATE( [Sales Act_Target], all( 'dim_period'[Year - 2dig] ), dim_period[Year - 2dig] = PreviousYearM)
+			
+			Return
+			if(Result=BLANK(),BLANK(),Result)
+			```
+		displayFolder: 01.Financial targets\Targets Act+ FCT\Graphs measures
+		lineageTag: 2d6f1819-589b-4069-9672-610e83a406a3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'EBIT LY 2dig' = ```
+			VAR CurrentYear = SELECTEDVALUE(dim_period[Year - 2dig])
+			
+			VAR PreviousYearM = CurrentYear - 1
+			    
+			
+			VAr Result =
+			CALCULATE( [EBIT], all( 'dim_period'[Year - 2dig] ), dim_period[Year - 2dig] = PreviousYearM)
+			
+			Return
+			if(Result=BLANK(),BLANK(),Result)
+			```
+		displayFolder: 01.Financial targets\Targets Act+ FCT\Graphs measures
+		lineageTag: 588997fc-a7f0-464b-9080-d7ec20d4ca26
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'EBIT Margin % LY 2dig' = ```
+			VAR CurrentYear = SELECTEDVALUE(dim_period[Year - 2dig])
+			
+			VAR PreviousYearM = CurrentYear - 1
+			    
+			
+			VAr Result =
+			CALCULATE( [EBIT Margin %], all( 'dim_period'[Year - 2dig] ), dim_period[Year - 2dig] = PreviousYearM)
+			
+			Return
+			if(Result=BLANK(),BLANK(),Result)
+			```
+		displayFolder: 01.Financial targets\Targets Act+ FCT\Graphs measures
+		lineageTag: a5cd7c0e-2bbb-4b93-89f0-50cfbdb49736
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales 2030' =
+			VAR _start_year = 2030
+			VAR _end_year = 2024
+			VAR _start_value = ABS( CALCULATE( [Sales Act_Target], ALL( dim_period[Year] ), dim_period[Year] = _start_year ) )
+			VAR _end_value = ABS(CALCULATE( [EBIT%], ALL( dim_period[Year] ), dim_period[Year] = _end_year ))
+			VAR _n_years = _end_year - _start_year
+			VAR _result = IF(
+			        OR( ISBLANK( _start_value ), ISBLANK( _end_value ) ),
+			        BLANK( ),
+			        POWER( ( DIVIDE( _end_value, _start_value, BLANK() ) ), ( DIVIDE( 1, _n_years ) ) ) - 1
+			    )
+			RETURN
+			_start_value*1000000
+		displayFolder: 01.Financial targets\Targets Act+ FCT\CAGR
+		lineageTag: 78464bbd-5a0f-4a5e-9f1a-cb051f225e0d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'EBIT 2030' =
+			VAR _start_year = 2030
+			VAR _end_year = 2024
+			VAR _start_value = ABS( CALCULATE( [EBIT], ALL( dim_period[Year] ), dim_period[Year] = _start_year ) )
+			VAR _end_value = ABS(CALCULATE( [EBIT%], ALL( dim_period[Year] ), dim_period[Year] = _end_year ))
+			VAR _n_years = _end_year - _start_year
+			VAR _result = IF(
+			        OR( ISBLANK( _start_value ), ISBLANK( _end_value ) ),
+			        BLANK( ),
+			        POWER( ( DIVIDE( _end_value, _start_value, BLANK() ) ), ( DIVIDE( 1, _n_years ) ) ) - 1
+			    )
+			RETURN
+			_start_value*1000000
+		displayFolder: 01.Financial targets\Targets Act+ FCT\CAGR
+		lineageTag: 1be077f9-0ee8-4c13-bf24-5ad3334b6401
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'AVG Resturants' = ```
+			CEILING (
+			    IF (
+			        ISBLANK ( [No of Restaurants LY] ),
+			        [No of Resturants],
+			        DIVIDE ( [No of Resturants] + [No of Restaurants LY], 2 )
+			    ),
+			    1
+			)
+			
+			```
+		displayFolder: 01.Financial targets\Targets Act+ FCT\Graphs measures
+		lineageTag: e9263188-fb81-4d25-8eef-54385d261eb7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales Color Code' =
+			VAR _measure = [Sales_Actual]
+			
+			VAR _result =
+			    SWITCH(
+			        TRUE(),
+			             _measure > 0, "#a1c3b5",       -- If the measure is positive, use Green
+			        // _measure < 0, "fed351",         -- If the measure is negative, use Red
+			        "#7c968b"                           -- Default color if none of the above conditions are met
+			    )
+			RETURN
+			_result
+		displayFolder: 01.Financial targets\Targets Act+ FCT\Graphs measures
+		lineageTag: ccfedc2c-1b04-456f-a456-d82b19d99b2d
+
+	measure 'Value_base FCT 2025' = sumx('Sales TYFC 2025','Sales TYFC 2025'[Values SEK])
+		formatString: 0
+		displayFolder: 99 Base Values
+		lineageTag: 1dc15043-56e7-4419-a03a-68af52c02808
+
+	measure 'GPB Value FCT 2025' =
+			IF (
+			    COUNTROWS ( VALUES ( DIM_XRate[Currency] ) ) = 1,
+			  [Value_base FCT 2025]/ MAX ( DIM_XRate[Value] ),
+			    0
+			)
+		displayFolder: 99 Base Values
+		lineageTag: 9826a692-eca6-4d4c-b294-485f404122f0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales FCT 2025' = ```
+			
+			VAR _base = CALCULATE ( [Value_base FCT 2025], 'Sales TYFC 2025'[Account] = "Sales" )
+			
+			
+			
+			RETURN
+			   _base
+			    
+			
+			```
+		formatString: #,0
+		displayFolder: 01.Financial targets\00 Financial KPI
+		lineageTag: b6326f3c-70e0-40e1-b675-d35e6216218c
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Sales Dev (2026+)' = ```
+			
+			VAR CurrYear =
+			    SELECTEDVALUE ('dim_period'[Year] )
+			VAR YoY =
+			    [Sales YoY %]
+			VAR PrevVal =
+			    SWITCH (
+			        TRUE (),
+			        CurrYear = 2026, CALCULATE ( [Value_base FCT 2025], 'Sales TYFC 2025'[Account] = "Sales" ),
+			        CALCULATE ( [Sales FCT 2025], DATEADD ( 'dim_period'[Year] , -1, YEAR ) )
+			    )
+			RETURN
+			    PrevVal * ( 1 + YoY )
+			
+			
+			```
+		formatString: 0
+		displayFolder: 01.Financial targets\00 Financial KPI
+		lineageTag: 1a7a85c4-1bfc-4385-8425-8bf3d0a58abe
+
+	measure 'Sales +1' = ```
+			VAR CurrentYear = SELECTEDVALUE(dim_period[Year])
+			
+			VAR PreviousYearM = CurrentYear -1
+			    
+			
+			VAr Result =
+			CALCULATE( [Sales FCT 2025], all( 'dim_period'[Year] ), dim_period[Year] = PreviousYearM)
+			
+			Return
+			if(Result=BLANK(),BLANK(),Result) * (1+[Sales YoY %])
+			```
+		formatString: #,0
+		displayFolder: 01.Financial targets\Targets Act+ FCT\Graphs measures
+		lineageTag: 383111bf-a11b-4ff5-aa16-257143808168
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Sales Abs (From 2025)' = ```
+			
+			VAR Y =
+			    SELECTEDVALUE ( dim_period[Year] )
+			VAR Base2025 =
+			    CALCULATE ( [Sales FCT 2025], ALL ( dim_period ), dim_period[Year] = 2025 )
+			RETURN
+			SWITCH (
+			    TRUE(),
+			    ISBLANK ( Y ) || ISBLANK ( Base2025 ) || Y < 2025 || Y > 2030, BLANK(),
+			    Y = 2025, Base2025,
+			    Base2025 *
+			        PRODUCTX (
+			            FILTER ( ALL ( dim_period[Year] ), dim_period[Year] >= 2026 && dim_period[Year] <= Y ),
+			            1 + COALESCE ( CALCULATE ( [Sales YoY %] ), 0 )
+			        )
+			)
+			
+			
+			
+			```
+		formatString: #,0
+		displayFolder: 01.Financial targets\Targets Act+ FCT\Graphs measures
+		lineageTag: f480c17d-aca4-4603-b8e0-69aee3e04e17
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'EBIT Forecast' =
+			
+			VAR _actual =
+			    DIVIDE(
+			        CALCULATE([EBIT], ft_Max[Act_Target] = "Actual"),
+			        CALCULATE([Sales], ft_Max[Act_Target] = "Actual")
+			    )
+			VAR _target =
+			    DIVIDE(
+			        CALCULATE([EBIT], ft_Max[Act_Target] = "Target"),
+			        CALCULATE([Sales], ft_Max[Act_Target] = "Target")
+			    )
+			VAR _chosen =
+			    IF (NOT ISBLANK(_actual) && _actual <> 0, _actual, _target)
+			RETURN
+			    IF (
+			        ISBLANK(_chosen) || _chosen <= -1,
+			        BLANK(),
+			        _chosen
+			    )*[Sales Abs (From 2025)]
+		formatString: #,0
+		displayFolder: 01.Financial targets\Targets Act+ FCT\Graphs measures
+		lineageTag: 9b35b7c9-c31e-46ac-b0c2-8de48e2ec27b
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure Dynamic_abs = ```
+			
+			SWITCH (
+			    TRUE (),
+			    NOT ISBLANK ( [Guest Actual] ), FORMAT ( [Guest Actual], "0.0" ),
+			    NOT ISBLANK ( [Guest Actual and Target] ), FORMAT ( [Guest Actual and Target], "0.0" )
+			)
+			
+			```
+		displayFolder: 99 Base Values
+		lineageTag: 320b6e32-c663-4934-add4-e511b64ad23f
+
+	measure Dynamic_perc = ```
+			
+			SWITCH (
+			    TRUE (),
+			  
+			    NOT ISBLANK ( [Guest Actual and Target] ), FORMAT ( [Guest Actual and Target], "0.0%" )
+			)
+			
+			```
+		displayFolder: 99 Base Values
+		lineageTag: 0d96b54c-9b8d-47e7-b6d0-19935042360f
+
+	measure 'chartCalculation (Numeric)' = ```
+			
+			SWITCH (
+			    TRUE (),
+			
+			    [User Selection] = "EBIT Margin, %",                      IF ( [EBIT Margin %] = 0, BLANK (), [EBIT Margin %] ),
+			    [User Selection] = "Sales",                               IF ( [Sales] = 0, BLANK (), [Sales] ),
+			    [User Selection] = "Profit (EBIT)",                       IF ( [Profit (EBIT)] = 0, BLANK (), [Profit (EBIT)] ),
+			    [User Selection] = "ROIC",                                IF ( [ROIC] = 0, BLANK (), [ROIC] ),
+			
+			    [User Selection] = "Central Unit Costs, % of sales",      IF ( [Central Unit Costs, % of sales] = 0, BLANK (), [Central Unit Costs, % of sales] ),
+			    [User Selection] = "No of restaurants",                   IF ( [No of Restaurants] = 0, BLANK (), [No of Restaurants] ),
+			
+			    [User Selection] = "Preference",                          IF ( [Preference] = 0, BLANK (), [Preference] ),
+			    [User Selection] = "Price Premium",                       IF ( [Price Premium] = 0, BLANK (), [Price Premium] ),
+			    [User Selection] = "Value for money",                     IF ( [Value for money] = 0, BLANK (), [Value for money] ),
+			    [User Selection] = "Taste Perception",                    IF ( [Taste Perception] = 0, BLANK (), [Taste Perception] ),
+			    [User Selection] = "Brand Awareness",                     IF ( [Brand Awareness] = 0, BLANK (), [Brand Awareness] ),
+			    [User Selection] = "Guest satisfaction - service",        IF ( [Guest satisfaction - service] = 0, BLANK (), [Guest satisfaction - service] ),
+			    [User Selection] = "Weighted average service time",       IF ( [Weighted average service time] = 0, BLANK (), [Weighted average service time] ),
+			    [User Selection] = "% of orders above x min",             IF ( [% of orders above x min] = 0, BLANK (), [% of orders above x min] ),
+			    [User Selection] = "Smooth ordering experience (tracking)", IF ( [Smooth ordering experience (tracking)] = 0, BLANK (), [Smooth ordering experience (tracking)] ),
+			
+			    [User Selection] = "eNPS",                                IF ( [eNPS] = 0, BLANK (), [eNPS] ),
+			    [User Selection] = "Engagement index",                    IF ( [Engagement index] = 0, BLANK (), [Engagement index] ),
+			    [User Selection] = "Employer brand preference",           IF ( [Employer brand preference] = 0, BLANK (), [Employer brand preference] ),
+			    [User Selection] = "Staff turnover",                      IF ( [Staff turnover] = 0, BLANK (), [Staff turnover] ),
+			
+			    [User Selection] = "Avg Unit volume, Local currency",     IF ( [Avg Unit volume, Local currency] = 0, BLANK (), [Avg Unit volume, Local currency] ),
+			    [User Selection] = "New opening success rate (Hit rate)", IF ( [New opening success rate (Hit rate)] = 0, BLANK (), [New opening success rate (Hit rate)] ),
+			    [User Selection] = "Checks, LFL",                         IF ( [Checks, LFL] = 0, BLANK (), [Checks, LFL] ),
+			    [User Selection] = "Sales, LFL",                          IF ( [Sales, LFL] = 0, BLANK (), [Sales, LFL] ),
+			    [User Selection] = "Market share vs McDonalds",           IF ( [Market share vs McDonalds] = 0, BLANK (), [Market share vs McDonalds] ),
+			
+			    [User Selection] = "Climate leadership, external",        IF ( [Climate leadership, external] = 0, BLANK (), [Climate leadership, external] ),
+			    [User Selection] = "Carbon footprint (kgCO2e per 1000 kcal)", IF ( [Carbon footprint (kgCO2e per 1000 kcal)] = 0, BLANK (), [Carbon footprint (kgCO2e per 1000 kcal)] ),
+			    [User Selection] = "Good healthy food",                   IF ( [Good healthy food] = 0, BLANK (), [Good healthy food] ),
+			    [User Selection] = "Climate leadership, internal",        IF ( [Climate leadership, internal] = 0, BLANK (), [Climate leadership, internal] ),
+			
+			    [User Selection] = "Shoppability",                        IF ( [Shoppability] = 0, BLANK (), [Shoppability] ),
+			    [User Selection] = "Availability",                        IF ( [Availability] = 0, BLANK (), [Availability] ),
+			    [User Selection] = "Failed orders",                       IF ( [Failed orders] = 0, BLANK (), [Failed orders] ),
+			    [User Selection] = "Order time (open app to confirmed order)", IF ( [Order time] = 0, BLANK (), [Order time] ),
+			    [User Selection] = "Guest satisfaction – user experience in app", IF ( [Guest satisfaction – user experience in app] = 0, BLANK (), [Guest satisfaction – user experience in app] ),
+			    [User Selection] = "Security",                            IF ( [Security] = 0, BLANK (), [Security] ),
+			    [User Selection] = "Cost per security incident",          IF ( [Cost per security incident] = 0, BLANK (), [Cost per security incident] ),
+			    [User Selection] = "Technical Fit",                       IF ( [Technical Fit] = 0, BLANK (), [Technical Fit] ),
+			    [User Selection] = "No Business critical applications lower than appropriate", IF ( [No Business critical applications lower than appropriate] = 0, BLANK (), [No Business critical applications lower than appropriate] ),
+			
+			    BLANK ()
+			)
+			
+			```
+		displayFolder: 99 Base Values
+		lineageTag: e5b0d320-0692-4807-a40d-81e1f149bf32
+
+		formatStringDefinition = SELECTEDVALUE(Units[Value])
+
+	measure 'Sales Flipped R12M' = if( [Guest Actual and Target]< 0,[Guest Actual and Target]*1.3,-[Guest Actual and Target]*0.3)
+		lineageTag: 5a289f11-07f4-4d39-8f09-1600f2946234
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'RowEmpty  R12M' = if ([Guest Actual and Target] <> 0 || [Guest Actual and Target] <> 0,-1.5)
+		lineageTag: af8d6560-6dd9-4234-a5f5-6e83b538b0fa
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'RowValues1Pos R12M' = if( [Guest Actual and Target]<> 0,-1)
+		formatString: 0
+		lineageTag: 8c44db5f-ce4e-4411-9d9c-e4adcec51b85
+
+	measure 'x-axis Labels R12M' =
+			
+			
+			SWITCH(
+			    TRUE(),
+			    ISINSCOPE(dim_period[Year]) && [Guest Actual and Target]<> 0, min(dim_period[Year]))
+		formatString: 0
+		lineageTag: eb634321-4ce1-4e2d-9277-da48b5048ff2
+
+	measure 'RowValues2Pos R12M' = if( [Guest Actual and Target]<> 0,-1)
+		formatString: 0
+		lineageTag: 63dbe390-8a75-4ded-be6b-a1be4c7292d9
+
+	measure 'RowValues3Pos R12M' = if( [Guest Actual and Target]<> 0,-1)
+		formatString: 0
+		lineageTag: dcc13299-a211-40a4-bdda-394f2056b82d
+
+	measure 'RowLbl1Pos R12M' = ```
+			
+			
+			CALCULATE (
+			    MIN ( dim_period[Year] ),
+			    FILTER ( ALLSELECTED ( dim_period[Year] ), [Guest Actual] > 0 )
+			)
+			
+			
+			
+			```
+		formatString: 0
+		lineageTag: 0d74ef46-876d-4b54-a857-8d4e34f18392
+
+	measure Target = "Target"
+		displayFolder: 99 Base Values
+		lineageTag: 007a90dc-5651-4f8e-9411-6dda2590395f
+
+	measure 'RowLb1Pos R12M' = ```
+			
+			VAR FirstSalesYear =
+			    CALCULATE (
+			        MIN ( dim_period[Year] ),
+			        FILTER ( ALLSELECTED ( dim_period[Year] ), [Guest Actual] > 0 )
+			    )
+			VAR CurYear = SELECTEDVALUE ( dim_period[Year] ) +1
+			RETURN
+			IF ( NOT ISBLANK ( FirstSalesYear ) && CurYear  IN { FirstSalesYear , FirstSalesYear },-1.5 )
+			
+			```
+		formatString: 0
+		displayFolder: 99 Base Values
+		lineageTag: b442a390-ecae-4338-9c11-c741276e9437
+
+	measure 'RowLb3Pos R12M' = ```
+			
+			VAR FirstSalesYear =
+			    CALCULATE (
+			        MIN ( dim_period[Year] ),
+			        FILTER ( ALLSELECTED ( dim_period[Year] ), [Guest Actual] > 0 )
+			    )
+			VAR CurYear = SELECTEDVALUE ( dim_period[Year] )+1
+			RETURN
+			IF ( NOT ISBLANK ( FirstSalesYear ) && CurYear IN { FirstSalesYear , FirstSalesYear },-1 )
+			
+			```
+		formatString: 0
+		displayFolder: 99 Base Values
+		lineageTag: a623b0a2-a719-4a87-8c59-9c9b61de4958
+
+	measure 'Ebit Abs (From 2025)' = [Sales Abs (From 2025)]* [EBIT Margin %]
+		formatString: #,0
+		displayFolder: 01.Financial targets\Targets Act+ FCT\Graphs measures
+		lineageTag: d54aa5b6-9e10-4546-82a8-e1dbb7890e57
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'RowLbl2Pos R12M' = ```
+			
+			VAR FirstSalesYear =
+			    CALCULATE (
+			        MIN ( dim_period[Year] ),
+			        FILTER ( ALLSELECTED ( dim_period[Year] ), [Guest Actual] > 0 )
+			    )
+			VAR CurYear = SELECTEDVALUE ( dim_period[Year] )+1
+			RETURN
+			IF ( NOT ISBLANK ( FirstSalesYear ) && CurYear IN { FirstSalesYear , FirstSalesYear },-1 )
+			
+			```
+		formatString: 0
+		displayFolder: 99 Base Values
+		lineageTag: b972ebbf-05a0-413f-bf94-afcc7e95d0e1
+
+	measure RowLb1Text = "Actual"
+		displayFolder: 99 Base Values
+		lineageTag: af10cd71-e39b-441a-925e-ddaff8a27fe5
+
+	measure 'RowLbl4Pos R12M' = ```
+			
+			VAR FirstSalesYear =
+			    CALCULATE (
+			        MIN ( dim_period[Year] ),
+			        FILTER ( ALLSELECTED ( dim_period[Year] ), [Guest Actual] > 0 )
+			    )
+			VAR CurYear = SELECTEDVALUE ( dim_period[Year] )+1
+			RETURN
+			IF ( NOT ISBLANK ( FirstSalesYear ) && CurYear IN { FirstSalesYear , FirstSalesYear },-1 )
+			
+			```
+		formatString: 0
+		displayFolder: 99 Base Values
+		lineageTag: 68c256bf-45e9-4e56-9ded-336c375cbd60
+
+	measure RowLb2Text = "Forecast"
+		displayFolder: 99 Base Values
+		lineageTag: 83d5a943-a581-4256-80c6-e0b48af74079
+
+	measure RowLb3Text = "Bench"
+		displayFolder: 99 Base Values
+		lineageTag: 8de021e0-abd4-49e4-a5d3-2e1155848645
+
+	measure 'RowLb1Pos R12M Max' = ```
+			
+			VAR FirstSalesYear =
+			    CALCULATE (
+			        max ( dim_period[Year] ),
+			        FILTER ( ALLSELECTED ( dim_period[Year] ), [Guest Actual] > 0 )
+			    )
+			VAR CurYear = SELECTEDVALUE ( dim_period[Year] ) +15
+			RETURN
+			IF ( NOT ISBLANK ( FirstSalesYear ) && CurYear  IN { FirstSalesYear , FirstSalesYear+9 },-1.5 )
+			
+			```
+		displayFolder: 99 Base Values
+		lineageTag: f6b38ad6-1a1b-4e27-8649-b316e522af45
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Sales 2024' = ```
+			
+			CALCULATE(
+			    [Sales_Actual],
+			    
+			        dim_period[Year] = 2024
+			    )
+			
+			
+			```
+		displayFolder: 01.Financial targets\Targets Act+ FCT\CAGR
+		lineageTag: aec48e2b-dcfc-4946-afd3-3170a3c57d38
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Target vs Forecast %' =
+			VAR _result = IF(
+			    ISBLANK( [Sales LY] ),
+			    BLANK( ),
+			    DIVIDE( [Sales Abs (From 2025)] -  [Sales LY], ABS(  [Sales LY] ) )
+			)
+			RETURN
+			    if(IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result )=-1,BLANK(),IF( ABS( _result ) > 10, IF( _result < 0, - 10, 10 ), _result ))
+		formatString: 0.0\ %;-0.0\ %;0.0\ %
+		displayFolder: 01.Financial targets\Targets Act+ FCT\Graphs measures
+		lineageTag: 4298cd73-039b-4c55-b428-6a54bc9a9ccf
+
+	measure 'Sales LY ABS 25' = ```
+			VAR CurrentYear = SELECTEDVALUE(dim_period[Year])
+			
+			VAR PreviousYearM = CurrentYear 
+			    
+			
+			VAr Result =
+			CALCULATE( [Sales Abs (From 2025)], all( 'dim_period'[Year] ), dim_period[Year] = PreviousYearM)
+			
+			Return
+			if(Result=BLANK(),BLANK(),Result)
+			```
+		displayFolder: 01.Financial targets\Targets Act+ FCT\Graphs measures
+		lineageTag: c2a91f65-9fbc-4b07-9425-b031005aec6f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition '00 measure' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Changed Type",{"Column1"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+

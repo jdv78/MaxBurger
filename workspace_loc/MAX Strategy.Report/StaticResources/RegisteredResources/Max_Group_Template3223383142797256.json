@@ -1,0 +1,51 @@
+{
+  "name": "Max Group Template",
+  "dataColors": [
+    "#C8C8B4",
+    "#E6E6D2",
+    "#E1BEA5",
+    "#EBD7B9",
+    "#A5C8B9",
+    "#BEE1E1",
+    "#F5F5F5",
+    "#DBC3D6"
+  ],
+  "visualStyles": {
+    "*": {
+      "*": {
+        "border": [
+          {
+            "color": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            },
+            "show": true
+          }
+        ]
+      }
+    },
+    "page": {
+      "*": {
+        "background": [
+          {
+            "color": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            }
+          }
+        ],
+        "outspace": [
+          {
+            "color": {
+              "solid": {
+                "color": "#FFFFFF"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

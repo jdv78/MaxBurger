@@ -1,0 +1,53 @@
+table 'Parameter Sales'
+	isHidden
+	lineageTag: 5aa7ab1d-b034-4d67-a36b-f687b2e4e905
+
+	column 'Parameter Sales'
+		isHidden
+		lineageTag: b4b53b1e-fa13-4415-992e-0ba5a50f4139
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Parameter Sales Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Parameter Sales Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Sales Fields'
+		isHidden
+		lineageTag: a290f61c-4e58-4f1b-919f-07cbdf41ff82
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Parameter Sales Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Parameter Sales Order'
+		isHidden
+		formatString: 0
+		lineageTag: b5c139ca-e18f-443d-9c4c-7f31fcf3eec2
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Parameter Sales' = calculated
+		mode: import
+		source =
+				{
+				    ("Sales", NAMEOF([01 Sales (Xw)]), 0),
+				    ("LY", NAMEOF([02 Sales LY (Xw)] ), 1),
+				    ("LLY", NAMEOF([03 Sales LLY (Xw)]), 2),
+				    ("Budget", NAMEOF([04 Sales Budget (Xw)]), 3)
+				
+				}
+
+	annotation PBI_Id = a95613aa26ac4ae084958395757bb22f
+

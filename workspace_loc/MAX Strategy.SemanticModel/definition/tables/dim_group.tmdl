@@ -1,0 +1,53 @@
+table dim_group
+	lineageTag: 9c917b06-56a3-4463-9e56-ef499ad99f04
+
+	column Group
+		dataType: string
+		lineageTag: f5e52ca1-dc12-4ba8-ba8c-2709aee2f407
+		summarizeBy: none
+		sourceColumn: Group
+		sortByColumn: Index
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column Index
+		dataType: int64
+		formatString: 0
+		lineageTag: a5b266da-3ba4-4e86-b075-02fed986e255
+		summarizeBy: none
+		sourceColumn: Index
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_group = m
+		mode: import
+		source =
+				let
+				    Source = SharePoint.Files("https://maxburgers.sharepoint.com/sites/BusinessIntelligence", [ApiVersion = 15]),
+				    #"Filtered Rows" = Table.SelectRows(Source, each Text.Contains([Folder Path], "/Shared Documents/General/Power BI/Sales/Business Control/MAX KPI Strategy/Datainput/")),
+				    #"Removed Other Columns" = Table.SelectColumns(#"Filtered Rows",{"Name", "Date modified", "Content"}),
+				    #"Added Custom" = Table.AddColumn(#"Removed Other Columns", "Excelworkbook", each Excel.Workbook([Content])),
+				    #"Removed Columns" = Table.RemoveColumns(#"Added Custom",{"Content"}),
+				    #"Expanded Excelworkbook" = Table.ExpandTableColumn(#"Removed Columns", "Excelworkbook", {"Name", "Data", "Item", "Kind", "Hidden"}, {"Excelworkbook.Name", "Excelworkbook.Data", "Excelworkbook.Item", "Excelworkbook.Kind", "Excelworkbook.Hidden"}),
+				    #"Filtered Rows1" = Table.SelectRows(#"Expanded Excelworkbook", each ([Name] = "MAX KPI 2025_2030.xlsx") and ([Excelworkbook.Name] = "Sweden_DataInput")),
+				    #"Removed Columns1" = Table.RemoveColumns(#"Filtered Rows1",{"Excelworkbook.Item", "Excelworkbook.Kind", "Excelworkbook.Hidden"}),
+				    #"Expanded Excelworkbook.Data" = Table.ExpandTableColumn(#"Removed Columns1", "Excelworkbook.Data", {"Column1", "Column2", "Column3", "Column4", "Column5", "Column6", "Column7", "Column8", "Column9", "Column10", "Column11", "Column12", "Column13", "Column14", "Column15", "Column16", "Column17", "Column18", "Column19", "Column20", "Column21", "Column22", "Column23", "Column24", "Column25", "Column26", "Column27", "Column28", "Column29", "Column30", "Column31", "Column32", "Column33", "Column34", "Column35", "Column36", "Column37", "Column38", "Column39", "Column40", "Column41", "Column42", "Column43", "Column44", "Column45", "Column46", "Column47", "Column48", "Column49", "Column50", "Column51", "Column52", "Column53", "Column54", "Column55", "Column56", "Column57", "Column58", "Column59", "Column60", "Column61", "Column62", "Column63", "Column64", "Column65", "Column66", "Column67", "Column68", "Column69", "Column70", "Column71", "Column72", "Column73", "Column74", "Column75"}, {"Excelworkbook.Data.Column1", "Excelworkbook.Data.Column2", "Excelworkbook.Data.Column3", "Excelworkbook.Data.Column4", "Excelworkbook.Data.Column5", "Excelworkbook.Data.Column6", "Excelworkbook.Data.Column7", "Excelworkbook.Data.Column8", "Excelworkbook.Data.Column9", "Excelworkbook.Data.Column10", "Excelworkbook.Data.Column11", "Excelworkbook.Data.Column12", "Excelworkbook.Data.Column13", "Excelworkbook.Data.Column14", "Excelworkbook.Data.Column15", "Excelworkbook.Data.Column16", "Excelworkbook.Data.Column17", "Excelworkbook.Data.Column18", "Excelworkbook.Data.Column19", "Excelworkbook.Data.Column20", "Excelworkbook.Data.Column21", "Excelworkbook.Data.Column22", "Excelworkbook.Data.Column23", "Excelworkbook.Data.Column24", "Excelworkbook.Data.Column25", "Excelworkbook.Data.Column26", "Excelworkbook.Data.Column27", "Excelworkbook.Data.Column28", "Excelworkbook.Data.Column29", "Excelworkbook.Data.Column30", "Excelworkbook.Data.Column31", "Excelworkbook.Data.Column32", "Excelworkbook.Data.Column33", "Excelworkbook.Data.Column34", "Excelworkbook.Data.Column35", "Excelworkbook.Data.Column36", "Excelworkbook.Data.Column37", "Excelworkbook.Data.Column38", "Excelworkbook.Data.Column39", "Excelworkbook.Data.Column40", "Excelworkbook.Data.Column41", "Excelworkbook.Data.Column42", "Excelworkbook.Data.Column43", "Excelworkbook.Data.Column44", "Excelworkbook.Data.Column45", "Excelworkbook.Data.Column46", "Excelworkbook.Data.Column47", "Excelworkbook.Data.Column48", "Excelworkbook.Data.Column49", "Excelworkbook.Data.Column50", "Excelworkbook.Data.Column51", "Excelworkbook.Data.Column52", "Excelworkbook.Data.Column53", "Excelworkbook.Data.Column54", "Excelworkbook.Data.Column55", "Excelworkbook.Data.Column56", "Excelworkbook.Data.Column57", "Excelworkbook.Data.Column58", "Excelworkbook.Data.Column59", "Excelworkbook.Data.Column60", "Excelworkbook.Data.Column61", "Excelworkbook.Data.Column62", "Excelworkbook.Data.Column63", "Excelworkbook.Data.Column64", "Excelworkbook.Data.Column65", "Excelworkbook.Data.Column66", "Excelworkbook.Data.Column67", "Excelworkbook.Data.Column68", "Excelworkbook.Data.Column69", "Excelworkbook.Data.Column70", "Excelworkbook.Data.Column71", "Excelworkbook.Data.Column72", "Excelworkbook.Data.Column73", "Excelworkbook.Data.Column74", "Excelworkbook.Data.Column75"}),
+				    #"Removed Columns3" = Table.RemoveColumns(#"Expanded Excelworkbook.Data",{"Name", "Date modified", "Excelworkbook.Name"}),
+				    #"Removed Top Rows" = Table.Skip(#"Removed Columns3",5),
+				    #"Promoted Headers" = Table.PromoteHeaders(#"Removed Top Rows", [PromoteAllScalars=true]),
+				    #"Filtered Rows2" = Table.SelectRows(#"Promoted Headers", each ([Sources] = "Actual")),
+				    Group1 = #"Filtered Rows2"[Group],
+				    #"Removed Duplicates" = List.Distinct(Group1),
+				    #"Converted to Table" = Table.FromList(#"Removed Duplicates", Splitter.SplitByNothing(), null, null, ExtraValues.Error),
+				    #"Renamed Columns" = Table.RenameColumns(#"Converted to Table",{{"Column1", "Group"}}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Renamed Columns",{{"Group", type text}}),
+				    #"Added Index" = Table.AddIndexColumn(#"Changed Type", "Index", 1, 1, Int64.Type)
+				in
+				    #"Added Index"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

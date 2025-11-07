@@ -1,0 +1,32 @@
+table RefreshDateTime
+	isHidden
+	lineageTag: cf2289fa-a0bd-4f2a-89b1-59a05f582c83
+
+	column Refresh
+		dataType: dateTime
+		isHidden
+		formatString: General Date
+		lineageTag: b146492e-271c-4fd8-97bf-6ef2c24b8f5d
+		summarizeBy: none
+		sourceColumn: Refresh
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition RefreshDateTime = m
+		mode: import
+		queryGroup: Time
+		source =
+				let
+				    Source = DateTimeZone.SwitchZone(DateTimeZone.LocalNow(),10),
+				    #"Converted to Table" = #table(1, {{Source}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Converted to Table",{{"Column1", "Refresh"}}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Renamed Columns",{{"Refresh", type datetime}})
+				in
+				    #"Changed Type"
+
+	changedProperty = IsHidden
+
+	annotation PBI_ResultType = Table
+

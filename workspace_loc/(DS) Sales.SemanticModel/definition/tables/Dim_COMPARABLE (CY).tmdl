@@ -1,0 +1,73 @@
+table 'Dim_COMPARABLE (CY)'
+	isHidden
+	lineageTag: 185ee68e-d1f4-40d1-9fc6-168e82784437
+
+	column RESTAURANT_KEY
+		dataType: int64
+		isHidden
+		lineageTag: 3c2347b6-3ca0-475d-ba93-577cf3cdc43e
+		summarizeBy: none
+		sourceColumn: RESTAURANT_KEY
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column YEAR
+		dataType: int64
+		isHidden
+		lineageTag: 10f0a7eb-2c6b-49e5-bef8-f31386e4b30d
+		summarizeBy: sum
+		sourceColumn: YEAR
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column IS_COMPARABLE
+		dataType: boolean
+		isHidden
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 68f6c4c5-45be-4c07-875b-624af546a815
+		summarizeBy: none
+		sourceColumn: IS_COMPARABLE
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Comp & NonComp TY'
+		dataType: string
+		isHidden
+		lineageTag: c8f5bb01-a018-406a-91d9-2bd9b42ce5d4
+		summarizeBy: none
+		sourceColumn: Comp & NonComp TY
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Dim_COMPARABLE (CY)' = m
+		mode: import
+		queryGroup: dim
+		source =
+				let
+				    Source = Snowflake.Databases("maxburgers-analytics.snowflakecomputing.com","ANALYSIS"),
+				    GOLD_Database = Source{[Name="GOLD",Kind="Database"]}[Data],
+				    CORE_Schema = GOLD_Database{[Name="CORE",Kind="Schema"]}[Data],
+				    D_RESTAURANT_COMPARABLE_Table = CORE_Schema{[Name="D_RESTAURANT_COMPARABLE",Kind="Table"]}[Data],
+				    #"Filtered Rows" = Table.SelectRows(D_RESTAURANT_COMPARABLE_Table, each List.Contains(CompFilterTY,[YEAR]) =true),
+				    #"Added Conditional Column" = Table.AddColumn(#"Filtered Rows", "Comp & NonComp TY", each if [IS_COMPARABLE] = true then "Comp" else "Non-Comp")
+				in
+				    #"Added Conditional Column"
+
+	changedProperty = IsHidden
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Exception
+

@@ -1,0 +1,32 @@
+table CompFilterTY
+	isHidden
+	lineageTag: 79692d85-ba19-4fe0-a0a0-6a663fb4a11a
+
+	column CompFilterTY
+		dataType: string
+		isHidden
+		lineageTag: 033da4da-7c5c-402d-95a0-5e567e78c0a9
+		summarizeBy: none
+		sourceColumn: CompFilterTY
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition CompFilterTY = m
+		mode: import
+		queryGroup: filter
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WMjIwMlWKjQUA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [CompTY = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"CompTY", Int64.Type}}),
+				    CompTY = #"Changed Type"[CompTY]
+				in
+				    CompTY
+
+	changedProperty = IsHidden
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Exception
+

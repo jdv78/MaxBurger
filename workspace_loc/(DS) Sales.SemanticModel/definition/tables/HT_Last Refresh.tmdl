@@ -1,0 +1,31 @@
+table 'HT_Last Refresh'
+	isHidden
+	lineageTag: f7bdd742-5023-4cc7-becb-478ec0000ec8
+
+	column 'HT_Last Refresh'
+		dataType: dateTime
+		isHidden
+		formatString: General Date
+		lineageTag: 68d442c2-b48a-4f76-a5c6-5639c9e0b7fc
+		summarizeBy: none
+		sourceColumn: HT_Last Refresh
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'HT_Last Refresh' = m
+		mode: import
+		queryGroup: Time
+		source =
+				let
+				    Source = DateTime.LocalNow()
+				in
+				    Source
+
+	changedProperty = IsHidden
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = DateTime
+

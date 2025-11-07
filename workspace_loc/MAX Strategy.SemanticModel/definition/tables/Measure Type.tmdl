@@ -1,0 +1,36 @@
+table 'Measure Type'
+	lineageTag: 1c9fb0c3-cb6d-4be0-a2fd-687decffe2bc
+
+	column Type
+		dataType: string
+		lineageTag: d8467c74-6d2a-480a-9383-648951b017ea
+		summarizeBy: none
+		sourceColumn: Type
+		sortByColumn: Rank
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column Rank
+		dataType: int64
+		formatString: 0
+		lineageTag: 360adee1-f97d-4894-8896-5d6178041062
+		summarizeBy: none
+		sourceColumn: Rank
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Measure Type' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WckwuKU3MUdJRMlSK1YlWCkksSk8tAXKNwFyn1LzkDCDPWCk2FgA=", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Type = _t, Rank = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Type", type text}, {"Rank", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

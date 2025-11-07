@@ -1,0 +1,65 @@
+table 'Units (3)'
+	lineageTag: b0bfcc2b-a217-4221-a5df-e79433471285
+
+	column Units
+		dataType: string
+		lineageTag: e129ab91-30a2-401d-85e8-f3c04a411427
+		summarizeBy: none
+		sourceColumn: Units
+
+		annotation SummarizationSetBy = Automatic
+
+	column Order
+		dataType: int64
+		formatString: 0
+		lineageTag: c33ae9c5-2570-41e6-8f47-ad03742e668e
+		summarizeBy: sum
+		sourceColumn: Order
+
+		annotation SummarizationSetBy = Automatic
+
+	column Value
+		dataType: string
+		lineageTag: 1b6619d1-5658-411e-ba0d-9d9fa5311716
+		summarizeBy: none
+		sourceColumn: Value
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Units (3)' = m
+		mode: import
+		source =
+				let
+				    Source =
+				        Table.FromRows(
+				            Json.Document(
+				                Binary.Decompress(
+				                    Binary.FromText(
+				                        "i45WCkgtSk7NK0lMT1XSUTLQMzBQBdKGSrE60UqheZklxUCeMlAYSBmBBUMyc0EqY5QyMqxyc2OUgGxjpdhYAA==",
+				                        BinaryEncoding.Base64
+				                    ),
+				                    Compression.Deflate
+				                )
+				            ),
+				            let _t = ((type nullable text) meta [Serialized.Text = true])
+				            in type table [Units = _t, Value = _t, Order = _t]
+				        ),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Units", type text}, {"Value", type text}, {"Order", Int64.Type}}),
+				
+				    // Convert only the "Time" row to a real time value (set to 00:00 here)
+				    AddTimeValue = Table.AddColumn(#"Changed Type", "Value2",
+				        each if [Units] = "Time" then #time(0, 0, 0) else [Value],
+				        type any
+				    ),
+				    Final =
+				        Table.RenameColumns(
+				            Table.RemoveColumns(AddTimeValue, {"Value"}),
+				            {{"Value2","Value"}}
+				        )
+				in
+				    Final
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
